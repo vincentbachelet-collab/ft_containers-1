@@ -4,36 +4,49 @@
 #include <stdexcept>
 #include <iostream>
 
+#define DEBUG 1
+
 namespace ft
 {
   template <class T, class Allocator = allocator<T> >
   class vector
   {
   public:
-      typedef T                                        value_type;
-      typedef Allocator                                allocator_type;
-      typedef typename allocator_type::reference       reference;
-      typedef typename allocator_type::const_reference const_reference;
-      typedef implementation-defined                   iterator;
-      typedef implementation-defined                   const_iterator;
-      typedef typename allocator_type::size_type       size_type;
-      typedef typename allocator_type::difference_type difference_type;
-      typedef typename allocator_type::pointer         pointer;
-      typedef typename allocator_type::const_pointer   const_pointer;
-      typedef std::reverse_iterator<iterator>          reverse_iterator;
-      typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
+      /*
+      ** Fonction allocate :
+      ** Attempts to allocate a block of storage with a size
+      ** large enough to contain n elements of member type value_type.
+      */
+      typedef T                                           value_type;
+      typedef Allocator                                   allocator_type;
+      typedef typename allocator_type::reference          reference;
+      typedef typename allocator_type::const_reference    const_reference;
+
+      /* Iterateurs */
+      //https://www.geeksforgeeks.org/iterators-c-stl/
+      //https://gcc.gnu.org/onlinedocs/libstdc++/libstdc++-html-USERS-4.2/class____gnu__cxx_1_1____normal__iterator.html
+      typedef ft::normal_iterator<pointer, vector>        iterator;
+      typedef ft::normal_iterator<const_pointer, vector>  const_iterator;
+      typedef typename allocator_type::size_type          size_type;
+      typedef typename allocator_type::difference_type    difference_type;
+      typedef typename allocator_type::pointer            pointer;
+      typedef typename allocator_type::const_pointer      const_pointer;
+      typedef std::reverse_iterator<iterator>             reverse_iterator;
+      typedef std::reverse_iterator<const_iterator>       const_reverse_iterator;
 
       /* Partie canonique */
-      vector();
+      //vector();
       /*
       ** Explicite signifie que le constructeur ne peut pas etre utilise
       ** pour des conversions implicites ou des copy initialization.
       */
-      explicit vector(const allocator_type &);
+      explicit vector(const allocator_type &alloc);
       explicit vector(size_type n);
       vector(size_type n, const value_type& value, const allocator_type& = allocator_type());
+      /*
       template <class InputIterator>
           vector(InputIterator first, InputIterator last, const allocator_type& = allocator_type());
+      */
       vector(const vector& x);
       vector(vector&& x)
       vector(initializer_list<value_type> il);
@@ -45,13 +58,14 @@ namespace ft
       vector& operator=(initializer_list<value_type> il);
 
       /* Input iterators */
+      /*
       template <class InputIterator>
           void assign(InputIterator first, InputIterator last);
-
-      /* Prototypes des fonctions */
+      */
+      /* Prototypes des fonctions
       void                  assign(size_type n, const value_type& u);
       void                  assign(initializer_list<value_type> il);
-      allocator_type        get_allocator() const noexcept;
+      allocator_type        get_allocator() const;
       iterator               begin();
       const_iterator         begin()   const;
       iterator               end();
@@ -89,10 +103,11 @@ namespace ft
       void                    resize(size_type sz, const value_type& c);
       void                    swap(vector&);
       void	                  reserve(size_type n);
+      */
       //bool        __invariants() const;
   private:
       allocator_type	m_alloc;
-      size_type		m_capacity;
-      pointer			m_start;
-      size_type		m_size;
+      size_type		    m_capacity;
+      pointer			    m_start;
+      size_type		    m_size;
 };
