@@ -5,6 +5,8 @@
 //A changer pour faire d autres tests
 typedef int value_type_t;
 
+//Faire une fonction affichage  du container
+
 int main(void)
 {
   //Instanciation via le constructor 0
@@ -15,6 +17,6 @@ int main(void)
   value_type_t n = 10;
   ft::vector<value_type_t> vector1(n);
 
-  ft::vector<int> vector2(n, )
+  ft::vector<int> vector2(n, 10, intAlloc);
   return (0);
 }

@@ -15,6 +15,11 @@ namespace ft
   template<class T, class Allocator = std::allocator<T> >
   class vector
   {
+  private:
+      allocator_type	m_alloc;
+      size_type		    m_capacity;
+      pointer			    m_start;
+      size_type		    m_size;
   public:
 
       /*
@@ -42,14 +47,32 @@ namespace ft
       typedef std::reverse_iterator<iterator>                    reverse_iterator;
       typedef std::reverse_iterator<const_iterator>              const_reverse_iterator;
       */
+      /* Aide pour moi, faire des getters et des setters */
+      allocator_type getAlloc(void) const
+      {
+        return (this->m_alloc);
+      }
 
+      size_type getSize(void) const
+      {
+        return (this->m_capacity);
+      }
+
+      pointer getStart(void) const
+      {
+        return (this->m_start);
+      }
+
+      size_type getType(void) const
+      {
+        return (this->m_size);
+      }
       /* Partie canonique */
 
       /*
       ** Explicite signifie que le constructeur ne peut pas etre utilise
       ** pour des conversions implicites ou des copy initialization.
       */
-
       //vector(const allocator_type &alloc);
       //explicit vector(const allocator_type &alloc);
       //TO DO: voir s'il faut forcement que ce soit explicit ou pas, on ne peut pas avoir les deux
@@ -147,10 +170,5 @@ namespace ft
       void	                  reserve(size_type n);
       */
       //bool        __invariants() const;
-  private:
-      allocator_type	m_alloc;
-      size_type		    m_capacity;
-      pointer			    m_start;
-      size_type		    m_size;
   };
 }
