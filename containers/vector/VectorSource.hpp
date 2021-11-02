@@ -4,11 +4,15 @@
 #include <stdexcept>
 #include <iostream>
 
+#include "iterator_test.hpp"
+#include "algorithm.hpp"
+#include "type_traits.hpp"
+
 #define DEBUG 1
 
 namespace ft
 {
-  template <class T, class Allocator = allocator<T> >
+  template <class T, class Allocator = std::allocator<T> >
   class vector
   {
   public:
@@ -110,4 +114,5 @@ namespace ft
       size_type		    m_capacity;
       pointer			    m_start;
       size_type		    m_size;
-};
+  };
+}
