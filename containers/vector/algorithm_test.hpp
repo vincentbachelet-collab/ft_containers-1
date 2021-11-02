@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 namespace ft
 {
@@ -71,5 +71,3 @@ namespace ft
 		return (first2 != last2);
 	}
 }
-
-#endif

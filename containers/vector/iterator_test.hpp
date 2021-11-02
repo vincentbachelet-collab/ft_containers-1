@@ -1,4 +1,4 @@
-pragma once
+#pragma once
 
 # include <cstddef> // ptrdiff_t
 # include <typeinfo>
@@ -382,5 +382,3 @@ namespace ft
 		return (reverse_iterator<Iterator>(it.base() - n));
 	}
 }
-
-#endif

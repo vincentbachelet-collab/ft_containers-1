@@ -1,4 +1,4 @@
-pragma once
+#pragma once
 
 namespace ft
 {
@@ -80,5 +80,3 @@ namespace ft
 	template<>
 	struct is_integral<unsigned long long int> : public integral_constant<bool, true> {} ;
 }
-
-#endif
