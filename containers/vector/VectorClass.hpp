@@ -42,13 +42,14 @@ public:
     }
 
     //lvalues and rvalues (a revoir)
+    //Ce n est pas dans le standard 98 !
     void PushBack(T&& value)
     {
         //Il faut d'abord verifier qu'il y a assez de place pour ajouter un elem
         if (this->m_Size >= this->m_Capacity)
             ReAlloc(this->m_Capacity + this->m_Capacity / 2);
 
-        //move va aussi permettre de faire un cast
+        //move va aussi permettre de faire un cast (lvalue)
         m_Data[this->m_Size] = std::move(value);
         this->m_Size++;
     }
@@ -57,7 +58,7 @@ public:
     ** Operateur pour acceder a notre data
     ** On va faire une version const et une version non const
     */
-    //version const 
+    //version const
     const    T& operator[](size_t index) const
     {
         /*
@@ -79,11 +80,11 @@ public:
         return (this->Data[index]);
     }
 
-    //Know the size 
+    //Know the size
     size_t Size() const { return this->m_Size;}
 
 
-    
+
 //Un vector store un pointeur sur n'importe quel type
 private:
     T *m_Data = nullptr;
@@ -92,13 +93,13 @@ private:
     //Aussi besoin de savoir combien de memoire on a alloue
     size_t m_Capacity = 0;
     //A chaque fois qu on aura besoin d'allouer a nouveau on allouera la moitie de la capacite qu on a actuellement
-    
+
     /*
     ** Reallocation function
     */
     void ReAlloc(size_t newCapacity)
     {
-        //1. allocate a new block of memory 
+        //1. allocate a new block of memory
         //2. copy existings elements into this new block of memory / (move)
         T * newBlock = new T[newCapacity];
 
