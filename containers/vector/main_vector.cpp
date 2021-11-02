@@ -34,7 +34,7 @@ struct Vector3
 
     Vector3& operator=(const Vector3 &&other)
     {
-        std::cout << "Copy" << std::endl;
+        std::cout << "Move" << std::endl;
         x = other.x;
         y = other.y;
         z = other.z;

@@ -29,7 +29,7 @@ public:
     }
 
     /*
-    ** PushBack function
+    ** PushBack function (will do copie - bad)
     */
     void PushBack(const T& value)
     {
@@ -38,6 +38,18 @@ public:
             ReAlloc(this->m_Capacity + this->m_Capacity / 2);
 
         m_Data[this->m_Size] = value;
+        this->m_Size++;
+    }
+
+    //lvalues and rvalues (a revoir)
+    void PushBack(T&& value)
+    {
+        //Il faut d'abord verifier qu'il y a assez de place pour ajouter un elem
+        if (this->m_Size >= this->m_Capacity)
+            ReAlloc(this->m_Capacity + this->m_Capacity / 2);
+
+        //move va aussi permettre de faire un cast
+        m_Data[this->m_Size] = std::move(value);
         this->m_Size++;
     }
 
@@ -69,6 +81,8 @@ public:
 
     //Know the size 
     size_t Size() const { return this->m_Size;}
+
+
     
 //Un vector store un pointeur sur n'importe quel type
 private:
