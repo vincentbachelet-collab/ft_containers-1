@@ -201,9 +201,7 @@ namespace ft
 				return (m_current[n]);
 			}
 	};
-	/*
-		normal_iterator non-member overloads
-	*/
+	//	normal_iterator non-member overloads
 	template <typename IteratorL, typename IteratorR, typename Container>
 	bool	operator==(const normal_iterator<IteratorL, Container> & lhs, const normal_iterator<IteratorR, Container> & rhs)
 	{
@@ -382,3 +380,4 @@ namespace ft
 		return (reverse_iterator<Iterator>(it.base() - n));
 	}
 }
+*/
