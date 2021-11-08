@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include "VectorClass.hpp"
 //Pour faire des tests
