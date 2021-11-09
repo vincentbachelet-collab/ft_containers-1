@@ -14,15 +14,16 @@ int main(void)
         /* Can not be printed if created by default constructor */
         //std::cout << "is is " << i << std::endl;
         // std::cout << "vi id" << vi << std::endl;
-    }  
+    }
     /*Test avec le constructeur qui prend une reference */
     {
         int test = 4;
-        int &ref = test;
+        //int &ref = test;
         //int *ptr = &ref;
 
-        std::vector<int>::iterator i(ref);
-        //ft::vector_iterator<int> vi(ref);        
+       // std::vector<int>::iterator i(ref);
+        std::vector<int>::iterator i(&test);
+        //ft::vector_iterator<int> vi(ref);
     }
     return (0);
 }
