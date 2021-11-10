@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-//Set of standard exceptions 
+//Set of standard exceptions
 #include <stdexcept>
 //Header providing string stream classes
 #include <sstream>
@@ -11,7 +11,7 @@
 #include <vector>
 #include <iterator>
 #include "../srcs/vector_iterator.hpp"
-#include "utility"//std::pair 
+#include "utility"//std::pair
 
 #include <climits>
 #include <limits>
@@ -60,22 +60,22 @@ namespace ft
 		size_type		_size;//nombre d'elements effectifs
 		size_type		_capacity;//taille memoire allouee
 		/*
-		** allocator, it provides a layer of abstraction for the user. 
-		** allocator can return constructed object, non-initialized memory space, 
-		** destroy an object or release the space. 
+		** allocator, it provides a layer of abstraction for the user.
+		** allocator can return constructed object, non-initialized memory space,
+		** destroy an object or release the space.
 		** STL containers use allocator to get memory space and create object.
 		*/
 		allocator_type	_allocator;//notre allocateur sur lequel on va appeler allocate
 		pointer			_ptr;//pointeur vers le premier element du vecteur
 
-		/* 
+		/*
 		** Utils private
 		*/
 		void				setCapacity(size_type capacity)
 		{
 			_capacity = capacity;
 		}
-	
+
 		static size_type	fitted_capacity(size_type target)
 		{
 			size_type	capacity = 1;
@@ -115,7 +115,7 @@ namespace ft
 		{
 			construct(index, val, _ptr);
 			if (DEBUG)
-			{	
+			{
 			//	std::cout << "Second construct private function called" << std::endl;
 			}
 		}
@@ -147,7 +147,7 @@ namespace ft
 		}
 
 		/*
-		** destroy 
+		** destroy
 		** destructs an object in allocated storage
 		** = calls the destructor of object
 		** https://en.cppreference.com/w/cpp/memory/allocator
@@ -195,7 +195,7 @@ namespace ft
 				_allocator.construct(&_ptr[i + n]);
 			}
 		}
-	
+
 	public:
 
 	/*
@@ -229,7 +229,7 @@ namespace ft
 	}
 
 	/*
-	** Constructeurs 
+	** Constructeurs
 	*/
 		vector(const allocator_type &alloc = allocator_type()): _size(0), _capacity(0), _allocator(alloc), _ptr(_allocator.allocate(_capacity))
 		{
@@ -292,7 +292,7 @@ namespace ft
 		** size
 		** https://www.cplusplus.com/reference/vector/vector/size/
 		*/
-		size_type size() const 
+		size_type size() const
 		{
 			if (DEBUG)
 			{
@@ -329,12 +329,12 @@ namespace ft
 			if (n > getCapacity())
 				realloc(n);
 		}
-	
+
 		/*
 		** empty
 		** https://www.cplusplus.com/reference/vector/vector/empty/
 		*/
-		bool empty() const 
+		bool empty() const
 		{
 			if (DEBUG)
 			{
@@ -369,7 +369,7 @@ namespace ft
 				throw;
 			}
 		}
-	
+
 		/*
 		** Iterateurs
 		*/
@@ -381,7 +381,7 @@ namespace ft
 		iterator begin()
 		{
 			if (DEBUG)
-			{	
+			{
 				std::cout << "begin function called" << std::endl;
 			}
 			//voir autres techniques
@@ -398,7 +398,7 @@ namespace ft
 		const_iterator begin() const
 		{
 			if (DEBUG)
-			{	
+			{
 				std::cout << "begin const function called" << std::endl;
 			}
 			if (empty())
@@ -415,7 +415,7 @@ namespace ft
 		iterator end()
 		{
 			if (DEBUG)
-			{	
+			{
 				std::cout << "end function called" << std::endl;
 			}
 			//voir autres techniques
@@ -427,12 +427,12 @@ namespace ft
 		}
 
 		/*
-		** end const 
+		** end const
 		*/
 		const_iterator end() const
 		{
 			if (DEBUG)
-			{	
+			{
 				std::cout << "end const function called" << std::endl;
 			}
 			//voir autres techniques
@@ -470,7 +470,7 @@ namespace ft
 		}
 
 		/*
-		** rend 
+		** rend
 		*/
 		reverse_iterator rend()
 		{
@@ -485,7 +485,7 @@ namespace ft
 		/*
 		** rend (const)
 		*/
-		const_reverse_iterator rend() const 
+		const_reverse_iterator rend() const
 		{
 			if (DEBUG)
 			{
@@ -497,7 +497,7 @@ namespace ft
 		/*
 		** Main functions
 		*/
-		
+
 		/*
 		** push_back
 		*/
@@ -521,7 +521,7 @@ namespace ft
 		 */
 
 		/*
-		** erase 
+		** erase
 		** removes from the vector either a single element (position)
 		** or a range ([first, last])
 		** https://www.cplusplus.com/reference/vector/vector/erase/
@@ -552,7 +552,7 @@ namespace ft
 		/*
 		** Swap
 		** https://www.cplusplus.com/reference/vector/vector/swap/
-		** Notice that a non-member function exists with the same name, swap, 
+		** Notice that a non-member function exists with the same name, swap,
 		** overloading that algorithm with an optimization that behaves like this member function.
 		*/
 		void	swap(vector &x)
@@ -565,7 +565,7 @@ namespace ft
 	};
 
 	/*
-	** Operator overload 
+	** Operator overload
 	** https://en.cppreference.com/w/cpp/container/vector/operator_cmp
 	*/
 
@@ -594,7 +594,42 @@ namespace ft
 		}
 		if (lhs.size() != rhs.size())
 		{
-
+			if (DEBUG)
+				std::cout << "Comparison == is false, the size is different" << std::endl;
+			return (false);
 		}
+		for (size_type i = 0; i < lhs.size(); i++)
+		{
+			if(lhs[i] != rhs[i])
+			{
+				if (DEBUG)
+					std::cout << "Comparison == is false, the values are different" << std::endl;
+				return (false);
+			}
+		}
+		if (DEBUG)
+			std::cout << "Comparison == is true" << std::endl;
+		return (true);
+	}
+
+	template <typename T, typename Alloc>
+	bool operator!=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	{
+		if (DEBUG)
+			std::cout << "Operator != called" << std::endl;
+		bool ret = !(lhs==rhs)
+		if (DEBUG)
+		{
+			std::cout << "Operation != is" << ret << std::endl;
+		}
+		return (ret);
+	}
+
+	template <typename T, typename Alloc>
+	bool operator<(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	{
+		if (DEBUG)
+			std::cout << "Operator < called" << std::endl;
+		//return(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 }
