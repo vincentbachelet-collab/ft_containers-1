@@ -583,8 +583,18 @@ namespace ft
 	}
 
 	template <typename T, typename Alloc>
+	/*
+	*TODO: revoir pourquoi ils ne sont pas a l interieur de la classe
+	*/
 	bool operator==(const vector<T, Alloc> & lhs, const vector<T, Alloc> &rhs)
 	{
+		if (DEBUG)
+		{
+			std::cout << "Operator == called" << std::endl;
+		}
+		if (lhs.size() != rhs.size())
+		{
 
+		}
 	}
 }
