@@ -5,9 +5,6 @@
 
 namespace ft
 {
-	//#include <boost/config.hpp>
-	//#include <boost/type_traits/integral_constant.hpp>
-
 	//https://en.cppreference.com/w/cpp/memory/allocator_traits
 	//https://en.cppreference.com/w/cpp/header/type_traits
 
@@ -17,21 +14,6 @@ namespace ft
 	** verifie si la valeur rentre dans les limites d'un entier
 	** https://code.woboq.org/appleseed/include/boost/type_traits/is_integral.hpp.html
 	*/
-
-	/*
-	** integral_constant is supposed to be defined in type_traits
-	*/
-	/*
-	template <class T, T v>
-	struct iterator_constant
-	{
-  		const static T 					value = v;
-  		typedef T						value_type;
-  		typedef iterator_constant<T,v>	type;
- 		bool operatorT()				{ return v; }
-	};
-	*/
-
 	template <class T, T v>
 	class integral_constant
     {
@@ -45,11 +27,12 @@ namespace ft
 	/*
 	** https://code.woboq.org/gcc/libstdc++-v3/include/std/type_traits.html
 	*/
-
 	typedef integral_constant<bool,true> true_type;
 	typedef integral_constant<bool,false> false_type;
 
-	/* tous les types non definis seront faux */
+	/* 
+	** tous les types non definis seront faux
+	*/
 	template <class T> struct is_integral : public false_type {};
 	template <class T> struct is_integral<const T> : public is_integral<T> {};
 	template <class T> struct is_integral<volatile const T> : public is_integral<T>{};
@@ -77,5 +60,65 @@ namespace ft
 
 	/*
 	** Ajouter enable if 
-	*/ 
+	*/
+
+	/*
+	** Iterator_traits 
+	** https://en.cppreference.com/w/cpp/iterator/iterator_traits
+	*/
+	 /*
+    ** defined in header <iterator>
+	** std::iterator_traits is the type trait class that provudes uniform interface 
+	**to the properties of LegacyIterator types.This makes it possible to implement algorithms only in terms of iterators.
+    ** the template can be specialized for user-defined iterators.
+	*/
+
+	/*
+	** Template parameter
+	*/
+    template <class Iter>
+    struct iterator_traits
+	{
+		/*
+		** Member types - Iter is the iterator type the retrived properties for
+		*/
+		typedef typename Iter::difference_type		difference_type;
+		typedef typename Iter::value_type			value_type;
+		typedef typename Iter::pointer				pointer;
+		typedef typename Iter::reference			reference;
+		typedef typename Iter::iterator_category	iterator_category;
+	};
+
+	/*
+	** Specialisation
+	** May be specialised for user-provided types that may be used as iterators.
+	** The standard library provides partial specializations for pointer types T * 
+	** which makes it possible to use all iterator based algorithms with raw pointers 
+	*/
+    template <class T>
+	struct iterator_traits<T *>
+	{
+		typedef std::ptrdiff_t					difference_type;
+		typedef T							 	value_type;
+		typedef T* 								pointer;
+		typedef T&								reference;
+		typedef std::random_access_iterator_tag	iterator_category;
+	};
+
+	/*
+	** Verifier que d'autres membres ne doivent pas etre const
+	*/
+	template <class T>
+	struct iterator_traits<const T*>
+	{
+		typedef std::ptrdiff_t 					difference_type;
+		typedef T 								value_type;
+		typedef const T* 						pointer;
+		typedef const T& 						reference;
+		typedef std::random_access_iterator_tag	iterator_category;
+	};
+
+    /*
+	** lexicographical_compare
+	*/
 }

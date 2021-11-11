@@ -1,5 +1,6 @@
 #include <iostream>
 #include <type_traits>
+#include <iterator>
 
 #include "../srcs/utils.hpp"
 
@@ -16,6 +17,7 @@ T f(T i)
  
 int main() 
 {
+    /* Test de is integral */
     //std::cout << std::boolalpha;
     /* Ajouter plus de tests pour verifier les types que j ai ajoute au code source */
     /* Implementation std */
@@ -34,4 +36,7 @@ int main()
     std::cout << ft::is_integral<int>::value << std::endl;
     std::cout << ft::is_integral<const int>::value << std::endl;
     std::cout << ft::is_integral<bool>::value << std::endl;
+
+    /* test de iterator_traits */
+    return (0);
 }
