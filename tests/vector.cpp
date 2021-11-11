@@ -1,6 +1,5 @@
 #include "../srcs/vector.hpp"
 
-
 int main(void)
 {
     //Constructeur par defaut
