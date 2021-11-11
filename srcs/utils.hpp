@@ -204,3 +204,8 @@ namespace ft
     return true;
 	}
 }
+
+/*
+** https://en.cppreference.com/w/cpp/algorithm/equal
+** Prendre les exemples pour une partie des tests
+*/
