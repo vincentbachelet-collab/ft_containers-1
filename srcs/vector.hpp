@@ -12,7 +12,7 @@
 #include <cstring>
 
 /*
-** Voir pourquoi on ne traite pas les reverse iterator 
+** TODO: Voir pourquoi on ne traite pas les reverse iterator 
 ** de la meme facon que les iterateurs
 */
 #include "../srcs/vector_iterator.hpp"
@@ -195,15 +195,30 @@ namespace ft
 			{
 				std::cout << "vector assignation operator called" << std::endl;
 			}
+			/* Ajout de capacite et allocation si necessaire */
 			if (this->_size < src._size)
 			{
 				reserve(src._size);
 				resize(src._size);
 			}
+			/* Suppression si espace en trop ? */
 			else
 			{
-				//A reprendre
+				int i = 0;
+				while (i < this->getSize())
+				{
+					_allocator.destroy(&_p[i]);
+					i++;
+				}
 			}
+			this->_size = src.size;
+			i = 0;
+			while (i < this->_size)
+			{
+				_allocator.construct(&_p[i], src._p[i]);
+				i++;
+			}
+			return (*this);
 		}
 
 		/*
@@ -554,12 +569,51 @@ namespace ft
 		/*
 		** fill insert
 		*/
-		void insert(iterator positionm size_type n, const value_type &val)
+		void insert(iterator position, size_type n, const value_type &val)
 		{
 			//chercher la position (du debut jusqu a pos)
 			//de la fin jusqu a pos
 			//verifier si la capacite est toujours ok
 			//ajouter l elem
+			size_type begin_to_p = 0;
+			iterator it = this->begin();
+			size_type pos_to_end = 0;
+			while (it != position)
+			{
+				begin_to_p++;
+				it++;
+			}
+			while (it != this->end())
+			{
+				pos_to_end++;
+				it++;
+			}
+			if (DEBUG)
+			{
+				std::cout << "insert fill function called" << std::endl;
+				std::cout << "begin to p = " << begin_to_p << std::endl;
+				std::cout << "pos to end = " << pos_to_end << std::endl;
+			}
+			//Appeler fonction qui permet de reallouer
+			//modifier pour juste augmenter si plus de place
+			if (this->_size + n > this->_capacity)
+			{
+				if (this->size + n < this->_capacity * 2)
+				{
+					reserve(this->capacity * 2);
+				}
+				else
+				{
+					reverse(this->_size + n);
+				}
+			}
+			//reprendre suite
+			/*
+			for (size_type i = 0, i < pos_to_end; i++)
+			{
+				_allocator.construct(&_p[begin_to_p + n _ pos_to_end - i -1])
+			}
+			*/
 		}
 
 		/*
@@ -655,6 +709,17 @@ namespace ft
 		 */
 
 		/*
+		** Removes all elements from the vector (which are destroyed), 
+		** leaving the container with a size of 0.
+		*/
+		void clear()
+		{
+			//forcement une premiere partie ici
+			std::cout << "clear function called" << std::endl;
+			this->size = 0;
+		}
+
+		/*
 		** erase
 		** removes from the vector either a single element (position)
 		** or a range ([first, last])
@@ -679,7 +744,6 @@ namespace ft
 			for (size_type k = i; k < j; k++)
 			{
 				_allocator.destroy(&_ptr[k]);
-
 			}
 		}
 
@@ -696,7 +760,179 @@ namespace ft
 			swap(this->_allocator, x._allocator);
 			swap(this->_ptr, x._ptr);
 		}
+	public:
+	/*
+	** Element access
+	** verifier dans la documentation
+	*/
+	reference operator[](size_type n)
+	{
+		reference ref = this->_p[n];
+		if (DEBUG)
+		{
+			//std::cout << "Operator[] called" << std::endl;
+			std::cout << "Value accessed is " << ref << std::endl;
+		}
+		return (ref)
+	}
 
+	const reference operator[](size_type n) const
+	{
+		reference ref = this->_p[n];
+		if (DEBUG)
+		{
+			//std::cout << "Operator[] called" << std::endl;
+			std::cout << "Value accessed is " << ref << std::endl;
+		}
+		return (ref)
+	}
+
+	/*
+	** At operator
+	** https://www.cplusplus.com/reference/vector/vector/at/
+	** Returns a reference to the element at position n in the vector.
+	** The function automatically checks whether n is within the bounds of valid elements in the vector, throwing an out_of_range exception if it is not 
+	** (i.e., if n is greater than, or equal to, its size).
+	** This is in contrast with member operator[], that does not check against bounds.
+	*/
+	reference at(size_type n)
+	{
+		//checker le inferieur ou egal
+		if (n >= this->_size)
+			throw std::out_of_range("out of range");
+		reference ref = _p[n];
+		if (DEBUG)
+		{
+			std::cout << "at operator called" << std::endl;
+			std::cout << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	const reference at(size_type n) const
+	{
+		//checker le inferieur ou egal
+		if (n >= this->_size)
+			throw std::out_of_range("out of range");
+		reference ref = _p[n];
+		if (DEBUG)
+		{
+			std::cout << "at const operator called" << std::endl;
+			std::cout << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	/*
+	** Front
+	** https://www.cplusplus.com/reference/vector/vector/front/
+	** Returns a reference to the first element in the vector.
+	** Unlike member vector::begin, which returns an iterator to this same element, 
+	** this function returns a direct reference.
+	*/
+	reference front()
+	{
+		reference ref = _p[0];
+		if (DEBUG)
+		{
+			std::cout << "front accessor called" << std::endl;
+			std::cout << "ref is " << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	const_reference front() const
+	{
+		reference ref = _p[0];
+		if (DEBUG)
+		{
+			std::cout << "front accessor called" << std::endl;
+			std::cout << "ref is " << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	/*
+	** Back
+	** https://www.cplusplus.com/reference/vector/vector/back/
+	** Returns a reference to the last element in the vector.
+	** Unlike member vector::end, which returns an iterator just past this element, 
+	** this function returns a direct reference.
+	*/
+	reference back()
+	{
+		reference ref = this->_p[this->_size -1];
+		if (DEBUG)
+		{
+			std::cout << "back accessor called" << std::endl;
+			std::cout << "ref is " << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	const_reference back() const
+	{
+		reference ref = this->_p[this->_size -1];
+		if (DEBUG)
+		{
+			std::cout << "back accessor called" << std::endl;
+			std::cout << "ref is " << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	/*
+	** Allocator
+	*/ 
+	allocator_type get_allocator() const
+	{
+		if (DEBUG)
+		{
+			std::cout << "get_allocator function called" << std::endl;
+			//essayer de l afficher mais je crois que ce n est pas possible ?
+		}
+		return (this->_allocator);
+	}
+		/*
+		** shift left (defined in algorithm)
+		** shift the elements in the range [first, last] by n positions
+		** https://en.cppreference.com/w/cpp/algorithm/shift
+		*/
+	//TODO: a desindenter
+	protected:
+			/*
+			** Getters - voir si je les laisse en public
+			*/
+			size_type	getCapacity() const
+			{
+				if (DEBUG)
+				{
+					std::cout << "The capacity is " << this->_capacity << std::endl;
+				}
+				return (this->_capacity);
+			}
+
+			size_type	getSize() const
+			{
+				if (DEBUG)
+				{
+					std::cout << "The size is " << this->_size << std::endl;
+				}
+				return (this->_size);
+			}
+
+			pointer		getPtr() const
+			{
+				if (DEBUG)
+				{
+					std::cout << "getPtr function called" << std::endl;
+				}
+				return (this->ptr);
+			}
+			/*
+			** Ajouter des setters
+			*/
+		
 		protected:
 		/*
 		** Utils 
@@ -862,48 +1098,10 @@ namespace ft
 			destroy(i);
 		}
 
-		/*
-		** shift left (defined in algorithm)
-		** shift the elements in the range [first, last] by n positions
-		** https://en.cppreference.com/w/cpp/algorithm/shift
-		*/
-		protected:
-			/*
-			** Getters - voir si je les laisse en public
-			*/
-			size_type	getCapacity() const
-			{
-				if (DEBUG)
-				{
-					std::cout << "The capacity is " << this->_capacity << std::endl;
-				}
-				return (this->_capacity);
-			}
-
-			size_type	getSize() const
-			{
-				if (DEBUG)
-				{
-					std::cout << "The size is " << this->_size << std::endl;
-				}
-				return (this->_size);
-			}
-
-			pointer		getPtr() const
-			{
-				if (DEBUG)
-				{
-					std::cout << "getPtr function called" << std::endl;
-				}
-				return (this->ptr);
-			}
-			/*
-			** Ajouter des setters
-			*/
 	};
 
 	/*
-	** Operator overload
+	** Operator overload / Relational operators
 	** https://en.cppreference.com/w/cpp/container/vector/operator_cmp
 	*/
 
@@ -917,13 +1115,14 @@ namespace ft
 	template <typename T, typename Alloc>
 	void swap(vector<T, Alloc>& x, vector<T, Alloc> &y)
 	{
+		if (DEBUG)
+		{
+			std::cout << "Swap non member function called" << std::endl;
+		}
 		x.swap(y);
 	}
 
 	template <typename T, typename Alloc>
-	/*
-	*TODO: revoir pourquoi ils ne sont pas a l interieur de la classe
-	*/
 	bool operator==(const vector<T, Alloc> & lhs, const vector<T, Alloc> &rhs)
 	{
 		if (DEBUG)
@@ -963,10 +1162,6 @@ namespace ft
 		return (ret);
 	}
 
-	/*
-	** Necessite d'avoir implemente lexicographical compare au prealable
-	** A reprendre
-	*/
 	template <typename T, typename Alloc>
 	bool operator<(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
 	{
@@ -974,126 +1169,44 @@ namespace ft
 		(void)rhs;
 		if (DEBUG)
 			std::cout << "Operator < called" << std::endl;
-		//return(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+		return(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
-	/*
-	** Element access
-	** verifier dans la documentation
-	*/
-	reference operator[](size_type n)
+	template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		reference ref = this->_p[n];
+		bool ret1 = lhs < rhs;
+		bool ret2 = lhs == rhs;
 		if (DEBUG)
 		{
-			//std::cout << "Operator[] called" << std::endl;
-			std::cout << "Value accessed is " << ref << std::endl;
+			std::cout << "operator <= called" << std::endl;
+			std::cout << "ret1 is " << ret1 << std::endl;
+			std::cout << "ret2 is " << ret2 << std::endl;
 		}
-		return (ref)
+		return (ret1 || lhs == ret2);
 	}
-
-	const reference operator[](size_type n) const
+	template <class T, class Alloc>
+	bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		reference ref = this->_p[n];
+		bool ret = rhs < lhs;
 		if (DEBUG)
 		{
-			//std::cout << "Operator[] called" << std::endl;
-			std::cout << "Value accessed is " << ref << std::endl;
+			std::cout << "operator > called" << std::endl;
+			std::cout << "ret is " << ret << std::endl;
 		}
-		return (ref)
+		return (ret);
 	}
-
-	/*
-	** At operator
-	** https://www.cplusplus.com/reference/vector/vector/at/
-	** Returns a reference to the element at position n in the vector.
-	** The function automatically checks whether n is within the bounds of valid elements in the vector, throwing an out_of_range exception if it is not 
-	** (i.e., if n is greater than, or equal to, its size).
-	** This is in contrast with member operator[], that does not check against bounds.
-	*/
-	reference at(size_type n)
+	template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		//checker le inferieur ou egal
-		if (n >= this->_size)
-			throw std::out_of_range("out of range");
-		reference ref = _p[n];
+		bool ret1 = lhs > rhs;
+		bool ret2 = lhs == rhs;
 		if (DEBUG)
 		{
-			std::cout << "at operator called" << std::endl;
-			std::cout << ref << std::endl;
+			std::cout << "operator <= called" << std::endl;
+			std::cout << "ret1 is " << ret1 << std::endl;
+			std::cout << "ret2 is " << ret2 << std::endl;
 		}
-		return (ref);
-	}
-
-	const reference at(size_type n) const
-	{
-		//checker le inferieur ou egal
-		if (n >= this->_size)
-			throw std::out_of_range("out of range");
-		reference ref = _p[n];
-		if (DEBUG)
-		{
-			std::cout << "at const operator called" << std::endl;
-			std::cout << ref << std::endl;
-		}
-		return (ref);
-	}
-
-	/*
-	** Front
-	** https://www.cplusplus.com/reference/vector/vector/front/
-	** Returns a reference to the first element in the vector.
-	** Unlike member vector::begin, which returns an iterator to this same element, 
-	** this function returns a direct reference.
-	*/
-	reference front()
-	{
-		reference ref = _p[0];
-		if (DEBUG)
-		{
-			std::cout << "front accessor called" << std::endl;
-			std::cout << "ref is " << ref << std::endl;
-		}
-		return (ref);
-	}
-
-	const_reference front() const
-	{
-		reference ref = _p[0];
-		if (DEBUG)
-		{
-			std::cout << "front accessor called" << std::endl;
-			std::cout << "ref is " << ref << std::endl;
-		}
-		return (ref);
-	}
-
-	/*
-	** Back
-	** https://www.cplusplus.com/reference/vector/vector/back/
-	** Returns a reference to the last element in the vector.
-	** Unlike member vector::end, which returns an iterator just past this element, 
-	** this function returns a direct reference.
-	*/
-	reference back()
-	{
-		reference ref = this->_p[this->_size -1];
-		if (DEBUG)
-		{
-			std::cout << "back accessor called" << std::endl;
-			std::cout << "ref is " << ref << std::endl;
-		}
-		return (ref);
-	}
-
-	const_reference back() const
-	{
-		reference ref = this->_p[this->_size -1];
-		if (DEBUG)
-		{
-			std::cout << "back accessor called" << std::endl;
-			std::cout << "ref is " << ref << std::endl;
-		}
-		return (ref);
+		return (ret1 || ret2);
 	}
 }
