@@ -494,10 +494,14 @@ namespace ft
 
 		/*
 		** push_back
+		** https://www.cplusplus.com/reference/vector/vector/push_back/
+		** Adds a new element at the end of the vector, after its current last element.
+		** The content of val is copied (or moved) to the new element.
 		*/
-		void	push_back(const value_type& x)
+		void	push_back(const value_type &src)
 		 {
-			(void)x;
+			 /*
+			(void)src;
 			if (DEBUG)
 			{
 				std::cout << "push_back function called" << std::endl;
@@ -507,9 +511,75 @@ namespace ft
 			{
 
 			}
+			*/
+			//revoir mon realloc
+		i	if (this->_size == this->_capacity)
+			{
+				if (this->_capacity == 0)
+					reserve(1);
+				else
+					reserve(this->_capacity * 2);
+			}
+			_allocator.construct(&_p[this->_size], val);
+			this->_size++;
 			//On pourra appeler la fonction size() quand elle sera prete
 		 }
+
+		 /*
+		 ** Pop back
+		 ** https://www.cplusplus.com/reference/vector/vector/pop_back/
+		 */
 		
+		void pop_back()
+		{
+			if (DEBUG)
+			{
+				std::cout << "pop back function called" << std::endl;
+			}
+			_allocator.destroy(&_p[--this->size]);
+			//Verifier la capacity a ce moment la ?
+			//Decrementer la capacite ?
+			//desallouer ?
+		}
+
+		/*
+		** Insert 
+		** 3 versions : single element, fill, range
+		** The vector is extended by inserting new elements before the element at the specified position
+		** effectively increasing the container size by the number of elements inserted.
+		** This causes an automatic reallocation of the allocated storage space if -and only if- the new 
+		** vector size surpasses the current vector capacity.
+		*/
+
+		/*
+		** fill insert
+		*/
+		void insert(iterator positionm size_type n, const value_type &val)
+		{
+			//chercher la position (du debut jusqu a pos)
+			//de la fin jusqu a pos
+			//verifier si la capacite est toujours ok
+			//ajouter l elem
+		}
+
+		/*
+		** single element insert
+		*/
+		iterator insert(iterator position, const value_type& val)
+		{
+			difference_type diff = position.get_ptr() - this->_p;
+			if (DEBUG)
+			{
+				std::cout << "insert single element called" << std::endl;
+				std::cout << "diff is " << diff << std::endl;
+			}
+			//checker la valeur de la diff
+			//checker si on manque d espace
+			//ca peut pas etre bon?
+			insert(position, 1, val);
+			return (iterator(begin() + diff));
+		}
+
 		/*
 		** assign
 		** std::vector<T,Allocator>::assign
@@ -518,21 +588,66 @@ namespace ft
 
 		/*
 		** Replaces the contents with count copies of value value
+		** https://www.cplusplus.com/reference/vector/vector/assign/
+		** fill version
+		** In the fill version (2), the new contents are n elements, each initialized to a copy of val.
 		*/
 		void assign( size_type count, const T& value )
 		{
 			//TO DO: revoir realloc
+			/*
 			if (n > _capacity)
 				realloc(n);
+			*/
+			if (DEBUG)
+			{
+				std::cout << "Assign function called" << std::endl;
+			}
+			reserve(n);
+			resize(n);
+			int i = 0;
+			while (i < n && i < this->_size)
+			{
+				/* Destruction des elements precedents */
+				_allocator.destroy(&_p[i]);
+				i++;
+			}
+			i = 0;
+			while (i < n)
+			{
+				_allocator.construct(&_p[i], val);
+				i++;
+			}
+			//Tester la difference
+			/*
+			if (n > this->_size)
+			{
+				this->_size = n;
+			}
+			*/
 		}
 
 		/*
 		** Replaces the contents with the elements from the initializer list ilist.
+		** range version
+		** In the range version (1), the new contents are elements constructed from each of 
+		** the elements in the range between first and last, in the same order.
 		*/
 		template< class InputIt >
-		void assign( InputIt first, InputIt last )
+		void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
-
+			size_type n = 0;
+			size_type i = 0;
+			for (InputIterator it = first; it != last; it++)
+				n++;
+			reserve(n);
+			resize(n);
+			for (size_type i = 0; i < n && i < _size; i++)
+				_alloc_type.destroy(&_p[i]);
+			for (InputIterator it = first; it != last; it++, i++)
+				_alloc_type.construct(&_p[i], *it);
+			//if (n > _size)
+			//	_size = n;
 		}
 
 		 /*
