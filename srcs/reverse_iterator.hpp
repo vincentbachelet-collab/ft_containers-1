@@ -33,6 +33,8 @@ namespace ft
     template <class Iterator>
     class reverse_iterator
     {
+        protected:
+            iterator_type _p;
         //verifier le niveau de "protection"
         public:
             typedef Iterator                                                iterator_type;
@@ -49,13 +51,51 @@ namespace ft
 
             /* Member functions */
             /*
-            ** Constructor
+            ** Constructors
             */
+            reverse_iterator(): _p(NULL)
+            {
+                if (DEBUG)
+                {
+                    std::cout << "reverse iterator default constructor called" << std::endl;
+                }
+            }
+
+            reverse_iterator(iterator_type ptr): _p(ptr)
+            {
+                if (DEBUG)
+                {
+                    std::cout << "reverse iterator ptr constructor called" << std::endl;
+                }
+            }
 
             /*
-            ** Base
+            ** Base (constructor par copie)
+            ** iterator_type base() const
+            ** returns a copu of the base iterator
+            ** the base iterator is an iterator of the same type as the one used to construct reverse_iterator 
+            ** but pointing to the element next to the one the reverse_iterator is currently pointing to)
+            ** a reverse iterator has always an offset of -1 with respect to its base iterator. 
             */
-
+           template <typename iter>
+           reverse_iterator(const reverse_iterator<iter> &src) _p(src.base())
+           {
+               if (DEBUG)
+               {
+                   std::cout << "reverse iterator base constructor called" << std::endl;
+               }
+           }
+            
+            /*
+            ** Destructor
+            */
+            virtual ~reverse_iterator() 
+            {
+                if (DEBUG)
+                {
+                    std::cout << "reverse iterator destructor called" << std::endl;
+                }
+            }
            /*
            **Operator *
            */
