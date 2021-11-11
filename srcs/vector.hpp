@@ -72,6 +72,7 @@ namespace ft
 		** Constructeurs 
 		** default, fill, range, copy
 		** J'ai retire le keyword explicit puisqu'il ne fait pas partie du standard 98
+		** https://en.cppreference.com/w/cpp/container/vector/vector
 		*/
 		vector(const allocator_type &alloc = allocator_type()): _size(0), _capacity(0), _allocator(alloc), _ptr(NULL)//_ptr(_allocator.allocate(_capacity)
 		{
@@ -117,18 +118,44 @@ namespace ft
 		/*
 		** Troisieme constructeur 
 		** range -> arguments : un iterateur first et un iterateur last
+		** Constructs the container with the contents of the range [first, last).
+		*/
+
+		/*
+		** This constructor has the same effect as vector(static_cast<size_type>(first), 
+		** static_cast<value_type>(last), a) if InputIt is an integral type.
+		** http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1206r0.pdf
 		*/
 		template<typename InputIterator>
 		vector(InputIterator first, InputIterator last,
-				const allocator_type &alloc = allocator_type())
+				const allocator_type &alloc = allocator_type()) : _p(NULL), _size(0), _capacity(0), _allocator()//_allocator(alloc)
 		{
-			(void)first;
-			(void)last;
-			(void)alloc;
-	//		for (; first != last; ++first)
-	//			push_back(*first);
+			/*std::vector<T,Allocator>::assign */
+			this->assign(first, last);
 		}
 
+		/*
+		** Destructeur
+		** TODO: voir le conde source, voir pourquoi destroy puis deallocate ?
+		** pourquoi pas clear ? erase ?
+		*/
+		~vector()
+		{
+			if (DEBUG)
+			{
+				std::cout << "vector destructor called" << std::endl;
+			}
+			ft::vector<T>::iterator it = this->begin();
+			ft::vector<T>::iterator ite = this->end();
+
+			while (it != ite)
+			{
+				this->_allocator.destroy(&(*it));
+				//this->_allocator.destroy(it);
+				it++;
+			}
+			this->_allocator.deallocate(this->_p, this->_capacity);
+		}
 		/*
 		**	 Utilitaires
 		*/
@@ -356,7 +383,7 @@ namespace ft
 		}
 
 		/*
-		** Main functions
+		** Main functions = MODIFIERS
 		*/
 
 		/*
@@ -376,6 +403,31 @@ namespace ft
 			}
 			//On pourra appeler la fonction size() quand elle sera prete
 		 }
+		
+		/*
+		** assign
+		** std::vector<T,Allocator>::assign
+		** Replaces the contents of the container.
+		*/
+
+		/*
+		** Replaces the contents with count copies of value value
+		*/
+		void assign( size_type count, const T& value )
+		{
+			//TO DO: revoir realloc
+			if (n > _capacity)
+				realloc(n);
+		}
+
+		/*
+		** Replaces the contents with the elements from the initializer list ilist.
+		*/
+		template< class InputIt >
+		void assign( InputIt first, InputIt last )
+		{
+
+		}
 
 		 /*
 		 ** Cleaning functions
@@ -424,54 +476,85 @@ namespace ft
 			swap(this->_ptr, x._ptr);
 		}
 
-			private:
+		protected:
 		/*
-		** Utils private
+		** Utils 
 		*/
-		void				setCapacity(size_type capacity)
+		/*
+		** Augmente la capacite si besoin
+		** Allocation d'un nouveau _p
+		** "Remplissage" du nouveau tableau
+		** Suppression de l'ancien
+		*/
+		void				realloc(size_type target)
 		{
-			_capacity = capacity;
+			pointer	new_tab;
+			/*
+			** Augmentation de this->capacity
+			*/
+			setCapacity(fitted_capacity(target));
+			new_tab = allocate(_capacity);
+			int i = 0;
+			while (i < this->getSize())
+			{
+				construct(i, _p[i], new_tab);
+				//destroy(i);
+				i++;
+			}
+			deallocate();
+			this->_p = new_tab;
 		}
 
+		void	realloc()
+		{
+			if (this->_capacity == 0)
+				realloc(1);
+			else
+				realloc(this->_capacity * 2);
+		}
+
+		/*
+		** Assigne target a this->_capacity
+		*/
+		void				setCapacity(size_type target)
+		{
+			if (DEBUG)
+				std::cout << "Set capacity function called" << std::endl;
+			this->_capacity = target;
+		}
+
+		/*
+		** Modifie la valeur de la capacity mais n'alloue et ne construit rien
+		*/
 		static size_type	fitted_capacity(size_type target)
 		{
 			size_type	capacity = 1;
 			if (DEBUG)
-			{
 				std::cout << "The target is " << target << std::endl;
-			}
 			if (target == 0)
 				return (0);
 			while (capacity < target)
 				capacity = capacity * 2;
 			if (DEBUG)
-			{
 				std::cout << "The capacity is now " << capacity << std::endl;
-			}
 			return (capacity);
 		}
-
 		/*
 		** Constructs an object of type T in allocated unintialized storage pointed to by p
 		** using placement-new
-		** Est-ce qu'il faut redefinir construct ?
 		*/
-		/*
-		void construct(size_type index, const_reference val, pointer data)
+		void	construct(size_type index, const_reference val, pointer data)
 		{
 			//va noud []
 			_allocator.construct(_allocator.address(data[index]), val);
 			if (DEBUG)
 			{
-			//	std::cout << "First construct private function called" << std::endl;
+				std::cout << "First construct private function called" << std::endl;
 			}
 		}
-		*/
-
 		/*
 		** On va toujours "passer par l'interface du premier construct"
 		*/
-		/*
 		void	construct(size_type index, const_reference val)
 		{
 			construct(index, val, _ptr);
@@ -480,20 +563,17 @@ namespace ft
 				std::cout << "Second construct private function called" << std::endl;
 			}
 		}
-		*/
 
 		/*
-		** allocate
+		** https://en.cppreference.com/w/cpp/memory/allocator/allocate
+		** Allocates n * sizeof(T) bytes of uninitialized storage by calling ::operator new(std::size_t)
 		*/
 		pointer	allocate(size_type n)
 		{
 			if (DEBUG)
-			{
 				std::cout << "allocate function called" << std::endl;
-			}
 			return (_allocator.allocate(n));
 		}
-
 		/*
 		** deallocate -> public member function (std::allocator)
 		** deallocates storage
@@ -514,87 +594,91 @@ namespace ft
 		** = calls the destructor of object
 		** https://en.cppreference.com/w/cpp/memory/allocator
 		*/
-		void	destroy(size_type index, const_reference val)
-		{
-			if (DEBUG)
-			{
-				std::cout << "Destroy 2nd function called" << std::endl;
-			}
-			//A verifier
-			(void)val;
-			_allocator.destroy(_allocator.address(_ptr[index]));
-		}
 
 		/*
-		** A verifier
+		** Va permettre de destroy un pointeur precis
+		** Appel la fonction std::allocator::destroy
+		** On destroy element par element
 		*/
 		void 	destroy(size_type index, pointer data)
 		{
-			(void)data;
 			if (DEBUG)
 			{
-				std::cout << "Destroy first function called" << std::endl;
+				std::cout << "Destroy index + pointer function called" << std::endl;
 			}
-			destroy(index, _ptr);
+			_allocator.destroy(_allocator.address(data[index]));
 		}
 
-		/**
-		**TO DO: voir si necessaire d implementer realloc
+		/*
+		** Will call destroy on _p at the index index
 		*/
+		void	destroy(size_type index)
+		{
+			if (DEBUG)
+			{
+				std::cout << "destroy index parameter called" << std::endl;
+			}
+			destroy(index, this->_p);
+		}
+
+		/*
+		** Will destroy the element which is a the position position
+		*/
+		void	destroy(iterator position)
+		{
+			if (DEBUG)
+			{
+				std::cout << "destroy iterator parameter function called" << std::endl;
+			}
+			size_type i = 0;
+			iterator first = begin();
+			iterator end = end();
+			while (first != position && first != end)
+			{
+				first++;
+				i++;
+			}
+			destroy(i);
+		}
 
 		/*
 		** shift left (defined in algorithm)
 		** shift the elements in the range [first, last] by n positions
 		** https://en.cppreference.com/w/cpp/algorithm/shift
 		*/
-		/*
-		void	shift_left(size_type position, size_type n)
-		{
-			if (DEBUG)
+		protected:
+			/*
+			** Getters - voir si je les laisse en public
+			*/
+			size_type	getCapacity() const
 			{
-				std::cout << "shift left function called" << std::endl;
+				if (DEBUG)
+				{
+					std::cout << "The capacity is " << this->_capacity << std::endl;
+				}
+				return (this->_capacity);
 			}
-			if (empty())
-			{
-				return;
-			}
-			for (size_type i = position; i < getSize() - n; i++)
-			{
-				_allocator.construct(&_ptr[i], _ptr[i + n]);
-				_allocator.construct(&_ptr[i + n]);
-			}
-		}
-		*/
-			protected:
-		/*
-		** Getters - voir si je les laisse en public
-		*/
-		size_type	getCapacity() const
-		{
-			if (DEBUG)
-			{
-				std::cout << "The capacity is " << this->_capacity << std::endl;
-			}
-			return (this->_capacity);
-		}
 
-		size_type getSize() const
-		{
-			if (DEBUG)
+			size_type	getSize() const
 			{
-				std::cout << "The size is " << this->_size << std::endl;
+				if (DEBUG)
+				{
+					std::cout << "The size is " << this->_size << std::endl;
+				}
+				return (this->_size);
 			}
-			return (this->_size);
-		}
 
-		pointer getPtr() const
-		{
-			if (DEBUG)
+			pointer		getPtr() const
 			{
-				std::cout << "getPtr function called" << std::endl;
+				if (DEBUG)
+				{
+					std::cout << "getPtr function called" << std::endl;
+				}
+				return (this->ptr);
 			}
-			return (this->ptr);
-		}
+			/*
+			** Ajouter des setters
+			*/
 	};
 
 	/*
@@ -660,6 +744,7 @@ namespace ft
 
 	/*
 	** Necessite d'avoir implemente lexicographical compare au prealable
+	** A reprendre
 	*/
 	template <typename T, typename Alloc>
 	bool operator<(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
