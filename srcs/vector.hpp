@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <cstring>
 
-# define DEBUG 1
+# define DEBUG 0
 
 namespace ft
 {
@@ -116,7 +116,7 @@ namespace ft
 			construct(index, val, _ptr);
 			if (DEBUG)
 			{
-			//	std::cout << "Second construct private function called" << std::endl;
+				std::cout << "Second construct private function called" << std::endl;
 			}
 		}
 
@@ -158,11 +158,17 @@ namespace ft
 			{
 				std::cout << "Destroy 2nd function called" << std::endl;
 			}
-			_allocator.destroy(_allocator.address(data[index]));
+			//A verifier
+			(void)val;
+			_allocator.destroy(_allocator.address(_ptr[index]));
 		}
 
+		/*
+		** A verifier
+		*/
 		void 	destroy(size_type index, pointer data)
 		{
+			(void)data;
 			if (DEBUG)
 			{
 				std::cout << "Destroy first function called" << std::endl;
@@ -254,7 +260,8 @@ namespace ft
 			{
 				//construct(i, val);
 				/* construct takes a pointer an a const_reference val*/
-				_allocator.construct(&_ptr[i]), val);
+				//A tester
+				_allocator.construct(&_ptr[i], val);
 				i++;
 			}
 		}
@@ -322,6 +329,8 @@ namespace ft
 		*/
 		void resize(size_type n, value_type val = value_type())
 		{
+			//A revoir
+			(void)val;
 			if (DEBUG)
 			{
 				std::cout << "resize function called" << std::endl;
@@ -347,7 +356,7 @@ namespace ft
 				return (false);
 			}
 			if (DEBUG)
-				std:cout << "empty function will return true" << std::endl;
+				std::cout << "empty function will return true" << std::endl;
 			return (true);
 		}
 
@@ -361,7 +370,7 @@ namespace ft
 		{
 			try
 			{
-				if (n > getCapacity)
+				if (n > getCapacity())
 					realloc(get_fit_capacity(n));
 			}
 			catch (std::exception &e)
@@ -509,7 +518,7 @@ namespace ft
 				std::cout << "push_back function called" << std::endl;
 			}
 			size_type size = this->size();
-			if (size == capicity())
+			if (size == capacity())
 			{
 
 			}
@@ -557,10 +566,10 @@ namespace ft
 		*/
 		void	swap(vector &x)
 		{
-			ft::swap(this->_size, x._size);
-			ft::swap(this->_capacity, x._capacity);
-			ft::swap(this->_allocator, x._allocator);
-			ft::swap(this->_ptr, x._ptr);
+			swap(this->_size, x._size);
+			swap(this->_capacity, x._capacity);
+			swap(this->_allocator, x._allocator);
+			swap(this->_ptr, x._ptr);
 		}
 	};
 
@@ -598,7 +607,7 @@ namespace ft
 				std::cout << "Comparison == is false, the size is different" << std::endl;
 			return (false);
 		}
-		for (size_type i = 0; i < lhs.size(); i++)
+		for (size_t i = 0; i < lhs.size(); i++)
 		{
 			if(lhs[i] != rhs[i])
 			{
@@ -617,7 +626,7 @@ namespace ft
 	{
 		if (DEBUG)
 			std::cout << "Operator != called" << std::endl;
-		bool ret = !(lhs==rhs)
+		bool ret = !(lhs==rhs);
 		if (DEBUG)
 		{
 			std::cout << "Operation != is" << ret << std::endl;
@@ -625,9 +634,14 @@ namespace ft
 		return (ret);
 	}
 
+	/*
+	** Necessite d'avoir implemente lexicographical compare au prealable
+	*/
 	template <typename T, typename Alloc>
 	bool operator<(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
 	{
+		(void)lhs;
+		(void)rhs;
 		if (DEBUG)
 			std::cout << "Operator < called" << std::endl;
 		//return(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));

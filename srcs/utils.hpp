@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <type_traits>
+#include <iterator>
 
 namespace ft
 {
@@ -44,17 +45,9 @@ namespace ft
 	template<> struct is_integral<signed char> : public true_type{};
 	template<> struct is_integral<short> : public true_type{};
 	template<> struct is_integral<int> : public true_type{};
-	template<> struct is_integral<long> : public true_type{};
 	template<> struct is_integral<long int> : public true_type{};
 	template<> struct is_integral<long long int> : public true_type {};
-	template<> struct is_integral<unsigned short int> : public true_type {};
-	template<> struct is_integral<unsigned int> : public true_type {};
-	template<> struct is_integral<unsigned long int> : public true_type {};
 	template<> struct is_integral<unsigned long long int> : public true_type {};
-	template<> struct is_integral<long long int> : public true_type {};
-	template<> struct is_integral<short int> : public true_type {};
-	template<> struct is_integral<signed char> : public true_type {};
-	template<> struct is_integral<short int> : public true_type {};
 	template<> struct is_integral<char> : public true_type{};
 	template<> struct is_integral<bool> : public true_type{};
 
@@ -63,18 +56,29 @@ namespace ft
 	*/
 
 	/*
+	** Si on definit un custom Iterateur, il faudra s'assurer que les iterator_traits sont
+	** correctement definis. Pour cela, le mieux est d'expliciter/ de rediger une specialisation
+	** des iterator traits. 
+	** Les iterator traits sont relativement recents et ont en quelque sorte remplace les
+	** iterator tags.
+	** les iterateurs traits vont permettrent de recuperer la value type ou la difference type de pointeur
+	** ce qui ne serait apparemment pas possible sans.
+	*/
+
+	/*
 	** Iterator_traits 
 	** https://en.cppreference.com/w/cpp/iterator/iterator_traits
 	*/
 	 /*
     ** defined in header <iterator>
-	** std::iterator_traits is the type trait class that provudes uniform interface 
+	** std::iterator_traits is the type trait class that provides uniform interface 
 	**to the properties of LegacyIterator types.This makes it possible to implement algorithms only in terms of iterators.
     ** the template can be specialized for user-defined iterators.
 	*/
 
 	/*
 	** Template parameter
+	** Fully generic version
 	*/
     template <class Iter>
     struct iterator_traits
@@ -91,6 +95,7 @@ namespace ft
 
 	/*
 	** Specialisation
+	** used whenever the template argument is a pointer type
 	** May be specialised for user-provided types that may be used as iterators.
 	** The standard library provides partial specializations for pointer types T * 
 	** which makes it possible to use all iterator based algorithms with raw pointers 

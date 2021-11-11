@@ -5,6 +5,8 @@
 #include "./utils.hpp"
 #include "vector_iterator.hpp"
 
+#define DEBUG 0 
+
 /*
 ** std::reverse_iterator::reverse_iterator
 */
