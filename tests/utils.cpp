@@ -1,6 +1,7 @@
 #include <iostream>
 #include <type_traits>
 #include <iterator>
+#include <typeinfo>
 
 #include "../srcs/utils.hpp"
 
