@@ -125,15 +125,44 @@ namespace ft
 		** This constructor has the same effect as vector(static_cast<size_type>(first), 
 		** static_cast<value_type>(last), a) if InputIt is an integral type.
 		** http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1206r0.pdf
+		** TODO: faire des tests
 		*/
 		template<typename InputIterator>
-		vector(InputIterator first, InputIterator last,
-				const allocator_type &alloc = allocator_type()) : _p(NULL), _size(0), _capacity(0), _allocator()//_allocator(alloc)
+		vector (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc_type(alloc), _array(NULL), _size(0), _capacity(0)
 		{
-			/*std::vector<T,Allocator>::assign */
-			this->assign(first, last);
+			size_type n = 0;
+			size_type i = 0;
+			for (InputIterator it = first; it != last; it++)
+				n++;
+			/* 
+			** Va calculer la capacite necessaire et allouer la place qu'il faut
+			*/
+			reserve(n);
+			/*
+			** TODO: Remplacer les fitcapacity par reserve ?
+			*/
+			for (InputIterator it = first; it != last; it++, i++)
+				_allocator.construct(&_p[i], *it);
+			_size = n;
+		}		
+		/*
+		** Constructeur par copie
+		*/
+		vector(const vector &src): _allocator(src._allocator), _size(src.size), _p(_allocator.allocate(_capacity)), _capacity(src._capacity)
+		{
+			if (DEBUG)
+			{
+				std::cout << "vector copy constructor called" << std::endl;
+			}
+			size_type i = 0;
+			while(i < this->_size)
+			{
+				_allocator.construct(&_p[i], src._p[i]);
+				/* Ajouter une condition pour afficher ce qui est construit ? */
+				i++;
+			}
 		}
-
+	
 		/*
 		** Destructeur
 		** TODO: voir le conde source, voir pourquoi destroy puis deallocate ?
@@ -156,8 +185,29 @@ namespace ft
 			}
 			this->_allocator.deallocate(this->_p, this->_capacity);
 		}
+
 		/*
-		**	 Utilitaires
+		** Operateur d'assignation
+		*/
+		vector & operator=(const vector &src)
+		{
+			if (DEBUG)
+			{
+				std::cout << "vector assignation operator called" << std::endl;
+			}
+			if (this->_size < src._size)
+			{
+				reserve(src._size);
+				resize(src._size);
+			}
+			else
+			{
+				//A reprendre
+			}
+		}
+
+		/*
+		**	 Utilitaires / Capacity
 		*/
 
 		/*
@@ -194,6 +244,7 @@ namespace ft
 		*/
 		size_t	max_size() const
 		{
+			//Fonction de std::allocator
 			size_t ret = _allocator.max_size();
 			if (DEBUG == 1)
 			{
@@ -204,18 +255,52 @@ namespace ft
 		}
 
 		/*
-		** resize
+		** resize = Resizes the container so that it contains n elements.
+		** If n is smaller than the current container size, the content is reduced to its first n elements, 
+		** removing those beyond (and destroying them).
+		** If n is greater than the current container size, the content is expanded by inserting at the end as many elements as needed to reach a size of n.
+		** If val is specified, the new elements are initialized as copies of val, otherwise, they are value-initialized.
+		** If n is also greater than the current container capacity, an automatic reallocation of the allocated storage space takes place.
 		*/
 		void resize(size_type n, value_type val = value_type())
 		{
 			//A revoir
+			/*
 			(void)val;
 			if (DEBUG)
 			{
 				std::cout << "resize function called" << std::endl;
 			}
+			// Appeler getfitcapacity
 			if (n > getCapacity())
 				realloc(n);
+			*/
+			if (n > this->_capacity)
+			{
+				/* reutiliser les autres fonctions get fitted ou autre */
+				/* comparer avec code source */
+				if (n < this->_capacity * 2)
+					reserve(this->_capacity * 2);
+				//TO DO: a checker
+				else
+					reserve(n);
+			}
+			int i = this->_nsize;
+			/* Construction des elements qui seraient supplementaires */
+			while (i < n)
+			{
+				_allocator.construct(&_p[i], val);
+				i++;
+			}
+			/* Deconstruction des elements qui seraient en trop */
+			i = n;
+			while (i < this->getSize())
+			{
+				_allocator.destroy(&_p[i]);
+				i++;
+			}
+			//Utiliser un setter
+			this->_size = n;
 		}
 
 		/*
@@ -247,6 +332,7 @@ namespace ft
 		*/
 		void	reserve(size_type n)
 		{
+			/*
 			try
 			{
 				if (n > getCapacity())
@@ -255,6 +341,26 @@ namespace ft
 			catch (std::exception &e)
 			{
 				throw;
+			}
+			*/
+			//Allocation d'un nouveau vecteur
+			if (n > this->getCapacity())
+			{
+				pointer_type new = _allocator.allocate(n);
+				int i = 0;
+				//reconstruction de tous les elements du vecteur
+				//destruction des elements de l'ancien vecteur
+				while (i < this->getSize())
+				{
+					_allocator.construct(&new[i], _p[i]);
+					_allocator.destroy(&_p[i]);
+					i++;
+				}
+				//desallocation de l'ancien vector
+				//_allocator.deallocate(this->_p, this->_capacity = n);
+				_allocator.deallocate(this->_p, n);
+				this->_p = new;
+				this->_capacity = n;
 			}
 		}
 
@@ -754,5 +860,125 @@ namespace ft
 		if (DEBUG)
 			std::cout << "Operator < called" << std::endl;
 		//return(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	/*
+	** Element access
+	** verifier dans la documentation
+	*/
+	reference operator[](size_type n)
+	{
+		reference ref = this->_p[n];
+		if (DEBUG)
+		{
+			//std::cout << "Operator[] called" << std::endl;
+			std::cout << "Value accessed is " << ref << std::endl;
+		}
+		return (ref)
+	}
+
+	const reference operator[](size_type n) const
+	{
+		reference ref = this->_p[n];
+		if (DEBUG)
+		{
+			//std::cout << "Operator[] called" << std::endl;
+			std::cout << "Value accessed is " << ref << std::endl;
+		}
+		return (ref)
+	}
+
+	/*
+	** At operator
+	** https://www.cplusplus.com/reference/vector/vector/at/
+	** Returns a reference to the element at position n in the vector.
+	** The function automatically checks whether n is within the bounds of valid elements in the vector, throwing an out_of_range exception if it is not 
+	** (i.e., if n is greater than, or equal to, its size).
+	** This is in contrast with member operator[], that does not check against bounds.
+	*/
+	reference at(size_type n)
+	{
+		//checker le inferieur ou egal
+		if (n >= this->_size)
+			throw std::out_of_range("out of range");
+		reference ref = _p[n];
+		if (DEBUG)
+		{
+			std::cout << "at operator called" << std::endl;
+			std::cout << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	const reference at(size_type n) const
+	{
+		//checker le inferieur ou egal
+		if (n >= this->_size)
+			throw std::out_of_range("out of range");
+		reference ref = _p[n];
+		if (DEBUG)
+		{
+			std::cout << "at const operator called" << std::endl;
+			std::cout << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	/*
+	** Front
+	** https://www.cplusplus.com/reference/vector/vector/front/
+	** Returns a reference to the first element in the vector.
+	** Unlike member vector::begin, which returns an iterator to this same element, 
+	** this function returns a direct reference.
+	*/
+	reference front()
+	{
+		reference ref = _p[0];
+		if (DEBUG)
+		{
+			std::cout << "front accessor called" << std::endl;
+			std::cout << "ref is " << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	const_reference front() const
+	{
+		reference ref = _p[0];
+		if (DEBUG)
+		{
+			std::cout << "front accessor called" << std::endl;
+			std::cout << "ref is " << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	/*
+	** Back
+	** https://www.cplusplus.com/reference/vector/vector/back/
+	** Returns a reference to the last element in the vector.
+	** Unlike member vector::end, which returns an iterator just past this element, 
+	** this function returns a direct reference.
+	*/
+	reference back()
+	{
+		reference ref = this->_p[this->_size -1];
+		if (DEBUG)
+		{
+			std::cout << "back accessor called" << std::endl;
+			std::cout << "ref is " << ref << std::endl;
+		}
+		return (ref);
+	}
+
+	const_reference back() const
+	{
+		reference ref = this->_p[this->_size -1];
+		if (DEBUG)
+		{
+			std::cout << "back accessor called" << std::endl;
+			std::cout << "ref is " << ref << std::endl;
+		}
+		return (ref);
 	}
 }
