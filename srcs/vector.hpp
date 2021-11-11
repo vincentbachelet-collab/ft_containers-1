@@ -1,271 +1,123 @@
 #pragma once
 
 #include <iostream>
-//Set of standard exceptions
 #include <stdexcept>
-//Header providing string stream classes
 #include <sstream>
-
 #include <memory>//allocator
 #include <iterator>
 #include <vector>
-#include <iterator>
-#include "../srcs/vector_iterator.hpp"
-#include "utility"//std::pair
-
 #include <climits>
 #include <limits>
-#include <memory>
-#include <stdexcept>
 #include <algorithm>
 #include <cstring>
 
+/*
+** Voir pourquoi on ne traite pas les reverse iterator 
+** de la meme facon que les iterateurs
+*/
+#include "../srcs/vector_iterator.hpp"
+#include "../srcs/reverse_iterator.hpp"
+#include "../srcs/pair.hpp"
+#include "utility"//std::pair
+
 # define DEBUG 0
 
+/*
+** Documentation
+** https://www.cplusplus.com/reference/vector/vector/
+** Les vecteurs sont des "dynamic size arrays"
+** c'est-a-dire qu'ils ont la capacite d'agrandir leur capacite au fur et a mesure
+** que l'on ajoute des elements.
+** Contiguous storage locations for their elements.
+** They can be access by using offsets on regular pointers to its elements.
+*/
 namespace ft
 {
 	//https://docs.microsoft.com/fr-fr/cpp/standard-library/allocator-class?view=msvc-170
+	/*
+	*** Notion d'allocator
+	** allocator, it provides a layer of abstraction for the user.
+	** allocator can return constructed object, non-initialized memory space,
+	** destroy an object or release the space.
+	** STL containers use allocator to get memory space and create object.
+	*/
     template < typename T, typename Alloc = std::allocator<T> >
 	class vector
 	{
-	//dans le code source c est protected
+	//dans le code source c est protected, verifier ce qu'il est preferable
 	public:
-		typedef T															value_type;
-		typedef Alloc														allocator_type;
-		typedef value_type&													reference;
-		typedef const value_type&											const_reference;
-		typedef value_type*													pointer;
-		typedef const value_type*											const_pointer;
-
-		/*
-		** Utiliser les iterateurs customs - implementation defined
-		*/
-		typedef ft::vector_iterator<value_type>								iterator;
-		typedef ft::vector_iterator<const value_type>						const_iterator;
-
-		/*
-		** Pour utiliser les iterateurs de la librairie standard
-		*/
-		// typedef std::vector<value_type>::iterator<const value_type>		const_iterator;
-		typedef typename allocator_type::size_type       					size_type;
-		typedef typename allocator_type::difference_type 					difference_type;
-		typedef std::reverse_iterator<iterator>          					reverse_iterator;
-		typedef std::reverse_iterator<const_iterator>    					const_reverse_iterator;
-		// typedef ft::reverse_iterator< iterator >			reverse_iterator;
-		// typedef ft::reverse_iterator< const_iterator >	const_reverse_iterator;
-		// typedef std::ptrdiff_t							difference_type;
-		// typedef size_t									size_type;
+		typedef T                                        value_type;
+		//typedef value_type*                            pointer_type;
+		//typedef value_type&                            reference_type;
+		typedef Alloc                                    allocator_type;
+		typedef typename allocator_type::reference       reference;
+		typedef typename allocator_type::const_reference const_reference;
+		typedef typename allocator_type::size_type       size_type;
+		typedef typename allocator_type::pointer         pointer;
+		typedef typename allocator_type::const_pointer   const_pointer;
+		typedef vector_iterator<value_type>              iterator;
+		typedef vector_iterator<value_type const>        const_iterator;
+		typedef ft::reverse_iterator<iterator>           reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>     const_reverse_iterator;
+		typedef typename allocator_type::difference_type difference_type;
 
 	private:
 		size_type		_size;//nombre d'elements effectifs
 		size_type		_capacity;//taille memoire allouee
-		/*
-		** allocator, it provides a layer of abstraction for the user.
-		** allocator can return constructed object, non-initialized memory space,
-		** destroy an object or release the space.
-		** STL containers use allocator to get memory space and create object.
-		*/
 		allocator_type	_allocator;//notre allocateur sur lequel on va appeler allocate
 		pointer			_ptr;//pointeur vers le premier element du vecteur
 
-		/*
-		** Utils private
-		*/
-		void				setCapacity(size_type capacity)
-		{
-			_capacity = capacity;
-		}
-
-		static size_type	fitted_capacity(size_type target)
-		{
-			size_type	capacity = 1;
-			if (DEBUG)
-			{
-				std::cout << "The target is " << target << std::endl;
-			}
-			if (target == 0)
-				return (0);
-			while (capacity < target)
-				capacity = capacity * 2;
-			if (DEBUG)
-			{
-				std::cout << "The capacity is now " << capacity << std::endl;
-			}
-			return (capacity);
-		}
-
-		/*
-		** Constructs an object of type T in allocated unintialized storage pointed to by p
-		** using placement-new
-		*/
-		void construct(size_type index, const_reference val, pointer data)
-		{
-			//va noud []
-			_allocator.construct(_allocator.address(data[index]), val);
-			if (DEBUG)
-			{
-			//	std::cout << "First construct private function called" << std::endl;
-			}
-		}
-
-		/*
-		** On va toujours "passer par l'interface du premier construct"
-		*/
-		void	construct(size_type index, const_reference val)
-		{
-			construct(index, val, _ptr);
-			if (DEBUG)
-			{
-				std::cout << "Second construct private function called" << std::endl;
-			}
-		}
-
-		/*
-		** allocate
-		*/
-		pointer	allocate(size_type n)
-		{
-			if (DEBUG)
-			{
-				std::cout << "allocate function called" << std::endl;
-			}
-			return (_allocator.allocate(n));
-		}
-
-		/*
-		** deallocate -> public member function (std::allocator)
-		** deallocates storage
-		** https://en.cppreference.com/w/cpp/memory/allocator
-		*/
-		void	deallocate()
-		{
-			if (DEBUG)
-			{
-				std::cout << "deallocate function called" << std::endl;
-			}
-			_allocator.deallocate(_ptr);
-		}
-
-		/*
-		** destroy
-		** destructs an object in allocated storage
-		** = calls the destructor of object
-		** https://en.cppreference.com/w/cpp/memory/allocator
-		*/
-		void	destroy(size_type index, const_reference val)
-		{
-			if (DEBUG)
-			{
-				std::cout << "Destroy 2nd function called" << std::endl;
-			}
-			//A verifier
-			(void)val;
-			_allocator.destroy(_allocator.address(_ptr[index]));
-		}
-
-		/*
-		** A verifier
-		*/
-		void 	destroy(size_type index, pointer data)
-		{
-			(void)data;
-			if (DEBUG)
-			{
-				std::cout << "Destroy first function called" << std::endl;
-			}
-			destroy(index, _ptr);
-		}
-
-		/**
-		**TO DO: voir si necessaire d implementer realloc
-		*/
-
-		/*
-		** shift left (defined in algorithm)
-		** shift the elements in the range [first, last] by n positions
-		** https://en.cppreference.com/w/cpp/algorithm/shift
-		*/
-		void	shift_left(size_type position, size_type n)
-		{
-			if (DEBUG)
-			{
-				std::cout << "shift left function called" << std::endl;
-			}
-			if (empty())
-			{
-				return;
-			}
-			for (size_type i = position; i < getSize() - n; i++)
-			{
-				_allocator.construct(&_ptr[i], _ptr[i + n]);
-				_allocator.construct(&_ptr[i + n]);
-			}
-		}
-
 	public:
-
-	/*
-	** Getters - voir si je les laisse en public
-	*/
-	size_type	getCapacity() const
-	{
-		if (DEBUG)
-		{
-			std::cout << "The capacity is " << this->_capacity << std::endl;
-		}
-		return (this->_capacity);
-	}
-
-	size_type getSize() const
-	{
-		if (DEBUG)
-		{
-			std::cout << "The size is " << this->_size << std::endl;
-		}
-		return (this->_size);
-	}
-
-	pointer getPtr() const
-	{
-		if (DEBUG)
-		{
-			std::cout << "getPtr function called" << std::endl;
-		}
-		return (this->ptr);
-	}
-
-	/*
-	** Constructeurs
-	*/
-		vector(const allocator_type &alloc = allocator_type()): _size(0), _capacity(0), _allocator(alloc), _ptr(_allocator.allocate(_capacity))
+		/*
+		** Constructeurs 
+		** default, fill, range, copy
+		** J'ai retire le keyword explicit puisqu'il ne fait pas partie du standard 98
+		*/
+		vector(const allocator_type &alloc = allocator_type()): _size(0), _capacity(0), _allocator(alloc), _ptr(NULL)//_ptr(_allocator.allocate(_capacity)
 		{
 			if (DEBUG == 1)
 			{
-				std::cout << "First constructor called" << std::endl;
+				std::cout << "vector default constructor called" << std::endl;
 			}
 		}
 
 		/*
 		** This constructor allows to create a vector with n elements of value val
-		** This constructor must call construct
+		** This constructor must call construct 
+		** fill
 		*/
-		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()): _size(n), _capacity(fitted_capacity(n)), _allocator(alloc), _ptr(_allocator.allocate(_capacity))
+		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()): _size(n), _capacity(0), _allocator(alloc), _ptr(NULL))
 		{
 			if (DEBUG)
 			{
-				std::cout << "Second constructor called" << std::endl;
+				std::cout << "vector fill constructor called" << std::endl;
 			}
+			/* 
+			** On doit d'abord allouer la place necessaire
+			** Il faut recuperer via allocate le premier element (_p) du vector
+			*/
+			this->_p = this->_allocator.allocate(n);
 			size_t i = 0;
 			while (i < n)
 			{
-				//construct(i, val);
-				/* construct takes a pointer an a const_reference val*/
-				//A tester
-				_allocator.construct(&_ptr[i], val);
+				/* 
+				** Construct in defined in header <memory> (it is not asked to reimplement it)
+				** Constructs an object of type T in allocated 
+				** uninitialized storage pointed to by p, using placement-new 
+				** Calls new((void *)p) T(val)
+				*/
+				/*
+				** Va permettre de "construire" chaque elements 
+				*/
+				this->_allocator.construct(&_ptr[i], val);
 				i++;
 			}
 		}
 
+		/*
+		** Troisieme constructeur 
+		** range -> arguments : un iterateur first et un iterateur last
+		*/
 		template<typename InputIterator>
 		vector(InputIterator first, InputIterator last,
 				const allocator_type &alloc = allocator_type())
@@ -570,6 +422,178 @@ namespace ft
 			swap(this->_capacity, x._capacity);
 			swap(this->_allocator, x._allocator);
 			swap(this->_ptr, x._ptr);
+		}
+
+			private:
+		/*
+		** Utils private
+		*/
+		void				setCapacity(size_type capacity)
+		{
+			_capacity = capacity;
+		}
+
+		static size_type	fitted_capacity(size_type target)
+		{
+			size_type	capacity = 1;
+			if (DEBUG)
+			{
+				std::cout << "The target is " << target << std::endl;
+			}
+			if (target == 0)
+				return (0);
+			while (capacity < target)
+				capacity = capacity * 2;
+			if (DEBUG)
+			{
+				std::cout << "The capacity is now " << capacity << std::endl;
+			}
+			return (capacity);
+		}
+
+		/*
+		** Constructs an object of type T in allocated unintialized storage pointed to by p
+		** using placement-new
+		** Est-ce qu'il faut redefinir construct ?
+		*/
+		/*
+		void construct(size_type index, const_reference val, pointer data)
+		{
+			//va noud []
+			_allocator.construct(_allocator.address(data[index]), val);
+			if (DEBUG)
+			{
+			//	std::cout << "First construct private function called" << std::endl;
+			}
+		}
+		*/
+
+		/*
+		** On va toujours "passer par l'interface du premier construct"
+		*/
+		/*
+		void	construct(size_type index, const_reference val)
+		{
+			construct(index, val, _ptr);
+			if (DEBUG)
+			{
+				std::cout << "Second construct private function called" << std::endl;
+			}
+		}
+		*/
+
+		/*
+		** allocate
+		*/
+		pointer	allocate(size_type n)
+		{
+			if (DEBUG)
+			{
+				std::cout << "allocate function called" << std::endl;
+			}
+			return (_allocator.allocate(n));
+		}
+
+		/*
+		** deallocate -> public member function (std::allocator)
+		** deallocates storage
+		** https://en.cppreference.com/w/cpp/memory/allocator
+		*/
+		void	deallocate()
+		{
+			if (DEBUG)
+			{
+				std::cout << "deallocate function called" << std::endl;
+			}
+			_allocator.deallocate(_ptr);
+		}
+
+		/*
+		** destroy
+		** destructs an object in allocated storage
+		** = calls the destructor of object
+		** https://en.cppreference.com/w/cpp/memory/allocator
+		*/
+		void	destroy(size_type index, const_reference val)
+		{
+			if (DEBUG)
+			{
+				std::cout << "Destroy 2nd function called" << std::endl;
+			}
+			//A verifier
+			(void)val;
+			_allocator.destroy(_allocator.address(_ptr[index]));
+		}
+
+		/*
+		** A verifier
+		*/
+		void 	destroy(size_type index, pointer data)
+		{
+			(void)data;
+			if (DEBUG)
+			{
+				std::cout << "Destroy first function called" << std::endl;
+			}
+			destroy(index, _ptr);
+		}
+
+		/**
+		**TO DO: voir si necessaire d implementer realloc
+		*/
+
+		/*
+		** shift left (defined in algorithm)
+		** shift the elements in the range [first, last] by n positions
+		** https://en.cppreference.com/w/cpp/algorithm/shift
+		*/
+		/*
+		void	shift_left(size_type position, size_type n)
+		{
+			if (DEBUG)
+			{
+				std::cout << "shift left function called" << std::endl;
+			}
+			if (empty())
+			{
+				return;
+			}
+			for (size_type i = position; i < getSize() - n; i++)
+			{
+				_allocator.construct(&_ptr[i], _ptr[i + n]);
+				_allocator.construct(&_ptr[i + n]);
+			}
+		}
+		*/
+			protected:
+		/*
+		** Getters - voir si je les laisse en public
+		*/
+		size_type	getCapacity() const
+		{
+			if (DEBUG)
+			{
+				std::cout << "The capacity is " << this->_capacity << std::endl;
+			}
+			return (this->_capacity);
+		}
+
+		size_type getSize() const
+		{
+			if (DEBUG)
+			{
+				std::cout << "The size is " << this->_size << std::endl;
+			}
+			return (this->_size);
+		}
+
+		pointer getPtr() const
+		{
+			if (DEBUG)
+			{
+				std::cout << "getPtr function called" << std::endl;
+			}
+			return (this->ptr);
 		}
 	};
 
