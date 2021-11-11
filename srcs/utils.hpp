@@ -123,4 +123,28 @@ namespace ft
 		typedef std::random_access_iterator_tag	iterator_category;
 	};
 
+	/*
+	** Enable if
+	** https://en.cppreference.com/w/cpp/types/enable_if
+	** defined in headers <type_traits>
+	** Les prototypes sur la documentation officielle depassent 98.
+	*/
+	template<bool B, typename T = void>
+	struct enable_if
+	{
+		/*
+		** if B is true, std::enable_if has a public member typedef type, equal to T;
+		** otherwise, there is no member typedef.
+		*/
+	};
+
+	/*
+	** std::enable_if can be used as an additional function argument 
+	** (not applicable to operator overloads), as a return type
+	*/
+	template<typename T>
+	struct enable_if<true, T>
+	{
+		typedef T type;
+	};
 }

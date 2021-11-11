@@ -7,6 +7,7 @@
 /* Code de la documentation officielle modifiee */
 int main()
 {
+    /*
     std::vector<char> v1 {'a', 'b', 'c', 'd'};
     std::vector<char> v2 {'a', 'b', 'c', 'd'};
  
@@ -26,4 +27,5 @@ int main()
     std::cout << "< ";
     for (auto c : v2) std::cout << c << ' ';
     std::cout << '\n';
+    */
 }
