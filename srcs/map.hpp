@@ -327,6 +327,7 @@ namespace ft
             {
                 std::cout << "new node function has been invoked, the size is now " << this->size << std::endl;
             }
+            //tmp->parent = parent ?
             return (tmp);
         }
 
@@ -422,12 +423,66 @@ namespace ft
                     this_root = NULL;
             }
         }
-
-        node_type   *const_pos_key(const key_type &key, node_type *current) const
+        
+        /*
+        ** Permet de recuperer l'adresse d'une cle recherchee
+        ** Recursif
+        */
+        node_type   *get_key_pos(const key_type &key, node_type *current)
         {
+            //|| ou && ?
             if (!current || current->last)
-                return (NULL);
-            //A reprendre
+            {
+                if (DEBUG)
+                    std::cout << "get key pos will return NULL" << std::endl;
+            }
+            //Si la cle est inferieure a la valeur de current
+            if (key_compare(key, current->value.first))
+                return (get_key_pos(key, current->left));
+            else
+                return (get_key_pos(key, current->right));
+            else
+            {
+                std::cout << "Found the key position " << current << ", the value is " << *current << std::endl;
+                return current;
+            }
+        }
+
+        /*
+        ** Voir quand on en aurait besoin particulirement ?
+        */
+         node_type   *const_get_key_pos(const key_type &key, node_type *current) const 
+        {
+            //|| ou && ?
+            if (!current || current->last)
+            {
+                if (DEBUG)
+                {
+                    std::cout << "get key pos will return NULL" << std::endl;
+                }
+            }
+            //Si la cle est inferieure a la valeur de current
+            if (key_compare(key, current->value.first))
+                return (const_get_key_pos(key, current->left));
+            else
+                return (const_get_key_pos(key, current->right));
+            else
+            {
+                std::cout << "Found the key position " << current << ", the value is " << *current << std::endl;
+                return current;
+            }
+        }
+
+        void    destroy_pair(btree_type *node)
+        {
+            _allocator.destroy(node->value);
+        }
+
+        void    delete_node(btree_type *node)
+        {
+            destroy_pair(node);
+            _allocator.deallocate(node->value);
+            delete(node);
         }
 
         void print(node_type *start, std::string path=="")
@@ -436,6 +491,51 @@ namespace ft
             (void)path;
             //A reprendre
         }
+
+        const btree_type &getRoot()
+        {
+            return (*this->_root);
+        }
+
+        /*
+        ** Voir pourquoi on a besoin de plusieurs types d'insert
+        ** Pourquoi on ne checkerait pas root tout le temps ?
+        */
+        node_type   *insert_node_check(const &value_type, node_type)
+        {
+            /*
+            ** Gestion du cas ou root est encore null
+            */
+            if (!this->_root)
+            {
+                if (DEBUG)
+                {
+                    std::cout << "Adding new (first) node because root is null" << std::endl;
+                }
+                this->_root = new_node(val, NULL);
+                node_type *last = new_node(value_type(key_type(), mapped_type(), this->_root));
+                //this->size--; //?
+                this->_root->right = last;
+                last->last = true;
+                return (this->_root);
+            }
+            /*
+            ** Gestion du cas ou il n'y a que root dans l'arbre
+            ** TODO: faire les schemas
+            */
+            if (this->_root->last)
+            {
+                node_type *new_root = new_node(val, NULL);
+                this->_root->parent = new_root;
+                new_root->right = this->_root;
+                this->_root = new_root;
+                return (this->_root);
+            }
+            /* gestion de tous les autres cas */
+            return (insert_node(val, current, parent));
+        }
+
+
     };
     /*
     ** Non member function overloads
