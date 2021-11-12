@@ -5,6 +5,8 @@
 #include <vector>
 
 /* 
+** Prototypes des fonctions de tests
+*/
 void    iterator_traits(void);
 
 /*

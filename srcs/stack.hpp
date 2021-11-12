@@ -89,5 +89,150 @@ namespace ft
            }
            return (size);
        }
+
+        /*
+        ** Top 
+        ** http://www.cplusplus.com/reference/stack/stack/top/
+        ** returns a reference to the top element (last inserted) in the stack
+        ** Effectively calls back of the underlying container object.
+        */
+        value_type &top()
+        {
+           value_type top = this->_container.back();
+           if (DEBUG)
+           {
+               std::cout << "Top function called" << std::endl;
+               std::cout << "the top is " << top << std::endl;
+           }
+           return (top);
+       }
+
+       /*
+       ** Top const
+       */
+        const value_type &top() const 
+        {
+            value_type top = this->_container.back();
+           if (DEBUG)
+           {
+               std::cout << "Top const function called" << std::endl;
+               std::cout << "the top is " << top << std::endl;
+           }
+           return (top);
+        }
+
+        /*
+        ** Push - Insert element
+        ** https://www.cplusplus.com/reference/stack/stack/push/
+        ** Inserts a new element at the top of the stack, above its current top element. 
+        ** The content of this new element is initialized to a copy of val.
+        ** Effectively calls push_back of the underlying container
+        */
+        void push(const value_type &val)
+        {
+            value_type &ref = this->_container.push_back(val);
+            if (DEBUG)
+            {
+                std::cout << "map push function called" << std::endl;
+                std::cout << "the ref returned is " << ref << std::endl;
+            }
+            return (ref);
+        }
+
+        /*
+        ** Pop
+        ** https://www.cplusplus.com/reference/stack/stack/pop/
+        ** Removes the top element, reducing its size by one.
+        ** This calls the remove destructor's element
+        ** Effectively calls the pop_back function of the underlying container
+        */
+        void pop()
+        {
+            if (DEBUG)
+            {
+                std::cout << "map pop function called" << std::endl;
+                std::cout << this->top() << "will be popped" << std::endl;
+            }
+            this->_container.pop_back();
+        }
    };
+
+    /*
+    ** Non member function overloads 
+    ** Relational operators
+    ** https://www.cplusplus.com/reference/stack/stack/operators/
+    ** Performs the appropriate comparison operation between lhs and rhs.
+    ** Each of these operator overloads calls the same operator on the underlying container objects.
+    */
+    template <class T, class Container>
+    bool operator==(const stack<T,Container>& lhs, const stack<T,Container>& rhs)
+    {
+        bool ret = lhs._container == rhs._container;
+        if (DEBUG)
+        {
+            std::cout << "map operator == called" << std::endl;
+            std::cout << "the res is " << res << std::endl;
+        }
+        return (ret);
+    }
+
+    template <class T, class Container>
+    bool operator!=(const stack<T,Container>& lhs, const stack<T,Container>& rhs)
+    {
+        bool ret = lhs._container != rhs._container;
+        if (DEBUG)
+        {
+            std::cout << "map operator != called" << std::endl;
+            std::cout << "the res is " << res << std::endl;
+        }
+        return (ret);
+    }
+
+    template <class T, class Container>
+    bool operator<(const stack<T,Container>& lhs, const stack<T,Container>& rhs)
+    {
+        bool ret = lhs._container < rhs._container;
+        if (DEBUG)
+        {
+            std::cout << "map operator < called" << std::endl;
+            std::cout << "the res is " << res << std::endl;
+        }
+        return (ret);
+    }
+
+    template <class T, class Container>
+    bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
+    {
+        bool ret = lhs._container <= rhs._container;
+        if (DEBUG)
+        {
+            std::cout << "map operator <= called" << std::endl;
+            std::cout << "the res is " << res << std::endl;
+        }
+        return (ret);
+    }
+
+    template <class T, class Container>
+    bool operator>(const stack<T,Container>& lhs, const stack<T,Container>& rhs)
+    {
+        bool ret = lhs._container > rhs._container;
+        if (DEBUG)
+        {
+            std::cout << "map operator > called" << std::endl;
+            std::cout << "the res is " << res << std::endl;
+        }
+        return (ret);
+    }
+
+    template <class T, class Container>
+    bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
+    {
+        bool ret = lhs._container >= rhs._container;
+        if (DEBUG)
+        {
+            std::cout << "map operator >= called" << std::endl;
+            std::cout << "the res is " << res << std::endl;
+        }
+        return (ret);
+    }
 }
