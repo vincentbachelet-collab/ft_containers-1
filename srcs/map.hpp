@@ -235,15 +235,326 @@ namespace ft
         ** key equivalent to the one of an element already in the container, and if so, the element is not inserted, 
         ** returning an iterator to this existing element (if the function returns a value).
         */
+
+       /*
+       ** insert single element
+       */
         pair<iterator, bool> insert(const value_type &val)
         {
             btree_type *cursor = _root.left;
             //last c'est bien le dernier element ajoute
             btree_type *last = &_root;
 
-            
+            //On va chercher a se positioner la ou va etre insere le node
+            while (cursor && cursor->value->first != val.first)
+            {
+                last = cursor;
+                if (key_compare()(val.first, cursor->value->first))
+                    cursor = cursor->left;
+                else
+                    cursor = cursor->right;
+            }
+            if (!cursor)
+            {
+                //la cle n existe pas deja
+                btree_type  *node;
+                node = create_node(val.first, last, val.second);
+                if (last == &_root)
+                {
+                    //?si il n'y a pas d'element ?
+                    last->left = node;
+                    last->right = node;
+                }
+                else if (key_compare()(val.first, last->value->first))
+                {
+                    //si la valeur est plus petite que last
+                    last->left = node;
+                }
+                else
+                {
+                    //si la valeur est plus grande que last
+                    last->right = node;
+                }
+                cursor = node;
+                this->_size++;
+                //essayer avec make pair
+                return (ft::pair<iterator, bool>(cursos, false)
+            }
+            //la cle existe deja mais avec la bonne valeur de is_found ca ne sera pas genant ?
+            //voir comment retourner une paire vide ?
+            return (ft::pair<iterator, bool>(cursos, true);
         }
 
+        /*
+        ** insert hint (2)
+        ** faire des sous fonctions, faire des schemas
+        **TODO: voir diff entre key_comp et key compare
+        */
+        iterator insert(iterator position, const value_type &val)
+        {
+            iterator last = &_root;
+            iterator tmp;
+
+            //si position est root ? et que la taille n est pas nulle?
+            if (position == end() && this->_size())
+            {
+                position = iterator(position.getNode()->left);
+            }
+            //pas tres sure de cette partie
+            while (position != this->end() && tmp != position)
+            {
+                tmp = last;
+                last = position;
+                if (this->key_comp()(val.first, position->first))
+                    position--;
+                else if (this->key_comp()(position->first, val.first))
+                    position++;
+                else
+                    return (position);
+            }
+            btree_type *node = create_node(val.first, val.second);
+            if (position == last)
+            {
+                //a revoir
+                position.getNode()->left = node;
+                position.getNode()->right = node;
+            }
+            else
+            {
+                if (position == this->end())
+                    ft::swap(position, last);
+                if (key_compare()(val.first, position->first))
+                {
+                    if (position.getNode()->left)
+                        (--position).getNode()->right = node;
+                    else
+                        position.getNode()->left = node;
+                }
+                else
+                {
+                    if (position.getNode()->right)
+                        (++position).getNode()->left = node;
+                    else
+                        position.getNode()->right = node;
+                }
+            }
+            node->parent = position.getNode();
+            this->_size++;
+            return (iterator(node));
+        }
+
+        /*
+        ** insert range (3)
+        */
+        template <class InputIt>
+        void insert(InputIt first, InputIt last)
+        {
+            iterator last_insert = this->begin();
+            InputIt it = first;
+            while (it < last)
+            {
+                last_insert = this->insert(last_insert, *it);
+                //faire messages de debug
+                it++;
+            }
+        }
+
+        /* a reprendre */
+        void    erase(iterator position)
+        {
+            btree_type *to_erase = position.getNode();
+			btree_type *parent = to_erase->parent;
+			btree_type *pivot = 0;
+
+			if (to_erase->left) {
+				pivot = to_erase->left;
+				if (to_erase->right){
+					btree_type *cursor = pivot;
+					while (cursor->right)
+						cursor = cursor->right;
+					cursor->right = to_erase->right;
+					cursor->right->parent = cursor;
+				}
+			}
+			else if (to_erase->right)
+				pivot = to_erase->right;
+			if (pivot)
+				pivot->parent = parent;
+			if (parent == &_root){
+				parent->left = pivot;
+				parent->right = pivot;
+			}
+			else if (parent->left == to_erase)
+				parent->left = pivot;
+			else
+				parent->right = pivot;
+			this->delete_node(to_erase);
+			_size--;
+        }
+
+        size_type erase (const key_type &key)
+        {
+			iterator it = this->find(key);
+			if (it == end())
+				return (false);
+			this->erase(it);
+			return (true);
+		}
+
+        void erase (iterator first, iterator last)
+        {
+			iterator next = first;
+			for (iterator it = first; it != last; it = next)
+			{
+				next++;
+				this->erase(it);
+			}
+		}
+
+        void swap (map &other)
+        {
+			swap(this->_size, other._size);
+			swap(this->_comp, other._comp);
+			swap(this->_allocator, other._allocator);
+			swap(this->_root.left, other._root.left);
+			swap(this->_root.right, other._root.right);
+			if (this->_root.left)
+				this->_root.left->parent = &this->_root;
+			if (other._root.left)
+				other._root.left->parent = &other._root;
+		}
+
+        /*
+        ** key compare
+        */
+        key_compare key_comp() const
+        {
+			return (this->_comp);
+		}
+
+        /*
+        ** value compare
+        */
+        value_compare value_comp() const
+        {
+			return (value_compare(this->_comp));
+		}
+
+        /*
+        ** find
+        */
+        iterator find(const key_type &key)
+        {
+            btree_type *cursor = this->_root.left;
+
+            while (cursor)
+            {
+                if (key_compare()(k, cursor->value->first))
+                    cursor = cursor->left;
+                else if (key_compare()(cursor->value->first, key))
+                    cursor = cursor->right;
+                else
+                    return (iterator(cursor));
+            }
+            return(end());
+        }
+
+        /*
+        ** find const 
+        */
+        const_iterator find(const key_type &key) const 
+        {
+             btree_type *cursor = this->_root.left;
+
+            while (cursor)
+            {
+                if (key_compare()(k, cursor->value->first))
+                    cursor = cursor->left;
+                else if (key_compare()(cursor->value->first, key))
+                    cursor = cursor->right;
+                else
+                    return (const_iterator(reinterpret_cast<const_btree_type *>(cursor)));
+            }
+            return(end());
+        }
+
+        /*
+        ** count
+        ** https://www.cplusplus.com/reference/map/map/count/
+        */
+        size_type count(const key_type &key) const
+        {
+            if (this->find(key) != end())
+                return (1);
+            return (0);
+        }
+
+        //TODO: ajouter le debug, tester
+
+        /*
+        ** lower bound 
+        ** https://www.cplusplus.com/reference/map/map/lower_bound/
+        */
+        iterator lower_bound(const key_type &key)
+        {
+            iterator it = this->begin();
+            while (it != this->end() && this->key_comp()(it->first, k))
+                it++;
+            return (it);
+        }
+
+        /*
+        ** const lower bound
+        */
+        const_iterator lower_bound (const key_type& k) const
+        {
+			const_iterator it = this->begin();
+
+			while (it != this->end() && this->key_comp()(it->first, k))
+				it++;
+			return (it);
+		}
+
+        /*
+        ** Upperbound
+        */
+        iterator upper_bound (const key_type &key)
+        {
+			iterator it = this->begin();
+
+			while (it != this->end() && !this->key_comp()(key, it->first))
+				it++;
+			return (it);
+		}
+
+        /*
+        ** Equal range
+        */
+       pair<iterator,iterator>	equal_range (const key_type& k)
+       {
+			iterator it = this->begin();
+
+			while (it != this->end() && (this->key_comp()(it->first, k)))
+				it++;
+			if (it == this->end() || this->key_comp()(k, it->first))
+				return (pair<iterator, iterator>(it, it));
+			iterator upper = it;
+			return (pair<iterator, iterator>(it, ++upper));
+		}
+
+        /*
+        ** const equal range
+        */
+        pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+			const_iterator it = this->begin();
+
+			while (it != this->end() && (this->key_comp()(it->first, k)))
+				it++;
+			if (it == this->end() || this->key_comp()(k, it->first))
+				return (pair<const_iterator, const_iterator>(it, it));
+			const_iterator upper = it;
+			return (pair<const_iterator, const_iterator>(it, ++upper));
+		}
         /*
         ** Iterateur
         */
@@ -341,11 +652,13 @@ namespace ft
         ** Besoin d'avoir begin pour pouvoir faire insert
         ** a reprendre
         */
+        /*
         template<class InputIt>
         void insert(InputIt first, InputIt last)
         {
             iterator it = this->begin();
         }
+        */
         //fonction de print?
     private:
         void initialize()
@@ -411,6 +724,7 @@ namespace ft
         ** Pourquoi on ne prend pas root ?
         ** TODO: faire un schema
         */
+        /*
         node_type   *insert_node(const value_type &val, node_type *current, node_type *parent)
         {
             if (!current)
@@ -444,11 +758,13 @@ namespace ft
             }
             return (current);
         }
+        */
 
         /*
         ** Va permettre de detruire et desallouer tous les nodes du tree
         ** fonction recursive
         */
+       /*
         void    clear_all_nodes(node_type *current)
         {
             if (current)
@@ -463,6 +779,7 @@ namespace ft
                     this_root = NULL;
             }
         }
+        */
         
         /*
         ** Permet de recuperer l'adresse d'une cle recherchee
@@ -541,11 +858,9 @@ namespace ft
         ** Voir pourquoi on a besoin de plusieurs types d'insert
         ** Pourquoi on ne checkerait pas root tout le temps ?
         */
+        /*
         node_type   *insert_node_check(const &value_type, node_type)
         {
-            /*
-            ** Gestion du cas ou root est encore null
-            */
             if (!this->_root)
             {
                 if (DEBUG)
@@ -559,10 +874,6 @@ namespace ft
                 last->last = true;
                 return (this->_root);
             }
-            /*
-            ** Gestion du cas ou il n'y a que root dans l'arbre
-            ** TODO: faire les schemas
-            */
             if (this->_root->last)
             {
                 node_type *new_root = new_node(val, NULL);
@@ -571,10 +882,10 @@ namespace ft
                 this->_root = new_root;
                 return (this->_root);
             }
-            /* gestion de tous les autres cas */
+            // gestion de tous les autres cas
             return (insert_node(val, current, parent));
         }
-
+        */
 
     };
     /*
