@@ -13,6 +13,7 @@
 #include "make_pair.hpp"
 #include "./binary_three.hpp"
 #include "./vector.hpp"
+#include "./node.hpp"
 
 #include <functional>
 
@@ -67,16 +68,12 @@ namespace ft
             value_compare(Compare comp): _comp(comp)
             {
                 if (DEBUG)
-                {
                     std::cout << "value compare default constructor invoked" << std::endl;
-                }
             }
             value_compare(Compare comp): _comp(comp)
             {
                 if (DEBUG)
-                {
                     std::cout << "value compare parameter constructor invoked" << std::endl;
-                }
             }
             /*
             ** Je ne comprend pas cette implementation
@@ -86,9 +83,9 @@ namespace ft
                 std::cout << "compare operator() invoked" << std::endl;
                 return (this->_comp(first.first, second.first));
             }
-            typedef bool result_type;
+            typedef bool        result_type;
             typedef value_type  first_argument_type;
-            typedef value_type second_argument_type;
+            typedef value_type  second_argument_type;
         };
 
         typedef Key										key_type;
@@ -106,15 +103,10 @@ namespace ft
 		typedef const value_type*						const_pointer;
 		typedef std::ptrdiff_t							difference_type;
 		typedef std::size_t								size_type;
-        //revoir pour le nom node ou btree
-		typedef ft::node<value_type>					btree_type;
-		typedef ft::node<const value_type>				const_btree_type;                  const_reverse_iterator;
+		typedef ft::btree<value_type>					btree_type;
+		typedef ft::btree<const value_type>				const_btree_type;               const_reverse_iterator;
     
     protected:
-        /*
-        ** Probleme syntaxique sur le node allocator ?
-        ** et le size type
-        */
         btree_type		_root;
 		size_type		_size;
 		key_compare		_comp;
@@ -128,12 +120,10 @@ namespace ft
         ** Constructeur 1 - empty
         ** J'ai retire le mot cle explicit puisqu il ne fait pas partie du standard 98.
         */
-        map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()): _alloc(alloc), _key_cmp(comp), _size(0), _root(NULL)
+        map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()): _allocator(alloc), _comp(comp), _size(0), _root(btree_type())
         {
             if (DEBUG)
-            {
                 std::cout << "map default constructor called" << std::endl;
-            }
         }
         /*
         ** Constructeur 2 - range
@@ -145,11 +135,44 @@ namespace ft
 			const allocator_type& alloc = allocator_type()) : _root(btree_type()), _size(0), _comp(comp), _allocator(alloc)
         {
             if (DEBUG)
-            {
                 std::cout << "map range constructor called" << std::endl;
-            }
 			insert(first, last);
 		}
+
+        //voir si dernier constructeur ?
+        /*
+        ** Constructeur par copie 
+        */
+        map(const map &src): _root(btree_type()), _size(0), _comp(src._comp), _allocator(src._allocator)
+        {
+            if (DEBUG)
+                std::cout << "map copy constructor called" << std::endl;
+            insert(src.begin(), src.end());
+        }
+        /*
+        ** Destructeur
+        */
+        virtual ~map(void)
+        {
+            if (DEBUG)
+                std::cout << "map destructor called" << std::endl;
+            clear();
+        }
+
+        map &operator=(const map &src)
+        {
+            if (DEBUG)
+                std::cout << "map assignation operator called" << std::endl;
+            if (this != &src)
+            {
+                this->clear();
+                this->_comp = src._comp;
+                this->_alloctor = src._allocator;
+                this->insert(src.begin(), src.end());
+            }
+            return (*this);
+        }
+
         /*
         ** Capacity
         */
@@ -158,15 +181,11 @@ namespace ft
             if (this->_size)
             {
                 if (DEBUG)
-                {
                     std::cout << "the map is not empty" << std::endl;
-                }
                 return (false);
             }
             if (DEBUG)
-            {
                 std::cout << "the map is empty" << std::endl;
-            }
             return (true);
         }
 
@@ -177,9 +196,7 @@ namespace ft
         {
             size_type s = this->_size;
             if (DEBUG)
-            {
                 std::cout << "the size is " << s << std::endl;
-            }
             return (s);
         }
         /*
@@ -195,6 +212,18 @@ namespace ft
         }
 
         /*
+        ** Permet d'acceler a la valeur pointee par la cle.
+        */
+        mapped_type &operator[](const key_type &key)
+        {
+            mapped_type &mapped = insert(value_type(key).first->second);
+            if (DEBUG)
+            {
+                std::cout << "operator[] invoked and the mapped_type is " << mapped << std::endl;
+            }
+        }
+
+        /*
         ** Modifiers
         */
         
@@ -206,16 +235,19 @@ namespace ft
         ** key equivalent to the one of an element already in the container, and if so, the element is not inserted, 
         ** returning an iterator to this existing element (if the function returns a value).
         */
-        pair<iterator, bool> insert(const value_type &src)
+        pair<iterator, bool> insert(const value_type &val)
         {
-            size_type save = this->_size;
-            insert_node_check_root(val, this->_root);
-            //reprendre
+            btree_type *cursor = _root.left;
+            //last c'est bien le dernier element ajoute
+            btree_type *last = &_root;
+
+            
         }
 
         /*
         ** Iterateur
         */
+
         /*
         ** Begin
         ** besoin de empty, end pour faire begin pour faire insert pour faire le constructeur fill
@@ -225,37 +257,30 @@ namespace ft
             if (empty())
             {
                 if (DEBUG)
-                {
                     std::cout << "begin is invoked but the map is empty" << std::endl;
-                }
                 return(end());
             }
-            iterator it = this->_first;
+            iterator it(this->_first);
             if (DEBUG)
-            {
                 std::cout << "begin is invoked, the value is " << *it << std::endl;
-            }
             return (it);
         }
 
         /*
         ** Const begin()
+        ** TODO: checker le code source
         */
         const_iterator begin() const 
         {
             if (empty())
             {
                 if (DEBUG)
-                {
                     std::cout << "const begin is invoked but the map is empty" << std::endl;
-                }
                 return(end());
             }
-            const_iterator it = const_iterator(reinterpret_cast<const_btree_type *>(_first()));
+            const_iterator it(reinterpret_cast<const_btree_type *>(_first()));
             if (DEBUG)
-            {
                 std::cout << "const begin is invoked, the value is " << *it << std::endl;
-            }
             return (it);
         }
 
@@ -264,20 +289,11 @@ namespace ft
         */
         iterator end()
         {
-            /*
-            //Pas super opti
-            iterator it = iterator(_root);
+            iterator it = iterator(this->_root);
             if (DEBUG)
             {
-                std::cout << "end function invoked, the value is " << *it << std::endl;
+                std::cout << "end function called, and the value is " << *it << std::endl;
             }
-            return (it);
-            */
-           if (!this->_root)
-           {
-               initialize();
-           }
-           //reprendre
         }
 
         /*
@@ -285,21 +301,45 @@ namespace ft
         */
         const_iterator end() const
         {
-            /*
             if (this->empty())
             {
                 if (DEBUG)
-                {
                     std::cout << "end function called, the map is empty so an iterator will be constructed" << std::endl;
-                }
                 return(const_iterator());
             }
-            const_iterator it = const_iterator(reinterpret_cast<const_btree_type *>(_root.left->parent)));
-            */
+            const_iterator it(reinterpret_cast<const_btree_type *>(_root._left->parent)));
+            return (it);
+        }
+
+        reverse_iterator rbegin()
+        {
+            reverse_iterator it(this->_root);
+            if (DEBUG)
+                std::cout << "rbegin function called and the value is " << *it << std::endl;
+            return (it);
+        }
+        
+        /*
+        ** refaire des tests sur const et pas const
+        */
+        const_reverse_iterator rbegin() const
+        {
+            const_reverse_iterator it(this->_root);
+            if (DEBUG)
+                std::cout << "const rbegin function called and the value is " << it << std::endl;
+            return (it);
+        }
+
+        reverse_iterator rend()
+        {
+            reverse_iterator it(this->first);
+            if (DEBUG)
+                std::cout << "const rend function called and the value is " << it << std::endl;
         }
 
         /*
         ** Besoin d'avoir begin pour pouvoir faire insert
+        ** a reprendre
         */
         template<class InputIt>
         void insert(InputIt first, InputIt last)

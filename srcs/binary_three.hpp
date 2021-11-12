@@ -10,7 +10,7 @@
 namespace ft
 {
     template<typename T>
-    class node
+    class btree
     {
     public:
 
@@ -18,39 +18,40 @@ namespace ft
         /*
         ** Forme canonique necessaire
         */
-       node(): _value(NULL), _left(NULL), _right(NULL), _parent(NULL)
+       btree(): _value(NULL), _left(NULL), _right(NULL), _parent(NULL)
        {
            if (DEBUG)
             {
-                std::cout << "node constructor called" << std::endl;
+                std::cout << "btree constructor called" << std::endl;
             }
        }
-       node(value_type *ptr): _value(ptr), _left(NULL), _right(NULL), _parent(NULL)
+
+       btree(value_type *ptr): _value(ptr), _left(NULL), _right(NULL), _parent(NULL)
        {
            if (DEBUG)
            {
-               std::cout << "node pointer parameter constructor called" << std::endl;
+               std::cout << "btree pointer parameter constructor called" << std::endl;
            }
        }
-       node(const node &src): _value(src._value), _left(src.left), _right(src.right), _parent(src.parent)
+
+       btree(const node &src): _value(src._value), _left(src.left), _right(src.right), _parent(src.parent)
        {
            if (DEBUG)
            {
-               std::cout << "node copy constructor called" << std::endl;
+               std::cout << "btree copy constructor called" << std::endl;
            }
        }
 
         /*
         ** TODO: checker que tous les destructeurs sont bien virtual
         */
-        virtual ~node()
+        virtual ~btree()
         {
             if (DEBUG)
             {
-                std::cout << "node destructor called" << std::endl;
+                std::cout << "btree destructor called" << std::endl;
             }
         }
-
        /*
        ** Accessors (ajouts persos)
        */
@@ -64,32 +65,32 @@ namespace ft
             }
             return (ret);
         }
-        node *getLeft() const 
+        btree *getLeft() const 
         {
-            node *left = this->_left;
+            btree *left = this->_left;
             if (DEBUG)
             {
-                std::cout << "the left node is " << *left << std::endl; 
+                std::cout << "the left btree is " << *left << std::endl; 
             }
             return (left);
         }
 
-        node *getRight() const
+        btree *getRight() const
         {
-            node *right = this->_right;
+            btree *right = this->_right;
             if (DEBUG)
             {
-                std::cout << "the right node is " << *left << std::endl; 
+                std::cout << "the right bree is " << *left << std::endl; 
             }
             return (right);
         }
 
-        node    *getParent() const
+        btree    *getParent() const
         {
-            node *parent = this->_parent;
+            btree *parent = this->_parent;
             if (DEBUG)
             {
-                std::cout << "The parent node is" << *parent << std::endl;
+                std::cout << "The parent btree is" << *parent << std::endl;
             }
             return (parent);
         }
@@ -99,8 +100,8 @@ namespace ft
     protected:
         typedef T   value_type;
         value_type  *_value;
-        node        *_left;
-        node        *_right;
-        node        *_parent;
+        btree       *_left;
+        btree       *_right;
+        btree       *_parent;
     };
 }
