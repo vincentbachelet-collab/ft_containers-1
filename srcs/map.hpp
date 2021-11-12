@@ -306,6 +306,7 @@ namespace ft
         {
             iterator it = this->begin();
         }
+        //fonction de print?
     private:
         void initialize()
         {
@@ -314,6 +315,126 @@ namespace ft
             //On indique qu'il s'agit d'une leaf ?
             this->_root->last = true;
             this->_size--;
+        }
+
+        node_type*  new_node(const value_type &val, node_type *parent)
+        {
+            node_type   *tmp = _allocator.allocate(1);
+            //TODO: faire un schema du processus
+            _allocator.construct(tmp, node_type(val, NULL, NULL, parent, false));
+            this->_size++;
+            if (DEBUG)
+            {
+                std::cout << "new node function has been invoked, the size is now " << this->size << std::endl;
+            }
+            return (tmp);
+        }
+
+        /*
+        ** Va permettre de retourner l'adresse du node ayant la plus petite valeur
+        */
+        node_type   *min_value_node(node_type *node)
+        {
+            node_type *min = node;
+            //Les plus petits sont toujours a gauche
+            while (min->left != NULL)
+            {
+                min = min->left;
+            }
+            if (DEBUG)
+            {
+                std::cout << "the min value node is " << min << " and the value is " << *min << std::endl;
+            }
+            return (min);
+        }
+
+        /*
+        ** Va permettre de retourner l'adresse du node ayant la plus grande valeur
+        */
+        node_type   *max_value_node(node_type *node)
+        {
+            node_type *max = node;
+            while (max->right != NULL)
+            {
+                max = max->right;
+            }
+            if (DEBUG)
+            {
+                std::cout << "the max value node is " << max << " and the value is " << *max << std::endl;
+            }
+            return (max);
+        }
+        
+        /*
+        ** Insert node
+        ** Pourquoi on ne prend pas root ?
+        ** TODO: faire un schema
+        */
+        node_type   *insert_node(const value_type &val, node_type *current, node_type *parent)
+        {
+            if (!current)
+            {
+                return new_node(val, parent);
+            }
+            //a tester
+            if (current->last)
+            {
+                node_type *to_insert = new_node(val, parent);
+                //le last sera toujours l'enfant des elements ajouts 
+                current->parent = to_insert;
+                //current, c'est la tete du binary tree ?
+                to_insert->right = current;
+                current = to_insert;
+               // return (current);
+            }
+            //Si la valeur a ajouter est plus petite
+            else if (key_compare(val.first, current->value.first))
+            {
+                if (DEBUG)
+                    std::cout << "the node will be insert on the left side" << std::endl;
+                current->left = insert_node(val, current->left, current);
+            }
+            //Si la valeur a ajouter est plus grande
+            else
+            {
+                if (DEBUG)
+                    std::cout << "the node will be insert on the right side" << std::endl;
+                current->right = insert_node(val, current->right, current);
+            }
+            return (current);
+        }
+
+        /*
+        ** Va permettre de detruire et desallouer tous les nodes du tree
+        ** fonction recursive
+        */
+        void    clear_all_nodes(node_type *current)
+        {
+            if (current)
+            {
+                clear_all_nodes(current->left);
+                clear_all_nodes(current->right);
+                _allocator.destroy(current);
+                _allocator.deallocate(current, 1);
+                if (this->_size > 0)
+                    this->_size--;
+                if (current == this->_root)
+                    this_root = NULL;
+            }
+        }
+
+        node_type   *const_pos_key(const key_type &key, node_type *current) const
+        {
+            if (!current || current->last)
+                return (NULL);
+            //A reprendre
+        }
+
+        void print(node_type *start, std::string path=="")
+        {
+            (void)start;
+            (void)path;
+            //A reprendre
         }
     };
     /*
