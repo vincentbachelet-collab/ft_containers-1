@@ -1,16 +1,22 @@
 #You must produce one binary with only your containers and one with the same
 #testing with STL containers
 
-#Attention pour l'instant j ai plusieurs mains
-#Seulement les cpp de tests font partie des SRCS
-SRCS		=	./tests/iterator_traits.cpp \
-				./tests/lexicographical_compare.cpp \
-				./tests/make_pair.cpp \
-				./tests/reverse_iterator.cpp \
-				./tests/utils.cpp \
-				./tests/vector_iterator.cpp \
-				./tests/vector.cpp \
-				./main.cpp
+SRCS		=	./tests/algorithm/lexicographical_compare.cpp \
+				#./tests/containers/map/binary_tree.cpp \
+				#./tests/containers/map/map_iterator.cpp \
+				#./tests/containers/map/map.cpp \
+				#./tests/containers/map/node.cpp \
+				./tests/containers/map/pair.cpp \
+				#./tests/containers/stack/stack.cpp \
+				./tests/containers/vector/vector_iterator.cpp \
+				#./tests/containers/vector/vector.cpp \
+				./tests/utils/iterator_traits.cpp \
+				./test/utils/make_pair.cpp \
+				./test/utils/reverse_iterator.cpp \
+				./test/utils/utils.cpp \
+				./main.cpp \
+
+NAME		=	test
 
 NAME_FT		=	ft_containers
 NAME_STD	=	std_containers
@@ -19,31 +25,26 @@ NAME_STD	=	std_containers
 CC			=	c++
 CFLAGS		=	-Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g3
 
-OBJS		= ${SRCS:.cpp=.o}
+OBJS 		=	${SRCS:.cpp=.o}
 
 #A revoir
 #STD		=	-D STD=1
 #TEST		=	-D TEST=1
 
 .cpp.o:
-			$(CC) $(CFLAGS) -c $< -o $(<.cpp=.o)
+					$(CC) $(CFLAGS) -c $< -o $(<:.cpp=.o)
 
 #Ajouter une regle pour verifier le timing + diff
-all: 		$(NAME_FT) $(NAME_STD)
+all: 		$(NAME)
 
-$(NAME_FT):		ft
-				./$(NAME_FT) > $(NAME_FT).txt
+$(NAME):	$(OBJS)
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
-$(NAME_STD):	std
-				./$(NAME_STD) > $(NAME_STD).txt
+#ft: 			fclean $(OBJ_FT)
+#				$(CC) $(CFLAGS) $(OBJ_FT) -o $(NAME_FT)
 
-bonus: 			all
-
-ft: 			fclean $(OBJ_FT)
-				$(CC) $(CFLAGS) $(OBJ_FT) -o $(NAME_FT)
-
-std:			fclean $(OBJ_STD)
-				$(CC) $(CFLAGS) $(OBJ_STD) -o $(NAME_STD)
+#std:			fclean $(OBJ_STD)
+#				$(CC) $(CFLAGS) $(OBJ_STD) -o $(NAME_STD)
 
 clean:
 				rm -f $(OBJ) $(OBJ_FT) $(OBJ_STD)

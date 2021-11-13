@@ -6,16 +6,7 @@
 ** 
 */
 
-#include "utils.hpp"
-#include "reverse_iterator.hpp"
-#include "map_iterator.hpp"
-#include "pair.hpp"
-#include "make_pair.hpp"
-#include "./binary_three.hpp"
-#include "./vector.hpp"
-#include "./node.hpp"
-
-#include <functional>
+#include "../../../includes/includes.hpp"
 
 #define DEBUG 0
 #define ENVIRONNEMENT 64

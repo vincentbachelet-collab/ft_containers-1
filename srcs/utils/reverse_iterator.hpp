@@ -1,11 +1,6 @@
 #pragma once
 
-#include <memory>
-#include <iostream>
-#include "./utils.hpp"
-#include "vector_iterator.hpp"
-
-#define DEBUG 0 
+#include "../../includes/includes.hpp"
 
 /*
 ** std::reverse_iterator::reverse_iterator

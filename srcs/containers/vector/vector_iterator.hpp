@@ -1,12 +1,6 @@
 #pragma once 
 
-#include <cstddef>//ptrdiff_t
-#include <iterator>//On a en besoin pour random_access_iterator_tag
-#include <memory>
-#include <iostream>
-#include <string>
-
-#define DEBUG 0
+#include "../../../includes/includes.hpp"
 
 /*
 ** Documentation 

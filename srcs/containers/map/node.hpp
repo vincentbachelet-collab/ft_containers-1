@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEBUG 0
+#includes "../../../includes/includes.hpp"
 
 namespace ft
 {

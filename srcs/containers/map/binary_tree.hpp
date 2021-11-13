@@ -1,11 +1,10 @@
 #pragma once 
 
-#define DEBUG 0
 /*
 ** This binary three will be used in the map container
 */
 
-#include "utils.hpp"
+#include "../../../includes/includes.hpp"
 
 namespace ft
 {

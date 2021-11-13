@@ -1,8 +1,4 @@
-#include "../srcs/utils.hpp"
-#include <iterator>
-#include <iostream>
-#include <typeinfo>
-#include <vector>
+#include "../../includes/includes.hpp"
 
 void    iterator_traits(void)
 {

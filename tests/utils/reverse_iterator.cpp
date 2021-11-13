@@ -1,13 +1,8 @@
-#include <vector>
-#include <iterator>
-#include <iostream>
-
-#include "../srcs/reverse_iterator.hpp"
-#include "../srcs/vector.hpp"
-
+//a reprendre
+#include "../../../includes/includes.hpp"
 /*AVOIR FINI vector avant de tout tester */
 
-int main(void)
+int test(void)
 {
     std::vector<int> stv;
 

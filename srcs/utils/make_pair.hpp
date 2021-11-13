@@ -1,6 +1,6 @@
-#include "./pair.hpp"
+#pragma once
 
-#define DEBUG 0
+#include "../../includes/includes.hpp"
 
 /*
 ** std::make_pair is defined in <utility>

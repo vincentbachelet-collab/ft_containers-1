@@ -1,15 +1,6 @@
 #pragma once 
 
-//#include "./map.hpp"
-#include <iterator>
-#include <iostream>
-#include <algorithm>
-#include <string>
-
-//revoir la faute d orthographe a tree
-#include "./binary_three.hpp"
-
-#define DEBUG 0
+#include "../../../includes/includes.hpp"
 
 /*
 ** Dans une map on va iterer sur first et second

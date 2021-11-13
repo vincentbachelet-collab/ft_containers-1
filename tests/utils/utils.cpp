@@ -1,9 +1,4 @@
-#include <iostream>
-#include <type_traits>
-#include <iterator>
-#include <typeinfo>
-
-#include "../srcs/utils.hpp"
+#include "../../../includes/includes.hpp"
 
 class A {};
  
@@ -16,7 +11,7 @@ T f(T i)
     return i;
 }
  
-int main() 
+int test1() 
 {
     /* Test de is integral */
     //std::cout << std::boolalpha;

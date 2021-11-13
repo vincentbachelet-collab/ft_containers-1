@@ -1,8 +1,6 @@
-#include <iterator>
-#include <iostream>
-#include <typeinfo>
-#include <vector>
+#pragma once
 
+#include "../../../includes/includes.hpp"
 /* 
 ** Prototypes des fonctions de tests
 */

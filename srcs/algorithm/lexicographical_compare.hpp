@@ -1,8 +1,7 @@
 #pragma once
-#include <iostream>
-#include <iterator>
 
-#define DEBG 0 
+#include "../../includes/includes.hpp"
+
 namespace ft
 {
     /*

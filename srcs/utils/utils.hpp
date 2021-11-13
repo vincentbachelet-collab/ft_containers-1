@@ -1,10 +1,6 @@
 #pragma once
 
-#include <cstddef>
-#include <type_traits>
-#include <iterator>
-
-#define DEBUG 1
+#include "../../includes/includes.hpp"
 
 namespace ft
 {

@@ -1,10 +1,6 @@
 #pragma once 
 
-#include <deque>
-#include <iostream>
-#include "./vector.hpp"
-
-#define DEBUG 0
+//#include "../../../includes/includes.hpp"
 
 namespace ft
 {

@@ -1,8 +1,5 @@
 //https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-#include <algorithm>
-#include <iostream>
-#include <vector>
-#include <random>
+#include "../../includes/includes.hpp"
  
 /* Code de la documentation officielle modifiee */
 int main()

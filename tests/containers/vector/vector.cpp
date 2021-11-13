@@ -1,6 +1,6 @@
-#include "../srcs/vector.hpp"
+#include "../../../includes/includes.hpp"
 
-int main(void)
+int vector_test(void)
 {
     //Constructeur par defaut
    // ft::vector<int> vec;

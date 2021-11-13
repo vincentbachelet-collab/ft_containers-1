@@ -1,26 +1,11 @@
 #pragma once
 
-#include <iostream>
-#include <stdexcept>
-#include <sstream>
-#include <memory>//allocator
-#include <iterator>
-#include <vector>
-#include <climits>
-#include <limits>
-#include <algorithm>
-#include <cstring>
+#include "../../../includes/include.hpp"
 
 /*
 ** TODO: Voir pourquoi on ne traite pas les reverse iterator 
 ** de la meme facon que les iterateurs
 */
-#include "../srcs/vector_iterator.hpp"
-#include "../srcs/reverse_iterator.hpp"
-#include "../srcs/pair.hpp"
-#include "utility"//std::pair
-
-# define DEBUG 0
 
 /*
 ** Documentation

@@ -1,11 +1,7 @@
-#include <utility>
-#include <iostream>
-#include <functional>
+//a reprendre
+#include "../../../includes/includes.hpp"
 
-#include "../srcs/pair.hpp"
-#include "../srcs/make_pair.hpp"
-
-int main(void)
+int test2(void)
 {
     int n = 1;
     int a[5] = {1, 2, 3, 4, 5};
