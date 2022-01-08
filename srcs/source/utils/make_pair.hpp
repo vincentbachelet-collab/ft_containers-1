@@ -9,13 +9,10 @@
 */
 
 /*
-** pair objects can be constructed from other pair objects containing different types, 
+** pair objects can be constructed from other pair objects containing different types,
 ** if the respective types are implicitly convertible.
 */
 
-/*
-** TODO: voir pourquoi ca ete ajoute en plus du constructeur de pair
-*/
 namespace ft
 {
     template<class T1, class T2 >

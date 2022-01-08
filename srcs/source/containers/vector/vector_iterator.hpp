@@ -1,16 +1,9 @@
-#pragma once 
+#pragma once
 
 #include "../../../includes/includes.hpp"
 
-/*
-** Documentation 
-** https://en.cppreference.com/w/cpp/iterator/iterator
-*/
 namespace ft
 {
-    /* Quand on declare un iterateur pour iterer sur une vecteur on ecrit bien :
-    ** std::vector<T>::iterator it;
-    */
     template<typename T>
     class vector_iterator
     {
@@ -32,7 +25,7 @@ namespace ft
                 std::cout << "vector iterator default constructor called" << std::endl;
             }
         }
-		vector_iterator(value_type &x) : _p(&x) 
+		vector_iterator(value_type &x) : _p(&x)
         {
             if (DEBUG)
             {
@@ -90,7 +83,7 @@ namespace ft
         }
 
         /*
-        ** revoir cet operateur 
+        ** revoir cet operateur
         ** A tester
         */
         operator vector_iterator<value_type const>(void) const
@@ -99,7 +92,7 @@ namespace ft
         }
 
         /*
-        ** Surcharge des operateurs 
+        ** Surcharge des operateurs
         ** https://docs.microsoft.com/fr-fr/cpp/cpp/increment-and-decrement-operator-overloading-cpp?view=msvc-170
         */
 
@@ -194,7 +187,7 @@ namespace ft
         return (v);
     }
 
-    bool operator==(const vector_iterator &other) const 
+    bool operator==(const vector_iterator &other) const
     {
         bool b = this->_p == other._p;
         if (DEBUG)
@@ -216,7 +209,7 @@ namespace ft
         return (b);
     }
 
-    bool operator<(const vector_iterator &other) const 
+    bool operator<(const vector_iterator &other) const
     {
         bool b = this->_p < other._p;
         if (DEBUG)
@@ -227,7 +220,7 @@ namespace ft
         return (b);
     }
 
-    bool operator<=(const vector_iterator &other) const 
+    bool operator<=(const vector_iterator &other) const
     {
         bool b = this->_p <= other._p;
         if (DEBUG)
@@ -238,7 +231,7 @@ namespace ft
         return (b);
     }
 
-    bool operator>(const vector_iterator &other) const 
+    bool operator>(const vector_iterator &other) const
     {
         bool b = this->_p > other._p;
         if (DEBUG)
@@ -249,7 +242,7 @@ namespace ft
         return (b);
     }
 
-    bool operator>=(const vector_iterator &other) const 
+    bool operator>=(const vector_iterator &other) const
     {
         bool b = this->_p >= other._p;
         if (DEBUG)
@@ -267,7 +260,7 @@ namespace ft
         return (n + rhs._p);
     }*/
 
-    vector_iterator<T> operator+(difference_type n) const 
+    vector_iterator<T> operator+(difference_type n) const
     {
         vector_iterator<T> res = this->_p + n;
         if (DEBUG)
@@ -278,7 +271,7 @@ namespace ft
         return (res);
     }
 
-    vector_iterator<T> operator-(difference_type n) const 
+    vector_iterator<T> operator-(difference_type n) const
     {
         vector_iterator<T> res = this->_p - n;
         if (DEBUG)
@@ -289,7 +282,7 @@ namespace ft
         return (res);
     }
 
-    difference_type operator-(const vector_iterator &rhs) const 
+    difference_type operator-(const vector_iterator &rhs) const
     {
         difference_type res = this->_p - rhs._p;
         if (DEBUG)
@@ -300,7 +293,7 @@ namespace ft
         return (res);
     }
 
-    vector_iterator<T> operator+=(difference_type n) const 
+    vector_iterator<T> operator+=(difference_type n) const
     {
         vector_iterator<T> res = this->_p += n;
         if (DEBUG)
@@ -311,7 +304,7 @@ namespace ft
         return (this->_p += n);
     }
 
-    vector_iterator<T> operator-=(difference_type n) const 
+    vector_iterator<T> operator-=(difference_type n) const
     {
         vector_iterator<T> res = this->_p -= n;
         if (DEBUG)
@@ -360,7 +353,7 @@ namespace ft
             std::cout << "the result is " << res << std::endl;
         }
         return (res);
-    } 
+    }
 
     template<typename it1, typename it2>
     bool operator<=(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
@@ -372,7 +365,7 @@ namespace ft
             std::cout << "the result is " << res << std::endl;
         }
         return (res);
-    }   
+    }
 
     template<typename it1, typename it2>
     bool operator>(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
@@ -396,5 +389,5 @@ namespace ft
             std::cout << "the result is " << res << std::endl;
         }
         return (res);
-    }  
+    }
 }
