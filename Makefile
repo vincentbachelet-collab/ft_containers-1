@@ -1,30 +1,37 @@
-# SRCS_TEST 	=
+NAME			=		ft_containers
 
-NAME		=		test
+SOURCES_FOLDER	= 		./srcs/tests
 
-NAME_FT		=		ft_containers
-NAME_STD	=		std_containers
+SOURCES			=		main.cpp \
 
-# Verifier le compilateur demande
-CC			=		c++
-CFLAGS		=		-Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+RM				=		rm -rf
+CC				=		clang++
+FLAGS			=		-Wall -Wextra -Werror -std=c++98 #-g3 -fsanitize=address
 
-# OBJS 		=		${SRCS_TEST:.cpp=.o}
+OBJECTS_FOLDER	=		./srcs/tests/
+OBJECT			=		${SOURCES:.cpp=.o}
+OBJECTS			=		${addprefix ${OBJECTS_FOLDER}, ${OBJECT}}
 
-.cpp.o:
-					$(CC) $(CFLAGS) -c $< -o $(<:.cpp=.o)
+$(OBJECTS_FOLDER)%.o :	$(SOURCES_FOLDER)%.cpp
+						@mkdir -p	$(OBJECTS_FOLDER)
+						@echo "Compiling: $<"
+						@ ${CC} $(FLAGS) -c $< -o $@
 
-all: 				$(NAME)
+$(NAME): 				$(OBJECTS)
+						@ echo "Creating the executable."
+						@ ${CC} $(FLAGS) -o $(NAME) $(OBJECTS)
 
-$(NAME):			$(OBJS)
-					$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+all: 					$(NAME)
 
 clean:
-					rm -f $(OBJ) $(OBJ_FT) $(OBJ_STD)
+						@echo "Cleaning: $(OBJECTS_FOLDER)"
+						@$(RM) $(OBJECTS)
 
-fclean:				clean
-					rm -f $(NAME) $(NAME_FT) $(NAME_STD) $(NAME).txt $(NAME_FT).txt $(NAME_STD).txt diff.txt
+fclean: 				clean
+						@echo "Cleaning: $(NAME)"
+						@rm -f $(NAME)
 
-re:					fclean all
+re: 					fclean all
 
-.PHONY: 			clean fclean all re bonus test ft std
+run: 					$(NAME)
+						@./$(NAME)
