@@ -1,10 +1,8 @@
-//https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-#include "../../includes/includes.hpp"
- 
-/* Code de la documentation officielle modifiee */
+//TODO: a ajuter dans les mains
+
+/*
 int main()
 {
-    /*
     std::vector<char> v1 {'a', 'b', 'c', 'd'};
     std::vector<char> v2 {'a', 'b', 'c', 'd'};
  
@@ -24,5 +22,5 @@ int main()
     std::cout << "< ";
     for (auto c : v2) std::cout << c << ' ';
     std::cout << '\n';
-    */
 }
+*/

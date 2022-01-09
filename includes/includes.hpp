@@ -18,32 +18,12 @@
 #include <utility>
 #include <string>
 #include <deque>
-#include <cstddef>//ptrdiff_t
+#include <cstddef>
 #include <type_traits>
 #include <random>
 
 #ifndef DEBUG
-# define DEBUG 0
+# define DEBUG 1
 #endif
 
-/*
-#include "../srcs/algorithm/lexicographical_compare.hpp"
-#include "../srcs/containers/map/binary_tree.hpp"
-#include "../srcs/containers/map/map_iterator.hpp"
-#include "../srcs/containers/map/node.hpp"
-#include "../srcs/containers/map/map.hpp"
-*/
-#include "../srcs/containers/map/pair.hpp"
-
-/*
-#include "../srcs/containers/stack.hpp"
-#include "../srcs/containers/vector_iterator.hpp"
-#include "../srcs/containers/vector.hpp"
-*/
-
-#include "../srcs/utils/make_pair.hpp"
-/*
-#include "../srcs/utils/reverse_iterator.hpp"
-#include "../srcs/utils/utils.hpp"
-#include "../srcs/testing_utils/testing_utils.hpp"
-*/
+//TODO: rassembler tous les points H

@@ -1,22 +1,23 @@
-#include "../../../includes/includes.hpp"
+//TODO: mettre l include
 
-class A {};
- 
-enum E : int {};
- 
+/*
+class A
+{
+};
+
+enum E : int
+{
+};
+
 template <class T>
 T f(T i)
 {
     static_assert(std::is_integral<T>::value, "Integral required.");
     return i;
 }
- 
-int test1() 
+
+int test1()
 {
-    /* Test de is integral */
-    //std::cout << std::boolalpha;
-    /* Ajouter plus de tests pour verifier les types que j ai ajoute au code source */
-    /* Implementation std */
     std::cout << std::is_integral<A>::value << std::endl;
     std::cout << std::is_integral<E>::value << std::endl;
     std::cout << std::is_integral<float>::value << std::endl;
@@ -25,14 +26,12 @@ int test1()
     std::cout << std::is_integral<bool>::value << std::endl;
     //std::cout << f(123) << std::endl;
     //std::cout << "------------------" << std::endl;
-    /* mon implementation */
     std::cout << ft::is_integral<A>::value << std::endl;
     std::cout << ft::is_integral<E>::value << std::endl;
     std::cout << ft::is_integral<float>::value << std::endl;
     std::cout << ft::is_integral<int>::value << std::endl;
     std::cout << ft::is_integral<const int>::value << std::endl;
     std::cout << ft::is_integral<bool>::value << std::endl;
-
-    /* test de iterator_traits */
     return (0);
 }
+*/

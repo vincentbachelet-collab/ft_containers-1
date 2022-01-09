@@ -1,6 +1,9 @@
-#include "../../includes/includes.hpp"
+#pragma once
 
-void    iterator_traits(void)
+//TODO: rajouter dans le main de test ?
+
+/*
+void iterator_traits(void)
 {
     //https://www.geeksforgeeks.org/initialize-a-vector-in-cpp-different-ways/
     std::vector<int> v;
@@ -31,6 +34,7 @@ void    iterator_traits(void)
         }
         std::cout << std::endl;
     }
+
     my_reverse(v1.begin(), v1.end());
     {
         std::cout << "-------------------" << std::endl;
@@ -45,14 +49,10 @@ void    iterator_traits(void)
         }
         std::cout << std::endl;
     }
-    
 
-    /*
     my_reverse(v.begin(), v.end());    
     std::cout << std::endl;
-    */
 
-    /*
     // VRAI ITERATOR TRAITS
     typedef std::iterator_traits<int*> traits;
     if (typeid(traits::iterator_category)==typeid(std::random_access_iterator_tag))
@@ -64,6 +64,30 @@ void    iterator_traits(void)
     typedef ft::iterator_traits<int *> my_traits;
     if (typeid(my_traits::iterator_category)==typeid(std::random_access_iterator_tag))
         std::cout << "int* is a random-access iterator" << std::endl;
-    */
-    return (0);
-} 
+return (0);
+}
+
+template <class BidirIt>
+void std_reverse(BidirIt first, BidirIt last)
+{
+    typename std::iterator_traits<BidirIt>::difference_type n = std::distance(first, last);
+    for (--n; n > 0; n -= 2)
+    {
+        typename std::iterator_traits<BidirIt>::value_type tmp = *first;
+        *first++ = *--last;
+        *last = tmp;
+    }
+}
+
+template <class BidirIt>
+void ft_reverse(BidirIt first, BidirIt last)
+{
+    typename ft::iterator_traits<BidirIt>::difference_type n = std::distance(first, last);
+    for (--n; n > 0; n -= 2)
+    {
+        typename ft::iterator_traits<BidirIt>::value_type tmp = *first;
+        *first++ = *--last;
+        *last = tmp;
+    }
+}
+* /
