@@ -116,33 +116,18 @@ namespace ft
 			return (const_iterator(_ptr[size()]));
 		}
 
-		//TODO: besoin de corriger reverse iterateur avant
 		reverse_iterator rbegin()
 		{
 			return (reverse_iterator(_ptr[size()]));
 		}
-
-		/*
-		const_reverse_iterator rbegin() const
-		{
-			return (const_reverse_iterator(_ptr[size()]));
-		}*/
 
 		reverse_iterator rend()
 		{
 			return (reverse_iterator(_ptr[0]));
 		}
 
-		/*
-		const_reverse_iterator rend() const
-		{
-			return (rend());
-		}
-		*/
-
 		void reserve(size_type size)
 		{
-			//TODO: voir si il y a un cas ou ca peut throw une erreur ?
 			if (size > this->get_capacity())
 			{
 				pointer n = this->_allocator.allocate(size);
@@ -154,7 +139,8 @@ namespace ft
 					this->_allocator.destroy(&this->_ptr[i]);
 					i++;
 				}
-				this->_allocator.deallocate(this->_ptr, size);
+				//set_capacity(size);
+				this->_allocator.deallocate(this->_ptr, this->_capacity);
 				this->_ptr = n;
 				set_ptr(n);
 				set_capacity(size);
@@ -174,7 +160,8 @@ namespace ft
 		}
 
 		//Constructeur deprecie depuis C++11
-		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _size(n), _capacity(0), _allocator(alloc), _ptr(NULL)
+		/* */
+		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _size(n), _capacity(n), _allocator(alloc), _ptr(NULL)
 		{
 			alloc_vec(n);
 			size_t i = 0;
@@ -185,6 +172,14 @@ namespace ft
 			}
 		}
 
+		/*
+		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _size(n), _capacity(n), _allocator(alloc), _ptr(NULL)
+		{
+			_ptr = _allocator.allocate(n);
+			for (size_type i = 0; i < n; i++)
+				_allocator.construct(&_ptr[i], val);
+		}*/
+
 		size_t max_size() const
 		{
 			size_t ret = _allocator.max_size();
@@ -193,6 +188,42 @@ namespace ft
 			std::cout << "ret is " << ret << std::endl;
 #endif
 			return (ret);
+		}
+
+		size_type capacity() const
+		{
+#if DEBUG == 1
+			std::cout << "Capacity function called" << std::endl;
+			std::cout << "The capacity is now at " << this->_capacity << std::endl;
+#endif
+			return (this->_capacity);
+		}
+
+		void resize(size_type n, value_type val = value_type())
+		{
+			if (n > this->get_capacity())
+			{
+				if (n < this->get_capacity() * 2)
+					reserve(this->get_capacity() * 2);
+				else
+					reserve(n);
+			}
+			size_type i = this->get_size();
+			//Construction des elements qui seraient supplementaires
+			while (i < n)
+			{
+				//TODO: appeler la fonction que j ai faite ?
+				this->_allocator.construct(&_ptr[i], val);
+				i++;
+			}
+			//Deconstruction des elements qui seraient en trop
+			i = n;
+			while (i < this->get_size())
+			{
+				_allocator.destroy(&_ptr[i]);
+				i++;
+			}
+			this->set_size(n);
 		}
 
 		/*
@@ -270,15 +301,7 @@ namespace ft
 			return (*this);
 		}
 
-		size_type capacity() const
-		{
-			if (DEBUG == 1)
-			{
-				std::cout << "Capacity function called" << std::endl;
-				std::cout << "The capacity is now at " << this->_capacity << std::endl;
-			}
-			return (this->_capacity);
-		}
+		
 
 		void resize(size_type n, value_type val = value_type())
 		{

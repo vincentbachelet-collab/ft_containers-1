@@ -51,6 +51,7 @@ int my_vector_tests(void)
     std::cout << "Testing reserve function" << std::endl;
     int test = 10;
     ft_vec3.reserve(test);
+    std_vec3.reserve(test);
     int check = ft_vec3.get_capacity();
     std::cout << "The resulting capacity is : " << check << std::endl;
     if (check == test)
@@ -101,13 +102,34 @@ int my_vector_tests(void)
     std::cout << ft_vec3.max_size() << std::endl;
     std::cout << std_vec3.max_size() << std::endl;
     std::cout << "-----------------" << std::endl;
-    //TODO: resize capacity reserve
     std::cout << "Testing empty" << std::endl;
     std::cout << std_vec3.empty() << std::endl;
     std::cout << ft_vec3.empty() << std::endl;
     std::cout << "-----------------" << std::endl;
     std::cout << std_vec.empty() << std::endl;
     std::cout << ft_vec.empty() << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std::cout << "Testing capacity" << std::endl;
+    std::cout << std_vec.capacity() << std::endl;
+    std::cout << ft_vec.capacity() << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std::cout << std_vec3.capacity() << std::endl;
+    std::cout << ft_vec3.capacity() << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std::cout << "Testing resize" << std::endl;
+    std_vec3.resize(15);
+    ft_vec3.resize(15);
+    std::cout << std_vec3.capacity() << std::endl;
+    std::cout << ft_vec3.capacity() << std::endl;
+    std::cout << ft_vec3.size() << std::endl;
+    std::cout << std_vec3.size() << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std_vec3.resize(3);
+    ft_vec3.resize(3);
+    std::cout << std_vec3.capacity() << std::endl;
+    std::cout << ft_vec3.capacity() << std::endl;
+    std::cout << ft_vec3.size() << std::endl;
+    std::cout << std_vec3.size() << std::endl;
     std::cout << "-----------------" << std::endl;
     //TODO: reprendre enable if
     //TODO: tester ce qu il y a dans utils
