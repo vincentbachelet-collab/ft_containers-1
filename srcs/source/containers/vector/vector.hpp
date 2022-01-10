@@ -185,6 +185,16 @@ namespace ft
 			}
 		}
 
+		size_t max_size() const
+		{
+			size_t ret = _allocator.max_size();
+#if DEBUG == 1
+			std::cout << "Max size function called" << std::endl;
+			std::cout << "ret is " << ret << std::endl;
+#endif
+			return (ret);
+		}
+
 		/*
 		//range constructeur
 		template <typename InputIterator>
@@ -268,17 +278,6 @@ namespace ft
 				std::cout << "The capacity is now at " << this->_capacity << std::endl;
 			}
 			return (this->_capacity);
-		}
-
-		size_t max_size() const
-		{
-			size_t ret = _allocator.max_size();
-			if (DEBUG == 1)
-			{
-				std::cout << "Max size function called" << std::endl;
-				std::cout << "ret is " << ret << std::endl;
-			}
-			return (ret);
 		}
 
 		void resize(size_type n, value_type val = value_type())
