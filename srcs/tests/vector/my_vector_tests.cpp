@@ -131,7 +131,29 @@ int my_vector_tests(void)
     std::cout << ft_vec3.size() << std::endl;
     std::cout << std_vec3.size() << std::endl;
     std::cout << "-----------------" << std::endl;
+
+    //A deplacer
+    std::cout << "TESTING MAIN MEMBERS FUNCTIONS" << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std::cout << "Testing operator= :" << std::endl;
+    std::vector<int> std_copy = std_vec3;
+    ft::vector<int> ft_copy = ft_vec3;
+    it = ft_copy.begin();
+    ite = ft_copy.end();
+    /*
+    while (it != ite)
+    {
+        std::cout << (*it) << std::endl;
+        it++;
+    }*/
+    std::cout << "OK!" << std::endl;
+    std::cout << "-----------------" << std::endl;
     //TODO: reprendre enable if
     //TODO: tester ce qu il y a dans utils
+    std::cout << "First quick test for assign : " << std::endl;
+    std_vec3.assign(5, 7);
+    ft_vec3.assign(5, 7);
+    std::cout << "OK!" << std::endl;
+    std::cout << "-----------------" << std::endl;
     return (0);
 }

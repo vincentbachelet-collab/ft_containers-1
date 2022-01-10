@@ -226,6 +226,45 @@ namespace ft
 			this->set_size(n);
 		}
 
+		//Assign : fill version
+		void assign(size_type count, const T &value)
+		{
+			reserve(count);
+			resize(count);
+			size_type i = 0;
+			while (i < count && i < this->get_size())
+			{
+				_allocator.destroy(&_ptr[i]);
+				i++;
+			}
+			i = 0;
+			while (i < count)
+			{
+				this->_allocator.construct(&_ptr[i], value);
+				i++;
+			}
+			if (count > this->get_size())
+				set_size(count);
+		}
+
+		//Assign range version
+		template <class InputIterator>
+		void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
+		{
+			size_type n = 0;
+			size_type i = 0;
+			for (InputIterator it = first; it != last; it++)
+				n++;
+			reserve(n);
+			resize(n);
+			for (size_type i = 0; i < n && i < _size; i++)
+				_allocator.destroy(&_ptr[i]);
+			for (InputIterator it = first; it != last; it++, i++)
+				_allocator.construct(&_ptr[i], *it);
+			if (n > this->get_size())
+				set_size(n);
+		}
+
 		/*
 		//range constructeur
 		template <typename InputIterator>
@@ -360,29 +399,6 @@ namespace ft
 	}
 
 	protected:
-	void realloc(size_type target)
-	{
-		pointer new_tab;
-		setCapacity(fitted_capacity(target));
-		new_tab = allocate(_capacity);
-		int i = 0;
-		while (i < this->getSize())
-		{
-			construct(i, _p[i], new_tab);
-			//destroy(i);
-			i++;
-		}
-		deallocate();
-		this->_p = new_tab;
-	}
-
-	void realloc()
-	{
-		if (this->_capacity == 0)
-			realloc(1);
-		else
-			realloc(this->_capacity * 2);
-	}
 
 	void setCapacity(size_type target)
 	{
@@ -562,49 +578,6 @@ namespace ft
 				return (iterator(begin() + diff));
 			}
 		
-
-		//Assign : fill version
-		void assign(size_type count, const T &value)
-		{
-			if (count > _capacity)
-				realloc(count);
-			reserve(count);
-			resize(count);
-			int i = 0;
-			while (i < count && i < this->_size)
-			{
-				_allocator.destroy(&_p[i]);
-				i++;
-			}
-			i = 0;
-			while (i < n)
-			{
-				_allocator.construct(&_p[i], val);
-				i++;
-			}
-			if (n > this->_size)
-			{
-				this->_size = n;
-			}
-		}
-
-		//Assign : range version
-		template <class InputIt>
-		void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
-		{
-			size_type n = 0;
-			size_type i = 0;
-			for (InputIterator it = first; it != last; it++)
-				n++;
-			reserve(n);
-			resize(n);
-			for (size_type i = 0; i < n && i < _size; i++)
-				_alloc_type.destroy(&_p[i]);
-			for (InputIterator it = first; it != last; it++, i++)
-				_alloc_type.construct(&_p[i], *it);
-			//if (n > _size)
-			//	_size = n;
-		}
 
 		void swap(vector &x)
 		{
