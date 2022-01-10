@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../../includes/common/includes.hpp"
+#include "./vector_iterator.hpp"
 
 namespace ft
 {
@@ -15,19 +16,71 @@ namespace ft
 		typedef typename allocator_type::size_type size_type;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		//typedef vector_iterator<value_type> iterator;
-		//typedef vector_iterator<value_type const> const_iterator;
+		//TODO: a remettre en ft quand iterateur prets a etre teste
+		typedef vector_iterator<value_type> iterator;
+		typedef vector_iterator<value_type const> const_iterator;
 		//typedef ft::reverse_iterator<iterator> reverse_iterator;
 		//typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		//typedef pointer iterator;
+		//typedef const_pointer const_iterator;
+		//typedef std::reverse_iterator<iterator> reverse_iterator;
+		//typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef typename allocator_type::difference_type difference_type;
 
 	private:
-		size_type _size;
-		size_type _capacity;
-		allocator_type _allocator;
-		pointer _ptr;
+		size_type _size;		   //taille du vecteur (remplie)
+		size_type _capacity;	   //taille en terme de capacite/memoire
+		allocator_type _allocator; //type de l'allocateur du container
+		pointer _ptr;			   //Addresse du premier element du vecteur (a verifier en test)
 
 	public:
+		/* Getters pour test */
+		pointer get_ptr(void)
+		{
+			return (this->_ptr);
+		}
+
+		void set_ptr(pointer ptr)
+		{
+			this->_ptr = ptr;
+		}
+
+		size_type get_size(void)
+		{
+			return (this->_size);
+		}
+
+		void set_size(size_type size)
+		{
+			this->_size = size;
+		}
+
+		size_type get_capacity(void)
+		{
+			return (this->_capacity);
+		}
+
+		void set_capacity(size_type capacity)
+		{
+			this->_capacity = capacity;
+		}
+
+		allocator_type get_allocator(void)
+		{
+			return (this->_allocator);
+		}
+
+		void construct_alloc(pointer ptr, const value_type val)
+		{
+			this->_allocator.construct(ptr, val);
+		}
+
+		void alloc_vec(size_type len)
+		{
+			set_ptr(get_allocator().allocate(len));
+		}
+
+		//https://en.cppreference.com/w/cpp/container/vector/vector
 		//Constructeur par defaut
 		vector(const allocator_type &alloc = allocator_type()) : _size(0), _capacity(0), _allocator(alloc), _ptr(NULL)
 		{
@@ -35,28 +88,127 @@ namespace ft
 			std::cout << "vector default constructor called" << std::endl;
 #endif
 		}
-	};
-};
-/*
-			   //pointeur vers le premier element du vecteur
 
-	public:
-		
+		iterator begin()
+		{
+			//if (empty())
+			//	return (end());
+			return (iterator(_ptr));
+		}
 
-		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()): _size(n), _capacity(0), _allocator(alloc), _ptr(NULL))
+		const_iterator begin() const
+		{
+#if DEBUG == 1
+			std::cout << "begin const function called" << std::endl;
+#endif
+			if (empty())
+				return (end());
+			return (const_iterator(_ptr[0]));
+		}
+
+		iterator end()
+		{
+#if DEBUG == 1
+			std::cout << "end function called" << std::endl;
+#endif
+			//voir autres techniques
+			if (empty())
+				return (end());
+			return (iterator(this->_ptr + this->_size));
+		}
+
+		const_iterator end() const
+		{
+#if DEBUG == 1
+			std::cout << "end const function called" << std::endl;
+#endif
+			if (empty())
+				return (end());
+			return (const_iterator(_ptr[size()]));
+		}
+
+		//TODO: besoin de corriger reverse iterateur avant
+		/*
+		reverse_iterator rbegin()
+		{
+#if DEBUG == 1
+			std::cout << "rbegin function called" << std::endl;
+#endif
+			return (reverse_iterator(_ptr[size()]));
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+#if DEBUG == 1
+			std::cout << "rbegin function called" << std::endl;
+#endif
+			return (const_reverse_iterator(_ptr[size()]));
+		}
+
+		reverse_iterator rend()
 		{
 			if (DEBUG == 1)
-				std::cout << "vector fill constructor called" << std::endl;
+				std::cout << "rend fonction called" << std::endl;
+			//pour moi il s agit d'un cast en c style - revoir le cast ?
+			return (reverse_iterator(_ptr[0]));
+		}
 
-			this->_p = this->_allocator.allocate(n);
+		const_reverse_iterator rend() const
+		{
+#if DEBUG == 1
+			std::cout << "rend const function called" << std::endl;
+#endif
+			return (rend());
+		}
+		*/
+
+		bool empty() const
+		{
+#if DEBUG == 1
+			std::cout << "empty function called" << std::endl;
+#endif
+			if (size() != 0)
+			{
+#if DEBUG == 1
+				std::cout << "empty function will return false" << std::endl;
+#endif
+				return (false);
+			}
+#if DEBUG == 1
+			std::cout << "empty function will return true" << std::endl;
+#endif
+			return (true);
+		}
+
+		size_type size() const
+		{
+#if DEBUG == 1
+			std::cout << "The size is " << this->_size << std::endl;
+#endif
+			return (this->_size);
+		}
+
+		//Constructeur deprecie depuis C++11
+		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _size(n), _capacity(0), _allocator(alloc), _ptr(NULL)
+		{
+#if DEBUG == 1
+			std::cout << "vector fill constructor called" << std::endl;
+#endif
+			//On alloue la place necessaire et ensuite on construit chaque element
+			//this->_p = this->_allocator.allocate(n);
+			alloc_vec(n);
 			size_t i = 0;
 			while (i < n)
 			{
-				this->_allocator.construct(&_ptr[i], val);
+				//this->_allocator.construct(&_ptr[i], val);
+				construct_alloc(&_ptr[i], val);
 				i++;
 			}
 		}
-
+	};
+}
+/*
+		 //pointeur vers le premier element du vecteur
 		template <typename InputIterator>
 		vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type()) : _alloc_type(alloc), _array(NULL), _size(0), _capacity(0)
 		{
@@ -134,15 +286,6 @@ namespace ft
 			return (this->_capacity);
 		}
 
-		size_type size() const
-		{
-			if (DEBUG)
-			{
-				std::cout << "The size is " << this->_size << std::endl;
-			}
-			return (this->_size);
-		}
-
 		size_t max_size() const
 		{
 			size_t ret = _allocator.max_size();
@@ -184,21 +327,6 @@ namespace ft
 		}
 		this->_size = n;
 		}
-
-	bool empty() const
-	{
-		if (DEBUG == 1)
-			std::cout << "empty function called" << std::endl;
-		if (size() != 0)
-		{
-			if (DEBUG == 1)
-				std::cout << "empty function will return false" << std::endl;
-			return (false);
-		}
-		if (DEBUG == 1)
-			std::cout << "empty function will return true" << std::endl;
-		return (true);
-	}
 
 	void reserve(size_type n)
 	{
@@ -352,75 +480,6 @@ namespace ft
 		}
 	}
 
-		iterator begin()
-		{
-			if (DEBUG == 1)
-				std::cout << "begin function called" << std::endl;
-			if (empty())
-				return (end());
-			return (iterator(_ptr[0]));
-		}
-
-		const_iterator begin() const
-		{
-			if (DEBUG == 1)
-				std::cout << "begin const function called" << std::endl;
-			if (empty())
-			{
-				return (end());
-			}
-			return (const_iterator(_ptr[0]));
-		}
-
-		iterator end()
-		{
-			if (DEBUG == 1)
-				std::cout << "end function called" << std::endl;
-			//voir autres techniques
-			if (empty())
-				return (end());
-			return (iterator(_ptr[size()]));
-		}
-
-		const_iterator end() const
-		{
-			if (DEBUG == 1)
-				std::cout << "end const function called" << std::endl;
-
-			if (empty())
-			{
-				return (end());
-			}
-			return (const_iterator(_ptr[size()]));
-		}
-		reverse_iterator rbegin()
-		{
-			if (DEBUG == 1)
-				std::cout << "rbegin function called" << std::endl;
-			return (reverse_iterator(_ptr[size()]));
-		}
-
-		const_reverse_iterator rbegin() const
-		{
-			if (DEBUG == 1)
-				std::cout << "rbegin function called" << std::endl;
-			return (const_reverse_iterator(_ptr[size()]));
-		}
-
-		reverse_iterator rend()
-		{
-			if (DEBUG == 1)
-				std::cout << "rend fonction called" << std::endl;
-			//pour moi il s agit d'un cast en c style - revoir le cast ?
-			return (reverse_iterator(_ptr[0]));
-		}
-
-		const_reverse_iterator rend() const
-		{
-			if (DEBUG == 1)
-				std::cout << "rend const function called" << std::endl;
-			return (rend());
-		}
 
 		void push_back(const value_type &src)
 		{
