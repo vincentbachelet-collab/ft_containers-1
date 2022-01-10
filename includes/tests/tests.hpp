@@ -1,3 +1,24 @@
 #pragma once
 
-int assign(void);
+int my_assign(void);
+int my_at_const(void);
+int my_at(void);
+int my_bidirect_it(void);
+int my_copy_construct(void);
+int my_erase(void);
+int my_insert(void);
+int my_insert2(void);
+int my_ite_arrow(void);
+int my_ite_eq_ope(void);
+int my_ite_n0(void);
+int my_ite_n00(void);
+int my_ite_n1(void);
+int my_ite(void);
+int my_push_pop(void);
+int my_relational_ope(void);
+int my_rite_arrow(void);
+int my_rite_eq_ope(void);
+int my_rite(void);
+int my_rite2(void);
+int my_size(void);
+int my_swap(void);
