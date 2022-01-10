@@ -2,8 +2,8 @@
 
 int main(void)
 {
-    std::cout << "Hello world !" << std::endl;
-    /* Test sur vector */
+    // std::cout << "Hello world !" << std::endl;
+    /* TESTS VECTORS */
 
     /* Test sur stack */
 

@@ -23,6 +23,7 @@
 #include <random>
 
 #include "../tests/tests.hpp"
+#include "../../srcs/source/containers/vector/vector.hpp"
 
 #ifndef DEBUG
 #define DEBUG 0
