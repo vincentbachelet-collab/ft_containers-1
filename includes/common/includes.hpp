@@ -25,6 +25,9 @@
 #include "../tests/tests.hpp"
 #include "../../srcs/source/utils/reverse_iterator.hpp"
 #include "../../srcs/source/containers/vector/vector.hpp"
+#include "../../srcs/source/utils/utils.hpp"
+#include "../../srcs/source/utils/reverse_iterator.hpp"
+#include "../../srcs/source/utils/make_pair.hpp"
 //#include "../../srcs/source/containers/vector/vector_iterator.hpp"
 
 #ifndef DEBUG
