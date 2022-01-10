@@ -3,6 +3,7 @@ NAME			=		ft_containers
 SOURCES_FOLDER	= 		./srcs/tests
 
 SOURCES			=		main.cpp \
+						./vector/assign.cpp \
 
 RM				=		rm -rf
 CC				=		clang++

@@ -22,6 +22,8 @@
 #include <type_traits>
 #include <random>
 
+#include "../tests/tests.hpp"
+
 #ifndef DEBUG
 #define DEBUG 0
 #endif
