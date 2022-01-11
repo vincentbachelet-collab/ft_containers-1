@@ -254,6 +254,37 @@ namespace ft
 				set_size(n);
 		}
 
+		//retourne une reference de l element a la position n dans le vecteur
+		reference at(size_type n)
+		{
+			//TODO: revoir ma strategie de erreur handling ?
+			if (n >= this->get_size())
+			{
+				throw std::out_of_range("out of range");
+			}
+			reference ref = this->_ptr[n];
+#if DEBUG == 1
+			std::cout << "at operator called" << std::endl;
+			std::cout << ref << std::endl;
+#endif
+			return (ref);
+		}
+
+		//retourne une reference de l element a la position n dans le vecteurs
+		const reference at(size_type n) const
+		{
+			if (n >= this->get_size())
+			{
+				//C'est bien le comportement qui a lieu avec la std
+				throw std::out_of_range("out of range");
+			}
+			reference ref = _ptr[n];
+#if DEBUG == 1
+			std::cout << ref << std::endl;
+#endif
+			return (ref);
+		}
+
 		/*
 		//range constructeur
 		template <typename InputIterator>
@@ -591,32 +622,6 @@ namespace ft
 			if (DEBUG == 1)
 				std::cout << "Value accessed is " << ref << std::endl;
 			return (ref)
-		}
-
-		reference at(size_type n)
-		{
-			if (n >= this->_size)
-				throw std::out_of_range("out of range");
-			reference ref = _p[n];
-			if (DEBUG == 1)
-			{
-				std::cout << "at operator called" << std::endl;
-				std::cout << ref << std::endl;
-			}
-			return (ref);
-		}
-
-		const reference at(size_type n) const
-		{
-			if (n >= this->_size)
-				throw std::out_of_range("out of range");
-			reference ref = _p[n];
-			if (DEBUG == 1)
-			{
-				std::cout << "at const operator called" << std::endl;
-				std::cout << ref << std::endl;
-			}
-			return (ref);
 		}
 
 		reference front()

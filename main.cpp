@@ -5,7 +5,8 @@ int main(void)
     // std::cout << "Hello world !" << std::endl;
     /* TESTS VECTORS */
     //my_vector_tests();
-    my_vector_assign();
+    //my_vector_assign();
+    my_vector_at();
     /* Test sur stack */
 
     /*Test sur map*/
