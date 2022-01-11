@@ -6,7 +6,8 @@ int main(void)
     /* TESTS VECTORS */
     //my_vector_tests();
     //my_vector_assign();
-    my_vector_at();
+    //my_vector_at();
+    my_vector_at_const();
     /* Test sur stack */
 
     /*Test sur map*/

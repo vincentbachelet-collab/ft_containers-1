@@ -27,7 +27,7 @@ namespace ft
 		pointer _ptr;			   //Addresse du premier element du vecteur (a verifier en test)
 
 	public:
-		pointer get_ptr(void)
+		pointer get_ptr(void) const
 		{
 			return (this->_ptr);
 		}
@@ -37,7 +37,7 @@ namespace ft
 			this->_ptr = ptr;
 		}
 
-		size_type get_size(void)
+		size_type get_size(void) const
 		{
 			return (this->_size);
 		}
@@ -47,7 +47,7 @@ namespace ft
 			this->_size = size;
 		}
 
-		size_type get_capacity(void)
+		size_type get_capacity(void) const
 		{
 			return (this->_capacity);
 		}
@@ -57,7 +57,7 @@ namespace ft
 			this->_capacity = capacity;
 		}
 
-		allocator_type get_allocator(void)
+		allocator_type get_allocator(void) const
 		{
 			return (this->_allocator);
 		}

@@ -23,8 +23,8 @@ SRC				=		./main.cpp \
 						./srcs/tests/vector/my_vector_tests.cpp \
 						./srcs/tests/vector/my_vector_assign.cpp \
 						./srcs/tests/vector/my_vector_at.cpp \
+						./srcs/tests/vector/my_vector_at_const.cpp \
 
-						# ./srcs/tests/vector/my_vector_at_const.cpp \
 						# ./srcs/tests/vector/my_vector_bidirect_it.cpp \
 						# ./srcs/tests/vector/my_vector_copy_construct.cpp \
 						# ./srcs/tests/vector/my_vector_erase.cpp \
