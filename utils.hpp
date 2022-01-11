@@ -211,4 +211,17 @@ namespace ft
         }
         return (first1 == last1) && (first2 != last2);
     }
+
+    template <class InputIterator>
+    typename ft::iterator_traits<InputIterator>::difference_type
+    distance(InputIterator first, InputIterator last)
+    {
+        typename ft::iterator_traits<InputIterator>::difference_type rtn = 0;
+        while (first != last)
+        {
+            first++;
+            rtn++;
+        }
+        return (rtn);
+    }
 }

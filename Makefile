@@ -27,9 +27,9 @@ SRC				=		./main.cpp \
 						./srcs/tests/vector/my_vector_push_pop.cpp \
 						./srcs/tests/vector/my_vector_copy_construct.cpp \
 						./srcs/tests/vector/my_vector_erase.cpp \
+						./srcs/tests/vector/my_vector_insert.cpp \
 
 						# ./srcs/tests/vector/my_vector_bidirect_it.cpp \
-						# ./srcs/tests/vector/my_vector_insert.cpp \
 						# ./srcs/tests/vector/my_vector_insert2.cpp \
 						# ./srcs/tests/vector/my_vector_ite_arrow.cpp \
 						# ./srcs/tests/vector/my_vector_ite_n0.cpp \

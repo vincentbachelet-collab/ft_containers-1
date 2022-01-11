@@ -10,7 +10,8 @@ int main(void)
     //my_vector_at_const();
     //my_vector_push_pop();
     //my_vector_copy_construct();
-    my_vector_erase();
+    //my_vector_erase();
+    my_vector_insert();
     /* Test sur stack */
 
     /*Test sur map*/

@@ -17,7 +17,13 @@ namespace ft
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef vector_iterator<value_type> iterator;
 		typedef vector_iterator<value_type const> const_iterator;
-		typedef reverse_iterator<iterator> reverse_iterator;
+		//typedef reverse_iterator<iterator> reverse_iterator;
+
+		//typedef typename ft::vector_iterator<T, false> iterator;
+		//typedef typename ft::vector_iterator<T, true> const_iterator;
+
+		//typedef typename ft::reverse_iterator<T, false> reverse_iterator;
+		//typedef typename ft::reverse_iterator<T, true> const_reverse_iterator;
 		typedef typename allocator_type::difference_type difference_type;
 
 	private:
@@ -79,42 +85,56 @@ namespace ft
 		//Iterateur (necessaires pour tester les autres constructeurs notamment)
 		iterator begin()
 		{
-			if (empty())
-				return (end());
+			//if (empty())
+			//	return (end());
 			return (iterator(_ptr));
 		}
 
 		const_iterator begin() const
 		{
-			if (empty())
-				return (end());
-			return (const_iterator(_ptr[0]));
+			//if (empty())
+			//	return (end());
+			return (const_iterator(_ptr));
 		}
 
 		iterator end()
 		{
-			if (empty())
-				return (end());
+			//if (empty())
+			//	return (end());
 			return (iterator(this->_ptr + this->_size));
 		}
 
+		/**/
 		const_iterator end() const
 		{
-			if (empty())
-				return (end());
-			return (const_iterator(_ptr[size()]));
+			//if (empty())
+			//	return (end());
+			//return (const_iterator(_ptr[size()]));
+			return const_iterator(_ptr + _size);
 		}
 
+		//TODO:revoir reverse iterator et reverse iterator
+		/*
 		reverse_iterator rbegin()
 		{
-			return (reverse_iterator(_ptr[size()]));
+			//return (reverse_iterator(_ptr[size()]));
+			return reverse_iterator(_vector + _size - 1);
+		}*/
+
+		/*
+		const_reverse_iterator rbegin()
+		{
+			//return (reverse_iterator(_ptr[size()]));
+			return const_reverse_iterator(_vector + _size - 1);
 		}
 
 		reverse_iterator rend()
 		{
-			return (reverse_iterator(_ptr[0]));
+			return reverse_iterator(_vector - 1);
 		}
 
+		const_reverse_iterator rend() const { return const_reverse_iterator(_vector - 1); }
+	*/
 		void reserve(size_type size)
 		{
 			if (size > this->get_capacity())
@@ -160,7 +180,7 @@ namespace ft
 			}
 		}
 
-		//range constructeur (3)
+		//range constructeur ()
 		//Le enable if est necessaire sinon la fonction construct ne pourra pas compiler
 		//Dans le enable if, si la premiere partie avant la virgule est fausse, la deuxieme partie sera ignoree
 		//Is integral represente grosso modo les data types qu on connait depuis le c
@@ -318,9 +338,9 @@ namespace ft
 			if (size == this->get_capacity())
 			{
 				if (this->get_capacity() == 0)
-					reserve(1);
+					this->reserve(1);
 				else
-					reserve(this->get_capacity() * 2);
+					this->reserve(this->get_capacity() * 2);
 			}
 			_allocator.construct(&_ptr[_size++], src);
 		}
@@ -368,6 +388,221 @@ namespace ft
 				_allocator.destroy(&_ptr[begin + last_to_end + i]);
 			_size -= first_to_last;
 			return first;
+		}
+
+		//TODO: faire des sous fonctions
+		iterator insert(iterator position, const value_type &val)
+		{
+			size_type pos_len = &(*position) - _ptr;
+			if (size_type(_capacity - _size) >= this->size() + 1)
+			{
+				for (size_type i = 0; i < pos_len; i++)
+					_allocator.construct(_size - i, *(_size - i - 1));
+				_size++;
+				_allocator.construct(&(*position), val);
+			}
+			else
+			{
+				pointer new_start = pointer();
+				pointer new_end = pointer();
+				pointer new_end_capacity = pointer();
+
+				int next_capacity = (this->size() * 2 > 0) ? this->size() * 2 : 1;
+				new_start = _allocator.allocate(next_capacity);
+				new_end = new_start + this->size() + 1;
+				new_end_capacity = new_start + next_capacity;
+
+				for (size_type i = 0; i < pos_len; i++)
+					_allocator.construct(new_start + i, *(_ptr + i));
+				_allocator.construct(new_start + pos_len, val);
+				for (size_type j = 0; j < this->size() - pos_len; j++)
+					_allocator.construct(new_end - j - 1, *(_size - j - 1));
+
+				for (size_type l = 0; l < this->size(); l++)
+					_allocator.destroy(_ptr + l);
+				if (_ptr)
+					_allocator.deallocate(_ptr, this->capacity());
+
+				_ptr = new_start;
+				_size = new_end;
+				_capacity = new_end_capacity;
+			}
+			return (iterator(_ptr + pos_len));
+		}
+
+		//INSERT PAS BON
+		void insert(iterator position, size_type n, const value_type &val)
+		{
+			(void)position;
+			(void)n;
+			(void)val;
+			/*
+			size_type begin = 0;
+			iterator it = this->begin();
+			size_type end = 0;
+			while (it != position)
+			{
+				begin++;
+				it++;
+			}
+			while (it != this->end())
+			{
+				end++;
+				it++;
+			}
+			if (this->_size + n > this->_capacity)
+			{
+				if (this->_size + n < this->capacity() * 2)
+					reserve(this->capacity() * 2);
+				else
+					reserve(this->_size + n);
+			}
+			size_type i = 0;
+			while (i < n)
+			{
+				_allocator.construct(&_ptr[begin + i], val);
+				i++;
+			}
+			this->set_size(this->get_size() + n);
+			*/
+			if (n == 0)
+				return;
+			if (n > this->max_size())
+				throw(std::length_error("vector::insert (fill)"));
+			size_type pos_len = &(*position) - _ptr;
+			if (size_type(_capacity - _size) >= n)
+			{
+				for (size_type i = 0; i < this->size() - pos_len; i++)
+					_allocator.construct(_size - i + (n - 1), *(_size - i - 1));
+				_size += n;
+				while (n)
+				{
+					_allocator.construct(&(*position) + (n - 1), val);
+					n--;
+				}
+			}
+			else
+			{
+				pointer new_start = pointer();
+				pointer new_end = pointer();
+				pointer new_end_capacity = pointer();
+
+				int next_capacity = (this->capacity() > 0) ? (int)(this->size() * 2) : 1;
+				new_start = _allocator.allocate(next_capacity);
+				new_end_capacity = new_start + next_capacity;
+
+				if (size_type(new_end_capacity - new_start) < this->size() + n)
+				{
+					if (new_start)
+						_allocator.deallocate(new_start, new_start - new_end_capacity);
+					next_capacity = this->size() + n;
+					new_start = _allocator.allocate(next_capacity);
+					new_end = new_start + this->size() + n;
+					new_end_capacity = new_start + next_capacity;
+				}
+
+				new_end = new_start + this->size() + n;
+
+				for (int i = 0; i < (&(*position) - _ptr); i++)
+					_allocator.construct(new_start + i, *(_ptr + i));
+				for (size_type k = 0; k < n; k++)
+					_allocator.construct(new_start + pos_len + k, val);
+				for (size_type j = 0; j < (this->size() - pos_len); j++)
+					_allocator.construct(new_end - j - 1, *(_size - j - 1));
+
+				for (size_type u = 0; u < this->size(); u++)
+					_allocator.destroy(_ptr + u);
+				_allocator.deallocate(_ptr, this->capacity());
+
+				_ptr = new_start;
+				_size = new_end;
+				_capacity = new_end_capacity;
+			}
+		}
+
+		template <class InputIterator>
+		void insert(iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
+		{
+			//(void)value;
+			(void)first;
+			(void)last;
+			(void)false;
+			/*
+			size_type n = 0;
+			size_type begin = 0;
+			size_type end = 0;
+			for (InputIterator it = first; it != last; it++)
+				n++;
+			iterator it = this->begin();
+			for (; it != position; it++)
+				begin++;
+			for (; it != this->end(); it++)
+				end++;
+			if (_size + n > this->capacity())
+			{
+				if (_size + n < _capacity * 2)
+					reserve(_capacity * 2);
+				else
+					reserve(_size + n);
+			}
+			for (size_type i = 0; i < end; i++)
+			{
+				_allocator.construct(&_ptr[begin + n + end - i - 1], _ptr[begin + end - i - 1]);
+				_allocator.destroy(&_ptr[begin + end - i - 1]);
+			}
+			InputIterator curs = first;
+			for (size_type i = 0; i < n; i++)
+			{
+				_allocator.construct(&_ptr[begin + i], *curs);
+				curs++;
+			}
+			_size += n;
+			*/
+			bool is_valid = true;
+
+			size_type dist = ft::distance(first, last);
+			if (size_type(_capacity - _size) >= dist)
+			{
+				for (size_type i = 0; i < this->size() - (&(*position) - _ptr); i++)
+					_allocator.construct(_size - i + (dist - 1), *(_size - i - 1));
+				_size += dist;
+				for (; &(*first) != &(*last); first++, position++)
+					_allocator.construct(&(*position), *first);
+			}
+			else
+			{
+				pointer new_start = pointer();
+				pointer new_end = pointer();
+				pointer new_end_capacity = pointer();
+
+				new_start = _allocator.allocate(this->size() * 2);
+				new_end = new_start + this->size() + dist;
+				new_end_capacity = new_start + (this->size() * 2);
+
+				if (size_type(new_end_capacity - new_start) < this->size() + dist)
+				{
+					if (new_start)
+						_allocator.deallocate(new_start, new_end_capacity - new_start);
+					new_start = _allocator.allocate(this->size() + dist);
+					new_end = new_start + this->size() + dist;
+					new_end_capacity = new_end;
+				}
+
+				for (int i = 0; i < &(*position) - _ptr; i++)
+					_allocator.construct(new_start + i, *(_ptr + i));
+				for (int j = 0; &(*first) != &(*last); first++, j++)
+					_allocator.construct(new_start + (&(*position) - _ptr) + j, *first);
+				for (size_type k = 0; k < this->size() - (&(*position) - _ptr); k++)
+					_allocator.construct(new_start + (&(*position) - _ptr) + dist + k, *(_ptr + (&(*position) - _ptr) + k));
+
+				for (size_type l = 0; l < this->size(); l++)
+					_allocator.destroy(_ptr + l);
+				_allocator.deallocate(_ptr, this->capacity());
+
+				_ptr = new_start;
+				_size = new_end;
+				_capacity = new_end_capacity;
+			}
 		}
 	};
 }
@@ -550,53 +785,6 @@ namespace ft
 				if (DEBUG == 1)
 					std::cout << "pop back function called" << std::endl;
 				_allocator.destroy(&_p[--this->size]);
-			}
-
-			void insert(iterator position, size_type n, const value_type &val)
-			{
-				size_type begin_to_p = 0;
-				iterator it = this->begin();
-				size_type pos_to_end = 0;
-				while (it != position)
-				{
-					begin_to_p++;
-					it++;
-				}
-				while (it != this->end())
-				{
-					pos_to_end++;
-					it++;
-				}
-				if (DEBUG == 1)
-				{
-					std::cout << "insert fill function called" << std::endl;
-					std::cout << "begin to p = " << begin_to_p << std::endl;
-					std::cout << "pos to end = " << pos_to_end << std::endl;
-				}
-				if (this->_size + n > this->_capacity)
-				{
-					if (this->size + n < this->_capacity * 2)
-						reserve(this->capacity * 2);
-					else
-						reverse(this->_size + n);
-				}
-				//TODO: a reprendre, tout tester
-				for (size_type i = 0, i < pos_to_end; i++)
-				{
-					_allocator.construct(&_p[begin_to_p + n _ pos_to_end - i - 1])
-				}
-			}
-
-			iterator insert(iterator position, const value_type &val)
-			{
-				difference_type diff = position.get_ptr() - this->_p;
-				if (DEBUG == 1)
-				{
-					std::cout << "insert single element called" << std::endl;
-					std::cout << "diff is " << diff << std::endl;
-				}
-				insert(position, 1, val);
-				return (iterator(begin() + diff));
 			}
 		
 

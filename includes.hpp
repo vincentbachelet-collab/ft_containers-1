@@ -36,3 +36,4 @@ int my_vector_at_const(void);
 int my_vector_push_pop(void);
 int my_vector_copy_construct(void);
 int my_vector_erase(void);
+int my_vector_insert(void);

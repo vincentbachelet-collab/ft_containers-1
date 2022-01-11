@@ -1,7 +1,7 @@
 #pragma once
 
 #include "includes.hpp"
-
+//TODO:revoir les itateurs traits
 namespace ft
 {
     template <class Iterator>
@@ -9,12 +9,18 @@ namespace ft
     {
     public:
         typedef Iterator iterator_type;
-        //TODO: remettre en ft apres
         typedef typename std::iterator_traits<Iterator>::iterator_category iterator_category;
         typedef typename std::iterator_traits<Iterator>::reference reference;
         typedef typename std::iterator_traits<Iterator>::pointer pointer;
         typedef typename std::iterator_traits<Iterator>::difference_type difference_type;
         typedef typename std::iterator_traits<Iterator>::value_type value_type;
+        /*
+        typedef typename iterator_traits<iterator_type>::value_type value_type;
+        typedef typename iterator_traits<iterator_type>::pointer pointer_type;
+        typedef typename iterator_traits<iterator_type>::reference reference_type;
+        typedef typename iterator_traits<iterator_type>::difference_type difference_type;
+        typedef typename iterator_traits<iterator_type>::iterator_category iter_category;
+        */
 
     protected:
         iterator_type _ptr;
