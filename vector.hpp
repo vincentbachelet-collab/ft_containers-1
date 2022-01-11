@@ -178,6 +178,17 @@ namespace ft
 				_allocator.construct(&_ptr[i], *first);
 		}
 
+		//Copy constructor (4)
+		vector(const vector &src) : _allocator(src._allocator), _size(src._size), _ptr(_allocator.allocate(_capacity)), _capacity(src._capacity)
+		{
+			size_type i = 0;
+			while (i < this->_size)
+			{
+				_allocator.construct(&_ptr[i], src._ptr[i]);
+				i++;
+			}
+		}
+
 		size_t max_size() const
 		{
 			size_t ret = _allocator.max_size();
@@ -303,20 +314,9 @@ namespace ft
 	};
 }
 /*
-		 //pointeur vers le premier element du vecteur
 		
 
-		vector(const vector &src) : _allocator(src._allocator), _size(src.size), _p(_allocator.allocate(_capacity)), _capacity(src._capacity)
-		{
-			if (DEBUG == 1)
-				std::cout << "vector copy constructor called" << std::endl;
-			size_type i = 0;
-			while (i < this->_size)
-			{
-				_allocator.construct(&_p[i], src._p[i]);
-				i++;
-			}
-		}
+		
 
 		~vector()
 		{

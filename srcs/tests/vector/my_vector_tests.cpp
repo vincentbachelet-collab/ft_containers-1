@@ -50,6 +50,7 @@ int my_vector_tests(void)
 
     std::cout << "Testing range constructor" << std::endl;
     ft::vector<int> third(ft_vec3.begin(), ft_vec3.end());
+    //TODO: faire une sous fonction display
     it = third.begin();
     ite = third.end();
     while (it != ite)
@@ -59,6 +60,20 @@ int my_vector_tests(void)
     }
     std::cout << "OK !" << std::endl;
     std::cout << "-----------------" << std::endl;
+
+    std::cout << "Testing copy constructor" << std::endl;
+    ft::vector<int> copy(third);
+    it = copy.begin();
+    ite = copy.end();
+    while (it != ite)
+    {
+        std::cout << (*it) << std::endl;
+        it++;
+    }
+    std::cout << "OK !" << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std::cout << "END OF CONSTRUCTORS" << std::endl;
+    std::cout << std::endl;
 
     //Tester reserve
     std::cout << "Testing reserve function" << std::endl;
