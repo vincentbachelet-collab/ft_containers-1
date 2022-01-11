@@ -28,6 +28,7 @@ SRC				=		./main.cpp \
 						./srcs/tests/vector/my_vector_copy_construct.cpp \
 						./srcs/tests/vector/my_vector_erase.cpp \
 						./srcs/tests/vector/my_vector_insert.cpp \
+						./srcs/tests/vector/my_vector_swap.cpp \
 
 						# ./srcs/tests/vector/my_vector_bidirect_it.cpp \
 						# ./srcs/tests/vector/my_vector_insert2.cpp \
@@ -43,7 +44,6 @@ SRC				=		./main.cpp \
 						# ./srcs/tests/vector/my_vector_rite.cpp \
 						# ./srcs/tests/vector/my_vector_rite2.cpp \
 						# ./srcs/tests/vector/my_vector_size.cpp \
-						# ./srcs/tests/vector/my_vector_swap.cpp \
 						# ./srcs/tests/stack/my_stack_default_copy.cpp \
 						# ./srcs/tests/stack/my_stack_default.cpp \
 						# ./srcs/tests/stack/my_stack_list_copy.cpp \

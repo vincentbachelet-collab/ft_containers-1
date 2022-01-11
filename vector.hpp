@@ -604,7 +604,56 @@ namespace ft
 				_capacity = new_end_capacity;
 			}
 		}
+
+		void swap(vector &x)
+		{
+			/*
+			swap(this->_size, x._size);
+			swap(this->_capacity, x._capacity);
+			swap(this->_allocator, x._allocator);
+			swap(this->_ptr, x._ptr);
+			*/
+			if (x == *this)
+				return;
+
+			pointer save_start = x._ptr;
+			size_type save_end = x._size;
+			size_type save_end_capacity = x._capacity;
+			allocator_type save_alloc = x._allocator;
+
+			x._ptr = this->_ptr;
+			x._size = this->_size;
+			x._capacity = this->_capacity;
+			x._allocator = this->_allocator;
+
+			this->_ptr = save_start;
+			this->_size = save_end;
+			this->_capacity = save_end_capacity;
+			this->_allocator = save_alloc;
+		}
 	};
+	template <typename T, typename Alloc>
+	void swap(vector<T, Alloc> &x, vector<T, Alloc> &y)
+	{
+		x.swap(y);
+	}
+
+	template <typename T, typename Alloc>
+	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		if (lhs.size() != rhs.size())
+		{
+			return (false);
+		}
+		for (size_t i = 0; i < lhs.size(); i++)
+		{
+			if (lhs[i] != rhs[i])
+			{
+				return (false);
+			}
+		}
+		return (true);
+	}
 }
 /*
 
@@ -786,15 +835,6 @@ namespace ft
 					std::cout << "pop back function called" << std::endl;
 				_allocator.destroy(&_p[--this->size]);
 			}
-		
-
-		void swap(vector &x)
-		{
-			swap(this->_size, x._size);
-			swap(this->_capacity, x._capacity);
-			swap(this->_allocator, x._allocator);
-			swap(this->_ptr, x._ptr);
-		}
 
 	public:
 
@@ -871,39 +911,6 @@ namespace ft
 			return (this->ptr);
 		}
 }
-
-	template <typename T, typename Alloc>
-	void swap(vector<T, Alloc> &x, vector<T, Alloc> &y)
-	{
-		if (DEBUG == 1)
-			std::cout << "Swap non member function called" << std::endl;
-		x.swap(y);
-	}
-
-	template <typename T, typename Alloc>
-	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-	{
-		if (DEBUG == 1)
-			std::cout << "Operator == called" << std::endl;
-		if (lhs.size() != rhs.size())
-		{
-			if (DEBUG == 1)
-				std::cout << "Comparison == is false, the size is different" << std::endl;
-			return (false);
-		}
-		for (size_t i = 0; i < lhs.size(); i++)
-		{
-			if (lhs[i] != rhs[i])
-			{
-				if (DEBUG == 1)
-					std::cout << "Comparison == is false, the values are different" << std::endl;
-				return (false);
-			}
-		}
-		if (DEBUG == 1)
-			std::cout << "Comparison == is true" << std::endl;
-		return (true);
-	}
 
 	template <typename T, typename Alloc>
 	bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)

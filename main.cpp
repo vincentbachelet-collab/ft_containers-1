@@ -11,7 +11,8 @@ int main(void)
     //my_vector_push_pop();
     //my_vector_copy_construct();
     //my_vector_erase();
-    my_vector_insert();
+    //my_vector_insert();
+    my_vector_swap();
     /* Test sur stack */
 
     /*Test sur map*/
