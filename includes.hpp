@@ -1,7 +1,5 @@
 #pragma once
 
-//TODO: reorganiser les fichiers
-
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -24,6 +22,10 @@
 #include <type_traits>
 #include <random>
 
-#ifndef DEBUG
-#define DEBUG 0
-#endif
+#include "reverse_iterator.hpp"
+#include "utils.hpp"
+#include "vector_iterator.hpp"
+#include "vector.hpp"
+
+int my_vector_tests(void);
+int my_vector_assign(void);

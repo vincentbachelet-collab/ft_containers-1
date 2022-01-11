@@ -1,16 +1,28 @@
-NAME			=		containers
-NAME_FT			=		ft_containers
+NAME			=	containers
+NAME_FT			=	ft_containers
+NAME_STD		=	std_containers
+CC				=	clang++
+#OBJDIR			=	objects
+#OBJDIR_FT		=	ft_objects
+#OBJDIR_STD		=	std_objects
+#SRC				=	main.cpp
+#OBJ 			=	$(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
+#OBJ_FT 			=	$(addprefix $(OBJDIR_FT)/, $(SRC:.cpp=.o))
+#OBJ_STD			=	$(addprefix $(OBJDIR_STD)/, $(SRC:.cpp=.o))
 
-OBJ 			=		$(SRC:.cpp=.o)
-OBJ_FT 			=		$(SRC:.cpp=.o)
+OBJ 			=	$(SRC:.cpp=.o)
+OBJ_FT 			=	$(SRC:.cpp=.o)
+OBJ_STD			=	$(SRC:.cpp=.o)
 
-STD				=		-D STD=1
-TEST			=		-D TEST=1
+CFLAGS			=	-Wall -Wextra -Werror -std=c++98#-fsanitize=address -g
+STD				=	-D STD=1
+TEST			=	-D TEST=1
+RM				=	rm -rf
 
-SRC				=		./srcs/tests/main.cpp \
+SRC				=		./main.cpp \
 						./srcs/tests/vector/my_vector_tests.cpp \
+						./srcs/tests/vector/my_vector_assign.cpp \
 
-						# ./srcs/tests/vector/my_vector_assign.cpp \
 						# ./srcs/tests/vector/my_vector_at_const.cpp \
 						# ./srcs/tests/vector/my_vector_at.cpp \
 						# ./srcs/tests/vector/my_vector_bidirect_it.cpp \
@@ -60,9 +72,6 @@ SRC				=		./srcs/tests/main.cpp \
 						# ./srcs/tests/map/my_map_tricky_construct.cpp \
 						# ./srcs/tests/map/my_map_tricky_erase.cpp \
 
-RM				=		rm -rf
-CC				=		clang++
-CFLAGS			=		-D DEBUG=0 -Wall -Wextra -Werror -std=c++98 #-g3 -fsanitize=address
 
 ifneq (,$(findstring xterm,${TERM}))
 	GREEN := $(shell tput -Txterm setaf 2)
@@ -72,27 +81,46 @@ else
 	RESET := ""
 endif
 
-all: 	ft
-		@echo "${GREEN}Successfully compiled test sources.${RESET}"
+all: 	ft std
+		@./$(NAME_FT) > $(NAME_FT).txt
+		@./$(NAME_STD) > $(NAME_STD).txt
+		@echo "${GREEN}Executing Program and Exporting Difference${RESET}"
+		@diff $(NAME_FT).txt $(NAME_STD).txt > diff.txt
+		@cat diff.txt
 
-ft: 	fclean $(OBJ_FT)
-		@$(CC) $(CFLAGS) $(OBJ_FT) -o $(NAME_FT)
+bonus: all
 
-%.o: %.cpp
-		@$(CC) $(CFLAGS) $(TEST) -c $< -o $@
+test: fclean $(OBJ)
+	@$(CC) $(CFLAGS) $(TEST) $(OBJ) -o $(NAME)
+	@echo "${GREEN}Compilation Done & Executing Program [test]${RESET}"
+	@./$(NAME)
 
-%.o: %.cpp
-		@$(CC) $(CFLAGS) -c $< -o $@
+ft: fclean $(OBJ_FT)
+	@ $(CC) $(CFLAGS) $(OBJ_FT) -o $(NAME_FT)
+	@echo "${GREEN}Compilation Done [ft]${RESET}"
+
+std: fclean $(OBJ_STD)
+	@ $(CC) $(CFLAGS) $(OBJ_STD) -o $(NAME_STD)
+	@echo "${GREEN}Compilation Done [std]${RESET}"
+
+$(OBJDIR)/%.o: %.cpp
+	@mkdir -p $(OBJDIR)
+	@$(CC) $(CFLAGS) $(TEST) -c $< -o $@
+
+$(OBJDIR_FT)/%.o: %.cpp
+	@mkdir -p $(OBJDIR_FT)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR_STD)/%.o: %.cpp
+	@mkdir -p $(OBJDIR_STD)
+	@$(CC) $(CFLAGS) $(STD) -c $< -o $@
 
 clean:
-		@$(RM) $(OBJ) $(OBJ_FT)
-		@echo "${GREEN}Cleaned all .o files.${RESET}"
+	@rm -f $(OBJ) $(OBJ_FT) $(OBJ_STD)
 
-fclean: clean 
-		@$(RM) $(NAME) $(NAME_FT)
-		@echo "${GREEN}Cleaned all .o files and ft executable.${RESET}"
+fclean: clean
+	@rm -f $(NAME) $(NAME_FT) $(NAME_STD) $(NAME).txt $(NAME_FT).txt $(NAME_STD).txt diff.txt
 
-re: 	fclean all
-		@echo "${GREEN}Make re OK !${RESET}"
+re: fclean all
 
 .PHONY: clean fclean all re bonus test ft std

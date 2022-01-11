@@ -1,4 +1,4 @@
-#include "../../../includes/tests/tests.hpp"
+#include "../../../includes.hpp"
 
 /* Tests basiques persos: construction... */
 int my_vector_tests(void)
@@ -150,10 +150,12 @@ int my_vector_tests(void)
     std::cout << "-----------------" << std::endl;
     //TODO: reprendre enable if
     //TODO: tester ce qu il y a dans utils
+    /*
     std::cout << "First quick test for assign : " << std::endl;
     std_vec3.assign(5, 7);
     ft_vec3.assign(5, 7);
     std::cout << "OK!" << std::endl;
     std::cout << "-----------------" << std::endl;
+    */
     return (0);
 }
