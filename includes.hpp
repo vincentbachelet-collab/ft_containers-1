@@ -21,6 +21,8 @@
 #include <cstddef>
 #include <type_traits>
 #include <random>
+#include <numeric>
+#include <string_view>
 
 #include "reverse_iterator.hpp"
 #include "utils.hpp"

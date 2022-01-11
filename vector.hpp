@@ -331,30 +331,43 @@ namespace ft
 			return erase(position, position + 1);
 		}
 
+		//Le compilateur appelle ca un subscript operator
+		reference operator[](size_type n)
+		{
+			reference ref = this->_ptr[n];
+			return (ref);
+		}
+
+		const reference operator[](size_type n) const
+		{
+			reference ref = this->_ptr[n];
+			return (ref);
+		}
+
+		//Removes from the vector either a single element (position) or a range of elements ([first,last)).
 		iterator erase(iterator first, iterator last)
 		{
 			if (first == this->end() || first == last)
 				return first;
-			iterator tmp = first;
-			iterator end = this->end;
 
-			//it len - calcul de la distance entre first et last
-			size_t i = 0;
-			while (first != last)
+			size_type begin = 0;
+			size_type first_to_last = 0;
+			size_type last_to_end = 0;
+			for (iterator it = this->begin(); it != first; it++)
+				begin++;
+			for (iterator it = first; it != last; it++)
+				first_to_last++;
+			for (iterator it = last; it != end(); it++)
+				last_to_end++;
+			for (size_type i = 0; i < last_to_end; i++)
 			{
-				++first;
-				++i;
+				_allocator.destroy(&_ptr[begin + i]);
+				_allocator.construct(&_ptr[begin + i], _ptr[begin + i + first_to_last]);
 			}
-
-			while (last != end)
-			{
-				*first = *last;
-				++first;
-				++last;
-			}
-			while (i-- > 0)
-				this->_allocator.destroy(&this->_ptr[--this->_size]);
-			return (tmp);
+			for (size_type i = 0; i < first_to_last; i++)
+				_allocator.destroy(&_ptr[begin + last_to_end + i]);
+			_size -= first_to_last;
+			return first;
 		}
 	};
 }
@@ -596,21 +609,6 @@ namespace ft
 		}
 
 	public:
-		reference operator[](size_type n)
-		{
-			reference ref = this->_p[n];
-			if (DEBUG == 1)
-				std::cout << "Value accessed is " << ref << std::endl;
-			return (ref)
-		}
-
-		const reference operator[](size_type n) const
-		{
-			reference ref = this->_p[n];
-			if (DEBUG == 1)
-				std::cout << "Value accessed is " << ref << std::endl;
-			return (ref)
-		}
 
 		reference front()
 		{

@@ -9,34 +9,41 @@ namespace ft
     {
     public:
         typedef T value_type;
-        typedef std::ptrdiff_t difference_type;
+        typedef long int difference_type;
+        typedef size_t size_type;
         typedef std::random_access_iterator_tag iterator_category;
         typedef value_type *pointer;
         typedef value_type &reference;
+        typedef T *ptr;
 
     protected:
         value_type *_p;
 
     public:
         //TODO: a revoir (toutes), tester, decrire
-        vector_iterator() : _p(NULL) {}
-        //vector_iterator(value_type &x) : _p(&x) {}
-        vector_iterator(value_type *x) : _p(x) {}
+        vector_iterator(ptr p = 0) : _p(p) {}
+        //vector_iterator(value_type *x) : _p(x) {}
         vector_iterator(vector_iterator const &src) : _p(src._p) {}
-        vector_iterator &operator=(vector_iterator const &rhs)
+        virtual ~vector_iterator() {}
+
+        vector_iterator &operator=(const vector_iterator &rhs)
         {
-            _p = rhs._p;
-            return *this;
+            if (this != &rhs)
+                this->_p = rhs._p;
+            return (*this);
         }
         value_type *get_ptr(void) const
         {
             return this->_p;
         }
-        virtual ~vector_iterator() {}
+
+        //TODO: a revoir
+        /*
         operator vector_iterator<value_type const>() const
         {
             return vector_iterator<value_type const>(this->_p);
         }
+        */
 
         vector_iterator &operator++()
         {
@@ -84,23 +91,10 @@ namespace ft
         value_type *operator->()
         {
             value_type *p = get_ptr();
-#if DEBUG == 1
-            std::cout << "the value_type * is " << p << "and the value is " << *p << std::endl;
-#endif
             return (p);
         }
 
-        //TODO: a revoir
-        /*
-        value_type &operator*()
-        {
-            value_type v = *this->p;
-#if DEBUG == 1
-            std::cout << "the value_type is " << v << std::endl;
-#endif
-            return (v);
-        }
-        */
+        reference operator*() const { return (*_p); }
 
         bool operator==(const vector_iterator &other) const
         {
