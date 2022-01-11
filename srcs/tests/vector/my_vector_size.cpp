@@ -1,7 +1,7 @@
 #include "../../../includes.hpp"
 
 #ifndef TESTED_NAMESPACE
-#define TESTED_NAMESPACE ft
+#define TESTED_NAMESPACE std
 #endif
 
 #define TESTED_TYPE int
@@ -16,11 +16,11 @@ int my_vector_size(void)
         myints.push_back(i);
     std::cout << "1. size: " << myints.size() << '\n';
 
-    myints.insert(myints.end(), 10, 100);
-    std::cout << "2. size: " << myints.size() << '\n';
+    //myints.insert(myints.end(), 10, 100);
+    //std::cout << "2. size: " << myints.size() << '\n';
 
-    //myints.pop_back();
-    //std::cout << "3. size: " << myints.size() << '\n';
+    myints.pop_back();
+    std::cout << "3. size: " << myints.size() << '\n';
 
     return 0;
     return (0);

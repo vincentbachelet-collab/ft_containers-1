@@ -430,50 +430,19 @@ namespace ft
 			return (iterator(_ptr + pos_len));
 		}
 
-		//INSERT PAS BON
+		//TODO: corriger cette version
+		/*
 		void insert(iterator position, size_type n, const value_type &val)
 		{
-			(void)position;
-			(void)n;
-			(void)val;
-			/*
-			size_type begin = 0;
-			iterator it = this->begin();
-			size_type end = 0;
-			while (it != position)
-			{
-				begin++;
-				it++;
-			}
-			while (it != this->end())
-			{
-				end++;
-				it++;
-			}
-			if (this->_size + n > this->_capacity)
-			{
-				if (this->_size + n < this->capacity() * 2)
-					reserve(this->capacity() * 2);
-				else
-					reserve(this->_size + n);
-			}
-			size_type i = 0;
-			while (i < n)
-			{
-				_allocator.construct(&_ptr[begin + i], val);
-				i++;
-			}
-			this->set_size(this->get_size() + n);
-			*/
 			if (n == 0)
 				return;
 			if (n > this->max_size())
 				throw(std::length_error("vector::insert (fill)"));
-			size_type pos_len = &(*position) - _ptr;
+			size_type pos_len = (*position) - _ptr[0];
 			if (size_type(_capacity - _size) >= n)
 			{
 				for (size_type i = 0; i < this->size() - pos_len; i++)
-					_allocator.construct(_size - i + (n - 1), *(_size - i - 1));
+					_allocator.construct(_size - i + (n - 1), _size - i - 1);
 				_size += n;
 				while (n)
 				{
@@ -519,6 +488,7 @@ namespace ft
 				_capacity = new_end_capacity;
 			}
 		}
+		*/
 
 		template <class InputIterator>
 		void insert(iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)

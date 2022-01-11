@@ -38,3 +38,4 @@ int my_vector_copy_construct(void);
 int my_vector_erase(void);
 int my_vector_insert(void);
 int my_vector_swap(void);
+int my_vector_size(void);
