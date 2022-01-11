@@ -14,7 +14,7 @@ OBJ 			=	$(SRC:.cpp=.o)
 OBJ_FT 			=	$(SRC:.cpp=.o)
 OBJ_STD			=	$(SRC:.cpp=.o)
 
-CFLAGS			=	-Wall -Wextra -Werror -std=c++98#-fsanitize=address -g
+CFLAGS			=	-Wall -Wextra -Werror -std=c++98 #-g3 -fsanitize=address
 STD				=	-D STD=1
 TEST			=	-D TEST=1
 RM				=	rm -rf
@@ -26,9 +26,9 @@ SRC				=		./main.cpp \
 						./srcs/tests/vector/my_vector_at_const.cpp \
 						./srcs/tests/vector/my_vector_push_pop.cpp \
 						./srcs/tests/vector/my_vector_copy_construct.cpp \
+						./srcs/tests/vector/my_vector_erase.cpp \
 
 						# ./srcs/tests/vector/my_vector_bidirect_it.cpp \
-						# ./srcs/tests/vector/my_vector_erase.cpp \
 						# ./srcs/tests/vector/my_vector_insert.cpp \
 						# ./srcs/tests/vector/my_vector_insert2.cpp \
 						# ./srcs/tests/vector/my_vector_ite_arrow.cpp \

@@ -189,6 +189,19 @@ namespace ft
 			}
 		}
 
+		//destructeur
+		~vector()
+		{
+			size_type i = 0;
+			size_type size = this->get_size();
+			while (i < size)
+			{
+				this->_allocator.destroy(&_ptr[i]);
+				i++;
+			}
+			this->_allocator.deallocate(this->_ptr, this->_capacity);
+		}
+
 		size_t max_size() const
 		{
 			size_t ret = _allocator.max_size();
@@ -311,26 +324,41 @@ namespace ft
 			}
 			_allocator.construct(&_ptr[_size++], src);
 		}
+
+		//deux versions de erase
+		iterator erase(iterator position)
+		{
+			return erase(position, position + 1);
+		}
+
+		iterator erase(iterator first, iterator last)
+		{
+			if (first == this->end() || first == last)
+				return first;
+			iterator tmp = first;
+			iterator end = this->end;
+
+			//it len - calcul de la distance entre first et last
+			size_t i = 0;
+			while (first != last)
+			{
+				++first;
+				++i;
+			}
+
+			while (last != end)
+			{
+				*first = *last;
+				++first;
+				++last;
+			}
+			while (i-- > 0)
+				this->_allocator.destroy(&this->_ptr[--this->_size]);
+			return (tmp);
+		}
 	};
 }
 /*
-		
-
-		
-
-		~vector()
-		{
-			if (DEBUG == 1)
-				std::cout << "vector destructor called" << std::endl;
-			ft::vector<T>::iterator it = this->begin();
-			ft::vector<T>::iterator ite = this->end();
-			while (it != ite)
-			{
-				this->_allocator.destroy(&(*it));
-				it++;
-			}
-			this->_allocator.deallocate(this->_p, this->_capacity);
-		}
 
 		vector &operator=(const vector &src)
 		{
@@ -502,24 +530,6 @@ namespace ft
 	{
 		std::cout << "clear function called" << std::endl;
 		this->size = 0;
-	}
-
-	iterator erase(iterator first, iterator last)
-	{
-		if (DEBUG == 1)
-			std::cout << "erase function called" << std::endl;
-
-		size_type i = &(*first) - &(*begin());
-		size_type j = &(*last) - &(*begin());
-		if (DEBUG == 1)
-		{
-			std::cout << "i equals " << i << std::endl;
-			std::cout << "j equals " << j << std::endl;
-		}
-		for (size_type k = i; k < j; k++)
-		{
-			_allocator.destroy(&_ptr[k]);
-		}
 	}
 
 			void pop_back()

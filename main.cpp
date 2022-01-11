@@ -4,12 +4,13 @@ int main(void)
 {
     // std::cout << "Hello world !" << std::endl;
     /* TESTS VECTORS */
-    my_vector_tests();
+    //my_vector_tests();
     //my_vector_assign();
     //my_vector_at();
     //my_vector_at_const();
     //my_vector_push_pop();
     //my_vector_copy_construct();
+    my_vector_erase();
     /* Test sur stack */
 
     /*Test sur map*/
