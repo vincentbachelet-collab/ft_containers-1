@@ -106,12 +106,22 @@ namespace ft
         {
             bool b = this->_p == other._p;
 #if DEBUG == 1
+
             std::cout << "the result is " << b << std::endl;
 #endif
             return (b);
         }
 
         bool operator!=(const vector_iterator &other) const
+        {
+            bool b = this->_p != other._p;
+#if DEBUG == 1
+            std::cout << "the result is " << b << std::endl;
+#endif
+            return (b);
+        }
+
+        bool operator!=(const vector_iterator &other)
         {
             bool b = this->_p != other._p;
 #if DEBUG == 1
@@ -157,23 +167,11 @@ namespace ft
             return (b);
         }
 
-        /*
-        //TODO: a refaire
-        vector_iterator<T>
-        operator+(difference_type n, const vector_iterator &rhs)
-        {
-            return (n + rhs._p);
-        }
-
         vector_iterator<T> operator+(difference_type n) const
         {
             vector_iterator<T> res = this->_p + n;
-#if DEBUG == 1
-            std::cout << "the result is " << res << std::endl;
-#endif
             return (res);
         }
-        */
 
         vector_iterator<T>
         operator-(difference_type n) const
