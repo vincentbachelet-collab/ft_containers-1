@@ -604,6 +604,22 @@ namespace ft
 				_capacity = new_end_capacity;
 			}
 		}
+		reference back()
+		{
+			reference ref = this->_ptr[this->_size - 1];
+			return (ref);
+		}
+
+		const_reference back() const
+		{
+			reference ref = this->_ptr[this->_size - 1];
+			return (ref);
+		}
+
+		void pop_back()
+		{
+			this->_allocator.destroy(&_ptr[--this->_size]);
+		}
 
 		void swap(vector &x)
 		{
@@ -829,12 +845,6 @@ namespace ft
 		this->size = 0;
 	}
 
-			void pop_back()
-			{
-				if (DEBUG == 1)
-					std::cout << "pop back function called" << std::endl;
-				_allocator.destroy(&_p[--this->size]);
-			}
 
 	public:
 
@@ -860,27 +870,6 @@ namespace ft
 			return (ref);
 		}
 
-		reference back()
-		{
-			reference ref = this->_p[this->_size - 1];
-			if (DEBUG == 1)
-			{
-				std::cout << "back accessor called" << std::endl;
-				std::cout << "ref is " << ref << std::endl;
-			}
-			return (ref);
-		}
-
-		const_reference back() const
-		{
-			reference ref = this->_p[this->_size - 1];
-			if (DEBUG == 1)
-			{
-				std::cout << "back accessor called" << std::endl;
-				std::cout << "ref is " << ref << std::endl;
-			}
-			return (ref);
-		}
 
 		allocator_type get_allocator() const
 		{
