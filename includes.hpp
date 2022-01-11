@@ -31,3 +31,4 @@ int my_vector_tests(void);
 int my_vector_assign(void);
 int my_vector_at(void);
 int my_vector_at_const(void);
+int my_vector_push_pop(void);

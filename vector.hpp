@@ -149,7 +149,6 @@ namespace ft
 		}
 
 		//Constructeur deprecie depuis C++11
-		/* */
 		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _size(n), _capacity(n), _allocator(alloc), _ptr(NULL)
 		{
 			alloc_vec(n);
@@ -161,6 +160,7 @@ namespace ft
 			}
 		}
 
+		//TODO: reprendre les autres types de constructeurs
 		/*
 		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _size(n), _capacity(n), _allocator(alloc), _ptr(NULL)
 		{
@@ -201,7 +201,6 @@ namespace ft
 			//Construction des elements qui seraient supplementaires
 			while (i < n)
 			{
-				//TODO: appeler la fonction que j ai faite ?
 				this->_allocator.construct(&_ptr[i], val);
 				i++;
 			}
@@ -257,11 +256,8 @@ namespace ft
 		//retourne une reference de l element a la position n dans le vecteur
 		reference at(size_type n)
 		{
-			//TODO: revoir ma strategie de erreur handling ?
 			if (n >= this->get_size())
-			{
 				throw std::out_of_range("out of range");
-			}
 			reference ref = this->_ptr[n];
 #if DEBUG == 1
 			std::cout << "at operator called" << std::endl;
@@ -274,15 +270,26 @@ namespace ft
 		const reference at(size_type n) const
 		{
 			if (n >= this->get_size())
-			{
 				//C'est bien le comportement qui a lieu avec la std
 				throw std::out_of_range("out of range");
-			}
 			reference ref = _ptr[n];
 #if DEBUG == 1
 			std::cout << ref << std::endl;
 #endif
 			return (ref);
+		}
+
+		void push_back(const value_type &src)
+		{
+			size_type size = this->get_size();
+			if (size == this->get_capacity())
+			{
+				if (this->get_capacity() == 0)
+					reserve(1);
+				else
+					reserve(this->get_capacity() * 2);
+			}
+			_allocator.construct(&_ptr[_size++], src);
 		}
 
 		/*
@@ -521,28 +528,6 @@ namespace ft
 			_allocator.destroy(&_ptr[k]);
 		}
 	}
-
-
-		void push_back(const value_type &src)
-		{
-			(void)src;
-			if (DEBUG == 1)
-				std::cout << "push_back function called" << std::endl;
-			size_type size = this->size();
-			if (size == capacity())
-			{
-				//revoir mon realloc
-				if (this->_size == this->_capacity)
-				{
-					if (this->_capacity == 0)
-						reserve(1);
-					else
-						reserve(this->_capacity * 2);
-				}
-				_allocator.construct(&_p[this->_size], val);
-				this->_size++;
-				//On pourra appeler la fonction size() quand elle sera prete
-			}
 
 			void pop_back()
 			{

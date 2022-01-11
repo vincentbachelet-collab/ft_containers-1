@@ -24,6 +24,7 @@ SRC				=		./main.cpp \
 						./srcs/tests/vector/my_vector_assign.cpp \
 						./srcs/tests/vector/my_vector_at.cpp \
 						./srcs/tests/vector/my_vector_at_const.cpp \
+						./srcs/tests/vector/my_vector_push_pop.cpp \
 
 						# ./srcs/tests/vector/my_vector_bidirect_it.cpp \
 						# ./srcs/tests/vector/my_vector_copy_construct.cpp \
@@ -35,7 +36,6 @@ SRC				=		./main.cpp \
 						# ./srcs/tests/vector/my_vector_ite_n00.cpp \
 						# ./srcs/tests/vector/my_vector_ite_n1.cpp \
 						# ./srcs/tests/vector/my_vector_ite.cpp \
-						# ./srcs/tests/vector/my_vector_push_pop.cpp \
 						# ./srcs/tests/vector/my_vector_relational_ope.cpp \
 						# ./srcs/tests/vector/my_vector_rev_ite_construct.cpp \
 						# ./srcs/tests/vector/my_vector_rite_arrow.cpp \

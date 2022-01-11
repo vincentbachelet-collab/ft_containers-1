@@ -7,7 +7,8 @@ int main(void)
     //my_vector_tests();
     //my_vector_assign();
     //my_vector_at();
-    my_vector_at_const();
+    //my_vector_at_const();
+    my_vector_push_pop();
     /* Test sur stack */
 
     /*Test sur map*/
