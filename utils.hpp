@@ -21,6 +21,8 @@ namespace ft
     struct is_integral : public false_type
     {
     };
+
+    //TODO: revoir ces deux types speciaux
     template <class T>
     struct is_integral<const T> : public is_integral<T>
     {
@@ -33,6 +35,7 @@ namespace ft
     struct is_integral<volatile T> : public is_integral<T>
     {
     };
+
     template <>
     struct is_integral<unsigned char> : public true_type
     {
@@ -116,6 +119,8 @@ namespace ft
         typedef std::random_access_iterator_tag iterator_category;
     };
 
+    //If B is true, std::enable_if has a public member typedef type,
+    //equal to T; otherwise, there is no member typedef.
     template <bool B, typename T = void>
     struct enable_if
     {

@@ -4,6 +4,7 @@
 int my_vector_tests(void)
 {
     //Appel du constructeur par defaut
+    std::cout << "TESTING CONSTRUCTORS" << std::endl;
     std::cout << "Default constructor testing : " << std::endl;
     ft::vector<int> ft_vec;
     std::vector<int> std_vec;
@@ -43,6 +44,18 @@ int my_vector_tests(void)
     {
         std::cout << (*it1) << std::endl;
         it1++;
+    }
+    std::cout << "OK !" << std::endl;
+    std::cout << "-----------------" << std::endl;
+
+    std::cout << "Testing range constructor" << std::endl;
+    ft::vector<int> third(ft_vec3.begin(), ft_vec3.end());
+    it = third.begin();
+    ite = third.end();
+    while (it != ite)
+    {
+        std::cout << (*it) << std::endl;
+        it++;
     }
     std::cout << "OK !" << std::endl;
     std::cout << "-----------------" << std::endl;

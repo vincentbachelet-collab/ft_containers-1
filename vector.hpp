@@ -73,7 +73,7 @@ namespace ft
 		}
 
 		//https://en.cppreference.com/w/cpp/container/vector/vector
-		//Constructeur par defaut
+		//Constructeur par defaut / default constructor
 		vector(const allocator_type &alloc = allocator_type()) : _size(0), _capacity(0), _allocator(alloc), _ptr(NULL) {}
 
 		//Iterateur (necessaires pour tester les autres constructeurs notamment)
@@ -148,7 +148,7 @@ namespace ft
 			return (this->_size);
 		}
 
-		//Constructeur deprecie depuis C++11
+		//Constructeur deprecie depuis C++11 / fill constructeur
 		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _size(n), _capacity(n), _allocator(alloc), _ptr(NULL)
 		{
 			alloc_vec(n);
@@ -160,14 +160,23 @@ namespace ft
 			}
 		}
 
-		//TODO: reprendre les autres types de constructeurs
-		/*
-		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _size(n), _capacity(n), _allocator(alloc), _ptr(NULL)
+		//range constructeur (3)
+		//Le enable if est necessaire sinon la fonction construct ne pourra pas compiler
+		//Dans le enable if, si la premiere partie avant la virgule est fausse, la deuxieme partie sera ignoree
+		//Is integral represente grosso modo les data types qu on connait depuis le c
+		template <class InputIterator>
+		vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type()) : _size(0), _capacity(0), _allocator(alloc), _ptr(NULL)
 		{
-			_ptr = _allocator.allocate(n);
-			for (size_type i = 0; i < n; i++)
-				_allocator.construct(&_ptr[i], val);
-		}*/
+			InputIterator tmp(first);
+			while (tmp++ != last)
+				this->_size++;
+
+			this->set_capacity(this->get_size());
+			this->_ptr = _allocator.allocate(this->get_capacity());
+
+			for (int i = 0; first != last; ++first, ++i)
+				_allocator.construct(&_ptr[i], *first);
+		}
 
 		size_t max_size() const
 		{
@@ -291,22 +300,6 @@ namespace ft
 			}
 			_allocator.construct(&_ptr[_size++], src);
 		}
-
-		/*
-		//range constructeur
-		template <typename InputIterator>
-		vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type()) : _alloc_type(alloc), _array(NULL), _size(0), _capacity(0)
-		{
-			size_type n = 0;
-			size_type i = 0;
-			for (InputIterator it = first; it != last; it++)
-				n++;
-			reserve(n);
-			for (InputIterator it = first; it != last; it++, i++)
-				this->_allocator.construct(&_p[i], *it);
-			this->_size = n;
-		}
-		*/
 	};
 }
 /*
