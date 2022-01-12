@@ -3,7 +3,6 @@
 
 int main(void)
 {
-    // std::cout << "Hello world !" << std::endl;
     /* TESTS VECTORS */
     //my_vector_tests();
     //my_vector_assign();
@@ -12,7 +11,7 @@ int main(void)
     //my_vector_push_pop();
     //my_vector_copy_construct();
     //my_vector_erase();
-    //my_vector_insert();
+    my_vector_ite();
     //my_vector_swap();
 
     //my_vector_size();

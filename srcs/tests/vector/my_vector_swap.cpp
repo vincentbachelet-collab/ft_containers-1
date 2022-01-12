@@ -6,6 +6,7 @@
 #define TESTED_TYPE int
 
 //TODO: a mettre dans un fichier commun pour ne pas avoir a reinclure
+/*
 void print_vec(TESTED_NAMESPACE::vector<TESTED_TYPE> vec)
 {
     ft::vector<int>::iterator it = vec.begin();
@@ -19,6 +20,7 @@ void print_vec(TESTED_NAMESPACE::vector<TESTED_TYPE> vec)
     }
     std::cout << std::endl;
 }
+*/
 
 int my_vector_swap(void)
 {
@@ -42,13 +44,13 @@ int my_vector_swap(void)
     a1.push_back(1);
     a1.push_back(2);
     a1.push_back(3);
-    print_vec(a1);
+    //print_vec(a1);
     ft::vector<int> a2;
     a2.push_back(4);
     a2.push_back(5);
-    print_vec(a2);
+    //print_vec(a2);
     a1.swap(a2);
-    print_vec(a1);
-    print_vec(a2);
+    //print_vec(a1);
+    //print_vec(a2);
     return (0);
 }

@@ -10,7 +10,7 @@
 
 void prepost_incdec(TESTED_NAMESPACE::vector<TESTED_TYPE> &vct)
 {
-    /*
+    /* */
     ft::vector<int>::iterator it = vct.begin();
     ft::vector<int>::iterator it_tmp;
 
@@ -30,15 +30,15 @@ void prepost_incdec(TESTED_NAMESPACE::vector<TESTED_TYPE> &vct)
     it_tmp = it--;
     std::cout << *it_tmp << " | " << *it << std::endl;
     std::cout << "###############################################" << std::endl;
-    */
     return;
 }
 
 int my_vector_ite(void)
 {
-    /*
+    /* */
     const int size = 5;
     ft::vector<int> vct(size);
+    /*
     ft::vector<int>::iterator it = vct.begin();
     //TODO: revoir les const
     ft::vector<int>::iterator const ite = vct.begin();
@@ -53,18 +53,18 @@ int my_vector_ite(void)
     std::cout << *(it += 2) << std::endl;
     std::cout << *(it -= 1) << std::endl;
 
-    //TODO: a faire
-    // *(it -= 2) = 42;
-    // *(it += 2) = 21;
+    *(it -= 2) = 42;
+    *(it += 2) = 21;
+    */
 
-    std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
-    std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
+    //Le test fait un truc qui ne compile pas on purpose ?
+    //std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
+    //std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
 
-    std::cout << "(it == const_it): " << (ite == it) << std::endl;
-    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+    //std::cout << "(it == const_it): " << (ite == it) << std::endl;
+    //std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+    //std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
 
     //printSize(vct, true);
-    */
     return (0);
 }

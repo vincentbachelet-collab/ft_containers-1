@@ -2,13 +2,6 @@ NAME			=	containers
 NAME_FT			=	ft_containers
 NAME_STD		=	std_containers
 CC				=	clang++
-#OBJDIR			=	objects
-#OBJDIR_FT		=	ft_objects
-#OBJDIR_STD		=	std_objects
-#SRC				=	main.cpp
-#OBJ 			=	$(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
-#OBJ_FT 			=	$(addprefix $(OBJDIR_FT)/, $(SRC:.cpp=.o))
-#OBJ_STD			=	$(addprefix $(OBJDIR_STD)/, $(SRC:.cpp=.o))
 
 OBJ 			=	$(SRC:.cpp=.o)
 OBJ_FT 			=	$(SRC:.cpp=.o)
@@ -31,46 +24,6 @@ SRC				=		./main.cpp \
 						./srcs/tests/vector/my_vector_swap.cpp \
 						./srcs/tests/vector/my_vector_size.cpp \
 						./srcs/tests/vector/my_vector_ite.cpp \
-
-						# ./srcs/tests/vector/my_vector_bidirect_it.cpp \
-						# ./srcs/tests/vector/my_vector_insert2.cpp \
-						# ./srcs/tests/vector/my_vector_ite_arrow.cpp \
-						# ./srcs/tests/vector/my_vector_ite_n0.cpp \
-						# ./srcs/tests/vector/my_vector_ite_n00.cpp \
-						# ./srcs/tests/vector/my_vector_ite_n1.cpp \
-						# ./srcs/tests/vector/my_vector_relational_ope.cpp \
-						# ./srcs/tests/vector/my_vector_rev_ite_construct.cpp \
-						# ./srcs/tests/vector/my_vector_rite_arrow.cpp \
-						# ./srcs/tests/vector/my_vector_rite_eq_ope.cpp \
-						# ./srcs/tests/vector/my_vector_rite.cpp \
-						# ./srcs/tests/vector/my_vector_rite2.cpp \
-						# ./srcs/tests/stack/my_stack_default_copy.cpp \
-						# ./srcs/tests/stack/my_stack_default.cpp \
-						# ./srcs/tests/stack/my_stack_list_copy.cpp \
-						# ./srcs/tests/stack/my_stack_relational_ope_list.cpp \
-						# ./srcs/tests/stack/my_stack_relational_ope.cpp \
-						# ./srcs/tests/map/my_map_bouds.cpp \
-						# ./srcs/tests/map/my_map_comp.cpp \
-						# ./srcs/tests/map/my_map_copy_construct.cpp \
-						# ./srcs/tests/map/my_map_empty.cpp \
-						# ./srcs/tests/map/my_map_erase.cpp \
-						# ./srcs/tests/map/my_map_erase2.cpp \
-						# ./srcs/tests/map/my_map_find_count.cpp \
-						# ./srcs/tests/map/my_map_insert.cpp \
-						# ./srcs/tests/map/my_map_insert2.cpp \
-						# ./srcs/tests/map/my_map_ite_arrow.cpp \
-						# ./srcs/tests/map/my_map_ite_n0.cpp \
-						# ./srcs/tests/map/my_map_ite_n1.cpp \
-						# ./srcs/tests/map/my_map_ite_type.cpp \
-						# ./srcs/tests/map/my_map_more.cpp \
-						# ./srcs/tests/map/my_map_op_sqbr.cpp \
-						# ./srcs/tests/map/my_map_relational_ope.cpp \
-						# ./srcs/tests/map/my_map_rev_ite_construct.cpp \
-						# ./srcs/tests/map/my_map_rite_arrow.cpp \
-						# ./srcs/tests/map/my_map_rite.cpp \
-						# ./srcs/tests/map/my_map_swap.cpp \
-						# ./srcs/tests/map/my_map_tricky_construct.cpp \
-						# ./srcs/tests/map/my_map_tricky_erase.cpp \
 
 
 ifneq (,$(findstring xterm,${TERM}))
