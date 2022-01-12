@@ -1,15 +1,14 @@
 #include "../../../includes.hpp"
+#include "../../../vector.hpp"
 
-#ifndef TESTED_NAMESPACE
 #define TESTED_NAMESPACE std
-#endif
 
 #define TESTED_TYPE int
 
 void print_vec(TESTED_NAMESPACE::vector<TESTED_TYPE> vec)
 {
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vec.begin();
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator ite = vec.end();
+    ft::vector<int>::iterator it = vec.begin();
+    ft::vector<int>::iterator ite = vec.end();
 
     std::cout << "Printing vec : ";
     while (it != ite)
@@ -23,9 +22,9 @@ void print_vec(TESTED_NAMESPACE::vector<TESTED_TYPE> vec)
 int my_vector_insert(void)
 {
     //Main d'exemple c plus plus reference
-    TESTED_NAMESPACE::vector<TESTED_TYPE> vec(3, 100);
+    ft::vector<int> vec(3, 100);
     //print_vec(vec);
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it;
+    ft::vector<int>::iterator it;
     it = vec.begin();
     it = vec.insert(it, 200);
     print_vec(vec);

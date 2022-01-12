@@ -1,11 +1,10 @@
 
 #include "../../../includes.hpp"
+#include "../../../vector.hpp"
 
 /* Inspiration des tests de mli */
 //On va tester les deux namespace et faire des diffs sur les resultats
-#ifndef TESTED_NAMESPACE
 #define TESTED_NAMESPACE ft
-#endif
 
 #define TESTED_TYPE int
 

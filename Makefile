@@ -30,6 +30,7 @@ SRC				=		./main.cpp \
 						./srcs/tests/vector/my_vector_insert.cpp \
 						./srcs/tests/vector/my_vector_swap.cpp \
 						./srcs/tests/vector/my_vector_size.cpp \
+						./srcs/tests/vector/my_vector_ite.cpp \
 
 						# ./srcs/tests/vector/my_vector_bidirect_it.cpp \
 						# ./srcs/tests/vector/my_vector_insert2.cpp \
@@ -37,7 +38,6 @@ SRC				=		./main.cpp \
 						# ./srcs/tests/vector/my_vector_ite_n0.cpp \
 						# ./srcs/tests/vector/my_vector_ite_n00.cpp \
 						# ./srcs/tests/vector/my_vector_ite_n1.cpp \
-						# ./srcs/tests/vector/my_vector_ite.cpp \
 						# ./srcs/tests/vector/my_vector_relational_ope.cpp \
 						# ./srcs/tests/vector/my_vector_rev_ite_construct.cpp \
 						# ./srcs/tests/vector/my_vector_rite_arrow.cpp \

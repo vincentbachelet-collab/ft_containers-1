@@ -1,16 +1,15 @@
 #include "../../../includes.hpp"
+#include "../../../vector.hpp"
 
-#ifndef TESTED_NAMESPACE
 #define TESTED_NAMESPACE ft
-#endif
 
 #define TESTED_TYPE int
 
 //meme chose que at mais avec un vecteur const
 int my_vector_at_const(void)
 {
-    TESTED_NAMESPACE::vector<TESTED_TYPE> const vec(3, 3);
-    TESTED_TYPE &ref = vec.at(2);
+    ft::vector<int> const vec(3, 3);
+    int &ref = vec.at(2);
     std::cout << ref << std::endl;
     try
     {
@@ -25,7 +24,7 @@ int my_vector_at_const(void)
         std::cout << "Error" << std::endl;
     }
     //Tests reference c plus plus
-    TESTED_NAMESPACE::vector<TESTED_TYPE> myvector(10); // 10 zero-initialized ints
+    ft::vector<int> myvector(10); // 10 zero-initialized ints
 
     // assign some values:
     for (unsigned i = 0; i < myvector.size(); i++)
@@ -58,8 +57,8 @@ int my_vector_at_const(void)
     }
 
     std::cout << "data: " << std::endl;
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = data.begin();
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator ite = data.end();
+    ft::vector<int>::iterator it = data.begin();
+    ft::vector<int>::iterator ite = data.end();
     while (it != ite)
     {
         std::cout << (*it);

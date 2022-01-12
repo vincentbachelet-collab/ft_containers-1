@@ -37,47 +37,28 @@ namespace ft
             return this->_p;
         }
 
-        //TODO: a revoir
-        /*
-        operator vector_iterator<value_type const>() const
-        {
-            return vector_iterator<value_type const>(this->_p);
-        }
-        */
-
         vector_iterator &operator++()
         {
-#if DEBUG == 1
-            std::cout << "vector iterator post incrementation operator called" << std::endl;
-#endif
             this->_p++;
             return (*this);
         }
 
         vector_iterator operator++(int)
         {
-#if DEBUG == 1
-            std::cout << "vector iterator pre incrementation operator called" << std::endl;
-#endif
-            vector_iterator it = *this;
-            this->_p++;
-            return (it);
+            vector_iterator res(*this);
+            ++(*this);
+            return (res);
         }
 
         vector_iterator &operator--()
         {
-#if DEBUG == 1
-            std::cout << "vector iterator post decrementation operator called" << std::endl;
-#endif
-            this->_p--;
-            return (*this);
+            vector_iterator res(*this);
+            --(*this);
+            return (res);
         }
 
         vector_iterator operator--(int)
         {
-#if DEBUG == 1
-            std::cout << "vector iterator pre decrementation operator called" << std::endl;
-#endif
             vector_iterator it = *this;
             (*this)--;
             return it;
@@ -90,8 +71,8 @@ namespace ft
 
         value_type *operator->()
         {
-            value_type *p = get_ptr();
-            return (p);
+            --_p;
+            return (*this);
         }
 
         reference operator*() const { return (*_p); }
@@ -99,28 +80,18 @@ namespace ft
         bool operator==(const vector_iterator &other) const
         {
             bool b = this->_p == other._p;
-#if DEBUG == 1
-
-            std::cout << "the result is " << b << std::endl;
-#endif
             return (b);
         }
 
         bool operator!=(const vector_iterator &other) const
         {
             bool b = this->_p != other._p;
-#if DEBUG == 1
-            std::cout << "the result is " << b << std::endl;
-#endif
             return (b);
         }
 
         bool operator!=(const vector_iterator &other)
         {
             bool b = this->_p != other._p;
-#if DEBUG == 1
-            std::cout << "the result is " << b << std::endl;
-#endif
             return (b);
         }
 
@@ -128,36 +99,24 @@ namespace ft
         operator<(const vector_iterator &other) const
         {
             bool b = this->_p < other._p;
-#if DEBUG == 1
-            std::cout << "the result is " << b << std::endl;
-#endif
             return (b);
         }
 
         bool operator<=(const vector_iterator &other) const
         {
             bool b = this->_p <= other._p;
-#if DEBUG == 1
-            std::cout << "the result is " << b << std::endl;
-#endif
             return (b);
         }
 
         bool operator>(const vector_iterator &other) const
         {
             bool b = this->_p > other._p;
-#if DEBUG == 1
-            std::cout << "the result is " << b << std::endl;
-#endif
             return (b);
         }
 
         bool operator>=(const vector_iterator &other) const
         {
             bool b = this->_p >= other._p;
-#if DEBUG == 1
-            std::cout << "the result is " << b << std::endl;
-#endif
             return (b);
         }
 
@@ -171,36 +130,24 @@ namespace ft
         operator-(difference_type n) const
         {
             vector_iterator<T> res = this->_p - n;
-#if DEBUG == 1
-            std::cout << "the result is " << res << std::endl;
-#endif
             return (res);
         }
 
         difference_type operator-(const vector_iterator &rhs) const
         {
             difference_type res = this->_p - rhs._p;
-#if DEBUG == 1
-            std::cout << "the result is " << res << std::endl;
-#endif
             return (res);
         }
 
         vector_iterator<T> operator+=(difference_type n) const
         {
             vector_iterator<T> res = this->_p += n;
-#if DEBUG == 1
-            std::cout << "the result is " << res << std::endl;
-#endif
             return (this->_p += n);
         }
 
         vector_iterator<T> operator-=(difference_type n) const
         {
             vector_iterator<T> res = this->_p -= n;
-#if DEBUG == 1
-            std::cout << "the result is " << res << std::endl;
-#endif
             return (res);
         }
 
@@ -214,9 +161,6 @@ namespace ft
     bool operator==(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
     {
         bool res = a.get_ptr() == b.get_ptr();
-#if DEBUG == 1
-        std::cout << "the result is " << res << std::endl;
-#endif
         return (res);
     }
 
@@ -224,9 +168,6 @@ namespace ft
     bool operator!=(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
     {
         bool res = a.get_ptr() != b.get_ptr();
-#if DEBUG == 1
-        std::cout << "the result is " << res << std::endl;
-#endif
         return (res);
     }
 
@@ -234,9 +175,6 @@ namespace ft
     bool operator<(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
     {
         bool res = a.get_ptr() < b.get_ptr();
-#if DEBUG == 1
-        std::cout << "the result is " << res << std::endl;
-#endif
         return (res);
     }
 
@@ -244,9 +182,6 @@ namespace ft
     bool operator<=(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
     {
         bool res = a.get_ptr() <= b.get_ptr();
-#if DEBUG == 1
-        std::cout << "the result is " << res << std::endl;
-#endif
         return (res);
     }
 
@@ -254,9 +189,6 @@ namespace ft
     bool operator>(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
     {
         bool res = a.get_ptr() > b.get_ptr();
-#if DEBUG == 1
-        std::cout << "the result is " << res << std::endl;
-#endif
         return (res);
     }
 
@@ -264,9 +196,6 @@ namespace ft
     bool operator>=(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
     {
         bool res = a.get_ptr() >= b.get_ptr();
-#if DEBUG == 1
-        std::cout << "the result is " << res << std::endl;
-#endif
         return (res);
     }
 }

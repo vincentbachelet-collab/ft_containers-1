@@ -1,16 +1,15 @@
 #include "../../../includes.hpp"
+#include "../../../vector.hpp"
 
-#ifndef TESTED_NAMESPACE
 #define TESTED_NAMESPACE ft
-#endif
 
 #define TESTED_TYPE int
 
 //TODO: a mettre dans un fichier commun pour ne pas avoir a reinclure
 void print_vec(TESTED_NAMESPACE::vector<TESTED_TYPE> vec)
 {
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vec.begin();
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator ite = vec.end();
+    ft::vector<int>::iterator it = vec.begin();
+    ft::vector<int>::iterator ite = vec.end();
 
     std::cout << "Printing vec : ";
     while (it != ite)
@@ -23,8 +22,8 @@ void print_vec(TESTED_NAMESPACE::vector<TESTED_TYPE> vec)
 
 int my_vector_swap(void)
 {
-    TESTED_NAMESPACE::vector<TESTED_TYPE> foo(3, 100); // three ints with a value of 100
-    TESTED_NAMESPACE::vector<TESTED_TYPE> bar(5, 200); // five ints with a value of 200
+    ft::vector<int> foo(3, 100); // three ints with a value of 100
+    ft::vector<int> bar(5, 200); // five ints with a value of 200
 
     foo.swap(bar);
 
@@ -39,12 +38,12 @@ int my_vector_swap(void)
     std::cout << std::endl;
 
     //std::cout << "Other test" << std::endl;
-    TESTED_NAMESPACE::vector<int> a1;
+    ft::vector<int> a1;
     a1.push_back(1);
     a1.push_back(2);
     a1.push_back(3);
     print_vec(a1);
-    TESTED_NAMESPACE::vector<int> a2;
+    ft::vector<int> a2;
     a2.push_back(4);
     a2.push_back(5);
     print_vec(a2);

@@ -2,29 +2,35 @@
 
 #include "includes.hpp"
 
+#include "vector_iterator.hpp"
+#include "utils.hpp"
+
+struct enable_if;
+//class vector_iterator;
+
 namespace ft
 {
+	//class vector_iterator;
 	template <typename T, typename Alloc = std::allocator<T> >
 	class vector
 	{
 	public:
 		typedef T value_type;
 		typedef Alloc allocator_type;
+		typedef long int difference_type;
 		typedef typename allocator_type::reference reference;
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::size_type size_type;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
+
 		typedef vector_iterator<value_type> iterator;
 		typedef vector_iterator<value_type const> const_iterator;
-		//typedef reverse_iterator<iterator> reverse_iterator;
 
-		//typedef typename ft::vector_iterator<T, false> iterator;
-		//typedef typename ft::vector_iterator<T, true> const_iterator;
-
-		//typedef typename ft::reverse_iterator<T, false> reverse_iterator;
-		//typedef typename ft::reverse_iterator<T, true> const_reverse_iterator;
-		typedef typename allocator_type::difference_type difference_type;
+		//typedef ft::vector_iterator iterator;
+		//typedef ft::vector_iterator const_iterator;
+		//typedef typename reverse_iterator reverse_iterator;
+		//typedef typename reverse_iterator const_reverse_iterator;
 
 	private:
 		size_type _size;		   //taille du vecteur (remplie)
@@ -90,11 +96,12 @@ namespace ft
 			return (iterator(_ptr));
 		}
 
-		const_iterator begin() const
+		//TODO: revoir les const ?
+		iterator begin() const
 		{
 			//if (empty())
 			//	return (end());
-			return (const_iterator(_ptr));
+			return (iterator(_ptr));
 		}
 
 		iterator end()
@@ -105,12 +112,12 @@ namespace ft
 		}
 
 		/**/
-		const_iterator end() const
+		iterator end() const
 		{
 			//if (empty())
 			//	return (end());
 			//return (const_iterator(_ptr[size()]));
-			return const_iterator(_ptr + _size);
+			return iterator(_ptr + _size);
 		}
 
 		//TODO:revoir reverse iterator et reverse iterator
@@ -184,6 +191,7 @@ namespace ft
 		//Le enable if est necessaire sinon la fonction construct ne pourra pas compiler
 		//Dans le enable if, si la premiere partie avant la virgule est fausse, la deuxieme partie sera ignoree
 		//Is integral represente grosso modo les data types qu on connait depuis le c
+		/* */
 		template <class InputIterator>
 		vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type()) : _size(0), _capacity(0), _allocator(alloc), _ptr(NULL)
 		{
@@ -225,10 +233,6 @@ namespace ft
 		size_t max_size() const
 		{
 			size_t ret = _allocator.max_size();
-#if DEBUG == 1
-			std::cout << "Max size function called" << std::endl;
-			std::cout << "ret is " << ret << std::endl;
-#endif
 			return (ret);
 		}
 
@@ -493,41 +497,6 @@ namespace ft
 		template <class InputIterator>
 		void insert(iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
-			//(void)value;
-			(void)first;
-			(void)last;
-			(void)false;
-			/*
-			size_type n = 0;
-			size_type begin = 0;
-			size_type end = 0;
-			for (InputIterator it = first; it != last; it++)
-				n++;
-			iterator it = this->begin();
-			for (; it != position; it++)
-				begin++;
-			for (; it != this->end(); it++)
-				end++;
-			if (_size + n > this->capacity())
-			{
-				if (_size + n < _capacity * 2)
-					reserve(_capacity * 2);
-				else
-					reserve(_size + n);
-			}
-			for (size_type i = 0; i < end; i++)
-			{
-				_allocator.construct(&_ptr[begin + n + end - i - 1], _ptr[begin + end - i - 1]);
-				_allocator.destroy(&_ptr[begin + end - i - 1]);
-			}
-			InputIterator curs = first;
-			for (size_type i = 0; i < n; i++)
-			{
-				_allocator.construct(&_ptr[begin + i], *curs);
-				curs++;
-			}
-			_size += n;
-			*/
 			bool is_valid = true;
 
 			size_type dist = ft::distance(first, last);
@@ -645,8 +614,6 @@ namespace ft
 
 		vector &operator=(const vector &src)
 		{
-			if (DEBUG == 1)
-				std::cout << "vector assignation operator called" << std::endl;
 			if (this->_size < src._size)
 			{
 				reserve(src._size);
@@ -672,7 +639,6 @@ namespace ft
 		}
 
 		
-
 		void resize(size_type n, value_type val = value_type())
 		{
 		(void)val;
@@ -704,169 +670,39 @@ namespace ft
 		this->_size = n;
 		}
 
-	void reserve(size_type n)
-	{
-		try
-		{
-			if (n > getCapacity())
-				realloc(get_fit_capacity(n));
-		}
-		catch (std::exception &e)
-			throw;
-		if (n > this->getCapacity())
-		{
-			pointer_type new = _allocator.allocate(n);
-			int i = 0;
-			while (i < this->getSize())
-			{
-				_allocator.construct(&new[i], _p[i]);
-				_allocator.destroy(&_p[i]);
-				i++;
-			}
-			_allocator.deallocate(this->_p, n);
-			this->_p = new;
-			this->_capacity = n;
-		}
-	}
-
-	protected:
-
-	void setCapacity(size_type target)
-	{
-		if (DEBUG == 1)
-			std::cout << "Set capacity function called" << std::endl;
-		this->_capacity = target;
-	}
-
-	static size_type fitted_capacity(size_type target)
-	{
-		size_type capacity = 1;
-		if (DEBUG == 1)
-			std::cout << "The target is " << target << std::endl;
-		if (target == 0)
-			return (0);
-		while (capacity < target)
-			capacity = capacity * 2;
-		if (DEBUG == 1)
-			std::cout << "The capacity is now " << capacity << std::endl;
-		return (capacity);
-	}
-
-	void construct(size_type index, const_reference val, pointer data)
-	{
-		_allocator.construct(_allocator.address(data[index]), val);
-		if (DEBUG == 1)
-			std::cout << "First construct private function called" << std::endl;
-	}
-
-	void construct(size_type index, const_reference val)
-	{
-		construct(index, val, _ptr);
-		if (DEBUG == 1)
-			std::cout << "Second construct private function called" << std::endl;
-	}
-
-	pointer allocate(size_type n)
-	{
-		if (DEBUG == 1)
-			std::cout << "allocate function called" << std::endl;
-		return (_allocator.allocate(n));
-	}
-
-	void deallocate()
-	{
-		if (DEBUG == 1)
-			std::cout << "deallocate function called" << std::endl;
-		_allocator.deallocate(_ptr);
-	}
-
-	void destroy(size_type index, pointer data)
-	{
-		if (DEBUG == 1)
-			std::cout << "Destroy index + pointer function called" << std::endl;
-		_allocator.destroy(_allocator.address(data[index]));
-	}
-
-	void destroy(size_type index)
-	{
-		if (DEBUG == 1)
-			std::cout << "destroy index parameter called" << std::endl;
-		destroy(index, this->_p);
-	}
-
-	void destroy(iterator position)
-	{
-		if (DEBUG == 1)
-			std::cout << "destroy iterator parameter function called" << std::endl;
-		size_type i = 0;
-		iterator first = begin();
-		iterator end = end();
-		while (first != position && first != end)
-		{
-			first++;
-			i++;
-		}
-		destroy(i);
-	}
-
-	void clear()
-	{
-		std::cout << "clear function called" << std::endl;
-		this->size = 0;
-	}
-
-
 	public:
 
 		reference front()
 		{
 			reference ref = _p[0];
-			if (DEBUG == 1)
-			{
-				std::cout << "front accessor called" << std::endl;
-				std::cout << "ref is " << ref << std::endl;
-			}
 			return (ref);
 		}
 
 		const_reference front() const
 		{
 			reference ref = _p[0];
-			if (DEBUG == 1)
-			{
-				std::cout << "front accessor called" << std::endl;
-				std::cout << "ref is " << ref << std::endl;
-			}
 			return (ref);
 		}
 
 
 		allocator_type get_allocator() const
 		{
-			if (DEBUG == 1)
-				std::cout << "get_allocator function called" << std::endl;
 			return (this->_allocator);
 		}
 
 	protected:
 		size_type getCapacity() const
 		{
-			if (DEBUG == 1)
-				std::cout << "The capacity is " << this->_capacity << std::endl;
 			return (this->_capacity);
 		}
 
 		size_type getSize() const
 		{
-			if (DEBUG == 1)
-				std::cout << "The size is " << this->_size << std::endl;
 			return (this->_size);
 		}
 
 		pointer getPtr() const
 		{
-			if (DEBUG == 1)
-				std::cout << "getPtr function called" << std::endl;
 			return (this->ptr);
 		}
 }
@@ -874,8 +710,6 @@ namespace ft
 	template <typename T, typename Alloc>
 	bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (DEBUG == 1)
-			std::cout << "Operator != called" << std::endl;
 		bool ret = !(lhs == rhs);
 		if (DEBUG == 1)
 			std::cout << "Operation != is" << ret << std::endl;
@@ -887,8 +721,6 @@ namespace ft
 	{
 		(void)lhs;
 		(void)rhs;
-		if (DEBUG == 1)
-			std::cout << "Operator < called" << std::endl;
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
@@ -897,12 +729,6 @@ namespace ft
 	{
 		bool ret1 = lhs < rhs;
 		bool ret2 = lhs == rhs;
-		if (DEBUG == 1)
-		{
-			std::cout << "operator <= called" << std::endl;
-			std::cout << "ret1 is " << ret1 << std::endl;
-			std::cout << "ret2 is " << ret2 << std::endl;
-		}
 		return (ret1 || lhs == ret2);
 	}
 
@@ -910,11 +736,6 @@ namespace ft
 	bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		bool ret = rhs < lhs;
-		if (DEBUG == 1)
-		{
-			std::cout << "operator > called" << std::endl;
-			std::cout << "ret is " << ret << std::endl;
-		}
 		return (ret);
 	}
 
@@ -923,12 +744,6 @@ namespace ft
 	{
 		bool ret1 = lhs > rhs;
 		bool ret2 = lhs == rhs;
-		if (DEBUG == 1)
-		{
-			std::cout << "operator <= called" << std::endl;
-			std::cout << "ret1 is " << ret1 << std::endl;
-			std::cout << "ret2 is " << ret2 << std::endl;
-		}
 		return (ret1 || ret2);
 	}
 */

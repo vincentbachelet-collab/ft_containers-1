@@ -1,15 +1,14 @@
 #include "../../../includes.hpp"
+#include "../../../vector.hpp"
 
-#ifndef TESTED_NAMESPACE
 #define TESTED_NAMESPACE ft
-#endif
 
 #define TESTED_TYPE int
 
 int my_vector_erase(void)
 {
     //reference cpp
-    TESTED_NAMESPACE::vector<TESTED_TYPE> myvector;
+    ft::vector<int> myvector;
 
     // set some values (from 1 to 10)
     for (int i = 1; i <= 10; i++)
@@ -27,20 +26,20 @@ int my_vector_erase(void)
     std::cout << std::endl;
 
     //reference c plus plus
-    TESTED_NAMESPACE::vector<TESTED_TYPE> cnt;
+    ft::vector<int> cnt;
     cnt.push_back(4);
     cnt.push_back(-1);
     cnt.push_back(10);
     cnt.push_back(2);
     //print_container("Init:\n", cnt);
 
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = cnt.begin();
+    ft::vector<int>::iterator it = cnt.begin();
 
     //prend un iterateur et pas un int/position
     cnt.erase(it);
     it = cnt.begin();
     std::cout << "second test : ";
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator ite = cnt.end();
+    ft::vector<int>::iterator ite = cnt.end();
     while (it != ite)
     {
         std::cout << (*it) << " ";

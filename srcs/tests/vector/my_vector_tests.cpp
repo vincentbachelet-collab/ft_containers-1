@@ -1,4 +1,5 @@
 #include "../../../includes.hpp"
+#include "../../../vector.hpp"
 
 /* Tests basiques persos: construction... */
 int my_vector_tests(void)

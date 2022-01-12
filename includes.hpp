@@ -24,10 +24,10 @@
 #include <numeric>
 #include <string_view>
 
-#include "reverse_iterator.hpp"
-#include "utils.hpp"
-#include "vector_iterator.hpp"
-#include "vector.hpp"
+//#include "reverse_iterator.hpp"
+//#include "utils.hpp"
+//#include "vector_iterator.hpp"
+//#include "vector.hpp"
 
 int my_vector_tests(void);
 int my_vector_assign(void);
@@ -39,3 +39,4 @@ int my_vector_erase(void);
 int my_vector_insert(void);
 int my_vector_swap(void);
 int my_vector_size(void);
+int my_vector_ite(void);

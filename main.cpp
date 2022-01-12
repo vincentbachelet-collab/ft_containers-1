@@ -1,4 +1,5 @@
 #include "includes.hpp"
+#include "vector.hpp"
 
 int main(void)
 {
@@ -13,8 +14,11 @@ int main(void)
     //my_vector_erase();
     //my_vector_insert();
     //my_vector_swap();
+
+    //my_vector_size();
+    my_vector_ite();
+
     /* Test sur stack */
-    my_vector_size();
 
     /*Test sur map*/
     return (0);

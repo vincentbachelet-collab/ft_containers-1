@@ -1,15 +1,14 @@
 #include "../../../includes.hpp"
+#include "../../../vector.hpp"
 
-#ifndef TESTED_NAMESPACE
-#define TESTED_NAMESPACE std
-#endif
+#define TESTED_NAMESPACE ft
 
 #define TESTED_TYPE int
 
 //TODO: a tester
 int my_vector_size(void)
 {
-    TESTED_NAMESPACE::vector<TESTED_TYPE> myints;
+    ft::vector<int> myints;
     std::cout << "0. size: " << myints.size() << '\n';
 
     for (int i = 0; i < 10; i++)

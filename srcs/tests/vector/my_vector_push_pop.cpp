@@ -1,15 +1,14 @@
 #include "../../../includes.hpp"
+#include "../../../vector.hpp"
 
-#ifndef TESTED_NAMESPACE
 #define TESTED_NAMESPACE ft
-#endif
 
 #define TESTED_TYPE int
 
-void printvec(TESTED_NAMESPACE::vector<TESTED_TYPE> vec)
+void printvec(ft::vector<int> vec)
 {
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vec.begin();
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator ite = vec.end();
+    ft::vector<int>::iterator it = vec.begin();
+    ft::vector<int>::iterator ite = vec.end();
 
     std::cout << "[ ";
     while (it != ite)
@@ -24,7 +23,7 @@ void printvec(TESTED_NAMESPACE::vector<TESTED_TYPE> vec)
 int my_vector_push_pop(void)
 {
     std::cout << "Testing push_back :" << std::endl;
-    TESTED_NAMESPACE::vector<TESTED_TYPE> vec;
+    ft::vector<int> vec;
     int i = 0;
     while (i < 100)
     {
@@ -33,8 +32,8 @@ int my_vector_push_pop(void)
     }
     std::cout << "OK !" << std::endl;
     std::cout << "--------------" << std::endl;
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vec.begin();
-    TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator ite = vec.end();
+    ft::vector<int>::iterator it = vec.begin();
+    ft::vector<int>::iterator ite = vec.end();
     while (it != ite)
     {
         //std::cout << (*it) << std::endl;
