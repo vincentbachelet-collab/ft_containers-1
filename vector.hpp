@@ -6,7 +6,7 @@
 #include "utils.hpp"
 
 struct enable_if;
-//class vector_iterator;
+class vector_iterator;
 
 namespace ft
 {
@@ -394,7 +394,8 @@ namespace ft
 			return first;
 		}
 
-		//TODO: faire des sous fonctions
+		//TODO: revoir insert
+		/*
 		iterator insert(iterator position, const value_type &val)
 		{
 			size_type pos_len = &(*position) - _ptr;
@@ -433,8 +434,8 @@ namespace ft
 			}
 			return (iterator(_ptr + pos_len));
 		}
+		*/
 
-		//TODO: corriger cette version
 		/*
 		void insert(iterator position, size_type n, const value_type &val)
 		{
@@ -494,6 +495,7 @@ namespace ft
 		}
 		*/
 
+		/*
 		template <class InputIterator>
 		void insert(iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
@@ -543,6 +545,7 @@ namespace ft
 				_capacity = new_end_capacity;
 			}
 		}
+		*/
 		reference back()
 		{
 			reference ref = this->_ptr[this->_size - 1];

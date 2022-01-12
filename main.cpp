@@ -16,7 +16,7 @@ int main(void)
     //my_vector_swap();
 
     //my_vector_size();
-    my_vector_ite();
+    //my_vector_ite();
 
     /* Test sur stack */
 

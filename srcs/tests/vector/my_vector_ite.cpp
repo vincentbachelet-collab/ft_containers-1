@@ -6,10 +6,11 @@
 #define TESTED_TYPE int
 
 //Teste des iterator (const et pas const) (et operateur de comparaison)
-//TODO
+//TODO: a revoir
 
 void prepost_incdec(TESTED_NAMESPACE::vector<TESTED_TYPE> &vct)
 {
+    /*
     ft::vector<int>::iterator it = vct.begin();
     ft::vector<int>::iterator it_tmp;
 
@@ -29,10 +30,13 @@ void prepost_incdec(TESTED_NAMESPACE::vector<TESTED_TYPE> &vct)
     it_tmp = it--;
     std::cout << *it_tmp << " | " << *it << std::endl;
     std::cout << "###############################################" << std::endl;
+    */
+    return;
 }
 
 int my_vector_ite(void)
 {
+    /*
     const int size = 5;
     ft::vector<int> vct(size);
     ft::vector<int>::iterator it = vct.begin();
@@ -61,5 +65,6 @@ int my_vector_ite(void)
     std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
 
     //printSize(vct, true);
+    */
     return (0);
 }
