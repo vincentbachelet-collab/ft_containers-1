@@ -1,9 +1,11 @@
 #pragma once
 
-#include "includes.hpp"
+#include <memory>
+#include <iostream>
+#include <string>
 #include "vector_iterator.hpp"
-#include "utils.hpp"
 #include "reverse_iterator.hpp"
+#include "utils.hpp"
 
 struct enable_if;
 class vector_iterator;
@@ -299,20 +301,22 @@ namespace ft
 		//retourne une reference de l element a la position n dans le vecteur
 		reference at(size_type n)
 		{
-			if (n >= this->get_size())
+			//if (n >= this->get_size())
+			if (n >= _size)
 				throw std::out_of_range("out of range");
-			reference ref = this->_ptr[n];
-			return (ref);
+			//reference ref = this->_ptr[n];
+			return (_ptr[n]);
 		}
 
 		//retourne une reference de l element a la position n dans le vecteurs
 		const reference at(size_type n) const
 		{
-			if (n >= this->get_size())
+			//if (n >= this->get_size())
+			if (n >= _size)
 				//C'est bien le comportement qui a lieu avec la std
 				throw std::out_of_range("out of range");
-			reference ref = _ptr[n];
-			return (ref);
+			//reference ref = _ptr[n];
+			return (_ptr[n]);
 		}
 
 		void push_back(const value &src)

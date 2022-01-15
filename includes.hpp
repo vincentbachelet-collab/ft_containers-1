@@ -24,6 +24,7 @@
 #include <numeric>
 #include <string_view>
 
+/*
 int my_vector_tests(void);
 int my_vector_assign(void);
 int my_vector_at(void);
@@ -33,3 +34,4 @@ int my_vector_copy_construct(void);
 int my_vector_erase(void);
 int my_vector_size(void);
 int my_vector_ite(void);
+*/
