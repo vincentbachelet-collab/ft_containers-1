@@ -88,57 +88,50 @@ namespace ft
 		//Iterateur (necessaires pour tester les autres constructeurs notamment)
 		iterator begin()
 		{
-			//if (empty())
-			//	return (end());
+			if (empty())
+				return (end());
 			return (iterator(_ptr));
 		}
 
 		//TODO: revoir les const ?
 		iterator begin() const
 		{
-			//if (empty())
-			//	return (end());
+			if (empty())
+				return (end());
 			return (iterator(_ptr));
 		}
 
 		iterator end()
 		{
-			//if (empty())
-			//	return (end());
+			if (empty())
+				return (end());
 			return (iterator(this->_ptr + this->_size));
 		}
 
-		/**/
 		iterator end() const
 		{
-			//if (empty())
-			//	return (end());
-			//return (const_iterator(_ptr[size()]));
+			if (empty())
+				return (end());
 			return iterator(_ptr + _size);
 		}
 
-		//TODO:revoir reverse iterator et reverse iterator
-		/*
-		reverse_iterator rbegin()
+		reverse_iterator rbegin() const
 		{
-			//return (reverse_iterator(_ptr[size()]));
-			return reverse_iterator(_vector + _size - 1);
-		}*/
+			return (reverse_iterator(_ptr[size()]));
+		}
 
-		/*
 		const_reverse_iterator rbegin()
 		{
-			//return (reverse_iterator(_ptr[size()]));
-			return const_reverse_iterator(_vector + _size - 1);
+			return (reverse_iterator(_ptr[size()]));
 		}
 
 		reverse_iterator rend()
 		{
-			return reverse_iterator(_vector - 1);
+			return reverse_iterator(_ptr - 1);
 		}
 
-		const_reverse_iterator rend() const { return const_reverse_iterator(_vector - 1); }
-	*/
+		const_reverse_iterator rend() const { return const_reverse_iterator(_ptr - 1); }
+
 		void reserve(size_type size)
 		{
 			if (size > this->get_capacity())
@@ -380,8 +373,6 @@ namespace ft
 			return first;
 		}
 
-		//TODO: revoir insert
-		/* */
 		iterator insert(iterator position, const value &val)
 		{
 			difference diff = position.get_ptr() - _ptr;
@@ -389,7 +380,6 @@ namespace ft
 			return iterator(begin() + diff);
 		}
 
-		/* */
 		void insert(iterator position, size_type n, const value &val)
 		{
 			size_type begin_to_pos = 0;
@@ -418,7 +408,6 @@ namespace ft
 			_size += n;
 		}
 
-		/* */
 		template <class InputIterator>
 		void insert(iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
@@ -533,34 +522,31 @@ namespace ft
 		}
 
 		/*
-void resize(size_type n, value val = value())
-{
-	if (n > getCapacity())
-		realloc(n);
-	if (n > this->_capacity)
-	{
-		if (n < this->_capacity * 2)
-			reserve(this->_capacity * 2);
-		else
-			reserve(n);
-	}
-	int i = this->_nsize;
-	//Construction des elements qui seraient supplementaires
-	while (i < n)
-	{
-		_allocatorator.construct(&_p[i], val);
-		i++;
-	}
-	//Deconstruction des elements qui seraient en trop
-	i = n;
-	while (i < this->getSize())
-	{
-		_allocatorator.destroy(&_p[i]);
-		i++;
-	}
-	this->_size = n;
-}
-*/
+		void resize(size_type n, value val = value())
+		{
+			if (n > this->_capacity)
+			{
+				if (n < this->_capacity * 2)
+					reserve(this->_capacity * 2);
+				else
+					reserve(n);
+			}
+			int i = this->_nsize;
+			//Construction des elements qui seraient supplementaires
+			while (i < n)
+			{
+				_allocator.construct(&_ptr[i], val);
+				i++;
+			}
+			//Deconstruction des elements qui seraient en trop
+			i = n;
+			while (i < this->getSize())
+			{
+				_allocator.destroy(&_ptr[i]);
+				i++;
+			}
+			this->_size = n;
+		} */
 	};
 
 	template <typename T, typename Alloc>
