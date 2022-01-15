@@ -37,20 +37,19 @@ namespace ft
 
         vector_iterator &operator++()
         {
-            this->_p++;
+            _p++;
             return (*this);
         }
 
         vector_iterator operator++(int)
         {
-            vector_iterator res(*this);
+            vector_iterator res = *this;
             ++(*this);
             return (res);
         }
 
         vector_iterator &operator--()
         {
-            //vector_iterator res(*this);
             _p--;
             return (*this);
         }
@@ -58,7 +57,7 @@ namespace ft
         vector_iterator operator--(int)
         {
             vector_iterator it = *this;
-            (*this)--;
+            --(*this);
             return it;
         }
 

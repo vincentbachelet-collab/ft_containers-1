@@ -5,7 +5,9 @@ CC			=	clang++#--verbose
 OBJDIR		=	objects
 OBJDIR_FT	=	ft_objects
 OBJDIR_STD	=	std_objects
-SRC			=	main.cpp
+SRC			=	main.cpp \
+				my_vector_copy_construct.cpp \
+
 OBJ 		=	$(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
 OBJ_FT 		=	$(addprefix $(OBJDIR_FT)/, $(SRC:.cpp=.o))
 OBJ_STD		=	$(addprefix $(OBJDIR_STD)/, $(SRC:.cpp=.o))

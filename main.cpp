@@ -13,6 +13,11 @@
 #define NS ft
 #endif
 
+#ifndef TESTED_NAMESPACE
+#define TESTED_NAMESPACE ft
+#endif
+
+/*
 template <typename T>
 void printSize(NS::vector<T> const &vct, bool print_content = 1)
 {
@@ -29,6 +34,9 @@ void printSize(NS::vector<T> const &vct, bool print_content = 1)
             std::cout << "- " << *it << std::endl;
     }
 }
+*/
+
+int my_vector_copy_construct(void);
 
 template <typename type>
 struct MyAlloc : std::allocator<type>
@@ -43,6 +51,7 @@ struct MyAlloc : std::allocator<type>
     }
 };
 
+/*
 void ft_insert()
 {
     NS::vector<int> myvector(3, 100);
@@ -66,8 +75,6 @@ void ft_insert()
     for (it = myvector.begin(); it < myvector.end(); it++)
         std::cout << ' ' << *it;
     std::cout << '\n';
-    /*
-	*/
 }
 
 void ft_swap()
@@ -84,7 +91,6 @@ void ft_swap()
     std::cout << '\n';
 }
 
-/*
 void ft_reverse_iterator()
 {
     NS::vector<int> myvector;
@@ -229,6 +235,7 @@ void ft_rend()
 }
 */
 
+/*
 void ft_constructor()
 {
     // constructors used in the same order as described above:
@@ -245,8 +252,6 @@ void ft_constructor()
     for (NS::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
         std::cout << ' ' << *it;
     std::cout << '\n';
-    /*
-	*/
 }
 
 template <class T>
@@ -279,8 +284,6 @@ void ft_test()
     std::cout << "\t### After assign(): ###" << std::endl;
 
     printSize(vct);
-    /*
-	*/
     NS::vector<char> characters;
 
     characters.assign(5, 'a');
@@ -364,8 +367,6 @@ void basic_tests()
     for (it = myvector_2.begin(); it < myvector_2.end(); it++)
         std::cout << ' ' << *it;
     std::cout << '\n';
-    /*
-	*/
 }
 
 void ft_erase()
@@ -390,9 +391,47 @@ void ft_erase()
     NS::vector<int>::iterator it = myvector.begin() + 2;
     (void)it;
 }
+*/
+
+void copy_construct(void)
+{
+    NS::vector<int> vct(5);
+    NS::vector<int>::iterator it = vct.begin(), ite = vct.end();
+
+    std::cout << "len: " << (ite - it) << std::endl;
+    for (; it != ite; ++it)
+        *it = (ite - it);
+
+    it = vct.begin();
+    NS::vector<int> vct_range(it, --(--ite));
+    for (int i = 0; it != ite; ++it)
+        *it = ++i * 5;
+
+    it = vct.begin();
+    NS::vector<int> vct_copy(vct);
+    for (int i = 0; it != ite; ++it)
+        *it = ++i * 7;
+    vct_copy.push_back(42);
+    vct_copy.push_back(21);
+
+    std::cout << "\t-- PART ONE --" << std::endl;
+    //printSize(vct);
+    //printSize(vct_range);
+    //printSize(vct_copy);
+
+    vct = vct_copy;
+    vct_copy = vct_range;
+    vct_range.clear();
+
+    std::cout << "\t-- PART TWO --" << std::endl;
+    //printSize(vct);
+    //printSize(vct_range);
+    //printSize(vct_copy);
+}
 
 int main(void)
 {
-
+    //copy_construct();
+    my_vector_copy_construct();
     return (0);
 }

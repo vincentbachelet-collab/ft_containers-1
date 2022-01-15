@@ -90,30 +90,21 @@ namespace ft
 		//Iterateur (necessaires pour tester les autres constructeurs notamment)
 		iterator begin()
 		{
-			if (empty())
-				return (end());
 			return (iterator(_ptr));
 		}
 
-		//TODO: revoir les const ?
 		iterator begin() const
 		{
-			if (empty())
-				return (end());
 			return (iterator(_ptr));
 		}
 
 		iterator end()
 		{
-			if (empty())
-				return (end());
 			return (iterator(this->_ptr + this->_size));
 		}
 
 		iterator end() const
 		{
-			if (empty())
-				return (end());
 			return iterator(_ptr + _size);
 		}
 
@@ -133,6 +124,11 @@ namespace ft
 		}
 
 		const_reverse_iterator rend() const { return const_reverse_iterator(_ptr - 1); }
+
+		void clear(void)
+		{
+			this->_size = 0;
+		}
 
 		void reserve(size_type size)
 		{
@@ -183,7 +179,6 @@ namespace ft
 		//Le enable if est necessaire sinon la fonction construct ne pourra pas compiler
 		//Dans le enable if, si la premiere partie avant la virgule est fausse, la deuxieme partie sera ignoree
 		//Is integral represente grosso modo les data types qu on connait depuis le c
-		/* */
 		template <class InputIterator>
 		vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator &alloc = allocator()) : _size(0), _capacity(0), _allocator(alloc), _ptr(NULL)
 		{
@@ -199,14 +194,21 @@ namespace ft
 		}
 
 		//Copy constructor (4)
-		vector(const vector &src) : _size(src._size), _capacity(src._capacity), _allocator(src._allocator), _ptr(_allocator.allocate(_capacity))
+		vector(const vector &src) : _size(src._size), _capacity(src._capacity), _allocator(src._allocator), _ptr(NULL)
 		{
+			/*
 			size_type i = 0;
+			_ptr = _allocator.allocate(_capacity);
 			while (i < this->_size)
 			{
 				_allocator.construct(&_ptr[i], src._ptr[i]);
 				i++;
 			}
+			*/
+
+			_ptr = _allocator.allocate(_capacity);
+			for (size_type i = 0; i < _size; i++)
+				_allocator.construct(&_ptr[i], src._ptr[i]);
 		}
 
 		//destructeur
@@ -319,7 +321,7 @@ namespace ft
 			return (_ptr[n]);
 		}
 
-		void push_back(const value &src)
+		void push_back(const value &val)
 		{
 			size_type size = this->get_size();
 			if (size == this->get_capacity())
@@ -329,7 +331,19 @@ namespace ft
 				else
 					this->reserve(this->get_capacity() * 2);
 			}
-			_allocator.construct(&_ptr[_size++], src);
+			_allocator.construct(&_ptr[_size], val);
+			_size++;
+			/*
+			if (_size == _capacity)
+			{
+				if (_capacity == 0)
+					reserve(1);
+				else
+					reserve(_capacity * 2);
+			}
+			_allocator.construct(&_ptr[_size], val);
+			_size++;
+			*/
 		}
 
 		//deux versions de erase
@@ -497,60 +511,59 @@ namespace ft
 			return (ref);
 		}
 
-		/* */
-
-		vector &operator=(const vector &src)
+		vector &operator=(const vector &x)
 		{
-			if (this->_size < src._size)
+			if (_size < x._size)
 			{
-				reserve(src._size);
-				resize(src._size);
+				reserve(x._size);
+				resize(x._size);
+			}
+			else
+				for (size_type i = 0; i < _size; i++)
+					_allocator.destroy(&_ptr[i]);
+			_size = x._size;
+			for (size_type i = 0; i < _size; i++)
+				_allocator.construct(&_ptr[i], x._ptr[i]);
+			return *this;
+			/*
+			if (this->_size < rhs._size)
+			{
+				reserve(rhs._size);
+				resize(rhs._size);
 			}
 			else
 			{
-				int i = 0;
-				while (i < this->getSize())
+				unsigned long i = 0;
+				while (i < this->get_size())
 				{
 					_allocator.destroy(&_ptr[i]);
 					i++;
 				}
 			}
-			this->_size = src.size;
-			int i = 0;
+			//this->_size = src._size;
+			unsigned long i = 0;
 			while (i < this->_size)
 			{
-				_allocator.construct(&_ptr[i], src._ptr[i]);
+				_allocator.construct(&_ptr[i], rhs._ptr[i]);
 				i++;
 			}
 			return (*this);
+			*/
+			/*
+			if (_size < rhs._size)
+			{
+				reserve(rhs._size);
+				resize(rhs._size);
+			}
+			else
+				for (size_type i = 0; i < _size; i++)
+					_allocator.destroy(&_ptr[i]);
+			_size = rhs._size;
+			for (size_type i = 0; i < _size; i++)
+				_allocator.construct(&_ptr[i], rhs._ptr[i]);
+			return *this;
+			*/
 		}
-
-		/*
-		void resize(size_type n, value val = value())
-		{
-			if (n > this->_capacity)
-			{
-				if (n < this->_capacity * 2)
-					reserve(this->_capacity * 2);
-				else
-					reserve(n);
-			}
-			int i = this->_nsize;
-			//Construction des elements qui seraient supplementaires
-			while (i < n)
-			{
-				_allocator.construct(&_ptr[i], val);
-				i++;
-			}
-			//Deconstruction des elements qui seraient en trop
-			i = n;
-			while (i < this->getSize())
-			{
-				_allocator.destroy(&_ptr[i]);
-				i++;
-			}
-			this->_size = n;
-		} */
 	};
 
 	template <typename T, typename Alloc>

@@ -1,5 +1,4 @@
-#include "../../../includes.hpp"
-#include "../../../vector.hpp"
+#include "vector.hpp"
 
 #define TESTED_NAMESPACE ft
 
@@ -31,7 +30,7 @@ int my_vector_copy_construct(void)
         *it = (ite - it);
 
     it = vct.begin();
-    TESTED_NAMESPACE::vector<TESTED_TYPE> vct_range(it, --(--ite));
+    TESTED_NAMESPACE::vector<TESTED_TYPE> vct_range(it, ite);
     for (int i = 0; it != ite; ++it)
         *it = ++i * 5;
 
@@ -42,7 +41,8 @@ int my_vector_copy_construct(void)
     vct_copy.push_back(42);
     vct_copy.push_back(21);
 
-    std::cout << "\t-- PART ONE --" << std::endl;
+    std::cout
+        << "\t-- PART ONE --" << std::endl;
     printSize(vct);
     printSize(vct_range);
     printSize(vct_copy);
@@ -54,7 +54,6 @@ int my_vector_copy_construct(void)
     std::cout << "\t-- PART TWO --" << std::endl;
     printSize(vct);
     printSize(vct_range);
-    printSize(vct_copy);
-    return (0);
+    printSize(vct_copy); //le troisieme a bcp trop d element
     return (0);
 }
