@@ -199,7 +199,7 @@ namespace ft
 		}
 
 		//Copy constructor (4)
-		vector(const vector &src) : _allocator(src._allocator), _size(src._size), _ptr(_allocator.allocate(_capacity)), _capacity(src._capacity)
+		vector(const vector &src) : _size(src._size), _capacity(src._capacity), _allocator(src._allocator), _ptr(_allocator.allocate(_capacity))
 		{
 			size_type i = 0;
 			while (i < this->_size)
