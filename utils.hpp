@@ -1,6 +1,6 @@
 #pragma once
 
-#include "includes.hpp"
+#include <iostream>
 
 namespace ft
 {
@@ -22,7 +22,6 @@ namespace ft
     {
     };
 
-    //TODO: revoir ces deux types speciaux
     template <class T>
     struct is_integral<const T> : public is_integral<T>
     {
