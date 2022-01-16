@@ -611,7 +611,7 @@ namespace ft
 	{
 		bool ret1 = lhs < rhs;
 		bool ret2 = lhs == rhs;
-		return (ret1 || lhs == ret2);
+		return (ret1 || ret2);
 	}
 
 	template <class T, class Alloc>
