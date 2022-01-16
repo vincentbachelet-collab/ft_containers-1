@@ -43,13 +43,13 @@ void my_ite_n1(void)
 {
     /*
     const int size = 5;
-	NS::vector<int> const vct(size);
-	NS::vector<int>::iterator it = vct.begin(); // <-- error expected
+    NS::vector<int> const vct(size);
+    NS::vector<int>::iterator it = vct.begin(); // <-- error expected
 
-	for (int i = 0; i < size; ++i)
-		it[i] = i;
+    for (int i = 0; i < size; ++i)
+        it[i] = i;
         */
-    return ;
+    return;
 }
 
 int my_vector_copy_construct(void);
@@ -87,6 +87,70 @@ int my_vector_copy_construct(void)
         *it = ++i * 7;
     vct_copy.push_back(42);
     vct_copy.push_back(21);
+    return (0);
+}
+
+void printSize(NS::vector<int> const &vct, bool print_content = true)
+{
+    const int size = vct.size();
+    const int capacity = vct.capacity();
+    const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
+    // Cannot limit capacity's max value because it's implementation dependent
+
+    std::cout << "size: " << size << std::endl;
+    std::cout << "capacity: " << isCapacityOk << std::endl;
+    std::cout << "max_size: " << vct.max_size() << std::endl;
+    if (print_content)
+    {
+        NS::vector<int>::const_iterator it = vct.begin();
+        NS::vector<int>::const_iterator ite = vct.end();
+        std::cout << std::endl
+                  << "Content is:" << std::endl;
+        for (; it != ite; ++it)
+            std::cout << "- " << *it << std::endl;
+    }
+    std::cout << "###############################################" << std::endl;
+}
+
+int my_rite_arrow(void)
+{
+    const int size = 5;
+    NS::vector<int> vct(size);
+    NS::vector<int>::iterator it(vct.begin());
+    NS::vector<int>::const_iterator ite(vct.end());
+
+    for (int i = 1; it != ite; ++i)
+        *it++ = i;
+    printSize(vct, 1);
+
+    it = vct.begin();
+    ite = vct.begin();
+
+    std::cout << *(++ite) << std::endl;
+    std::cout << *(ite++) << std::endl;
+    std::cout << *ite++ << std::endl;
+    std::cout << *++ite << std::endl;
+
+    it->m();
+    ite->m();
+
+    std::cout << *(++it) << std::endl;
+    std::cout << *(it++) << std::endl;
+    std::cout << *it++ << std::endl;
+    std::cout << *++it << std::endl;
+
+    std::cout << *(--ite) << std::endl;
+    std::cout << *(ite--) << std::endl;
+    std::cout << *--ite << std::endl;
+    std::cout << *ite-- << std::endl;
+
+    //(*it).m();
+    //(*ite).m();
+
+    std::cout << *(--it) << std::endl;
+    std::cout << *(it--) << std::endl;
+    std::cout << *it-- << std::endl;
+    std::cout << *--it << std::endl;
     return (0);
 }
 
@@ -454,23 +518,24 @@ void copy_construct(void)
     vct_copy.push_back(21);
 
     std::cout << "\t-- PART ONE --" << std::endl;
-    //printSize(vct);
-    //printSize(vct_range);
-    //printSize(vct_copy);
+    // printSize(vct);
+    // printSize(vct_range);
+    // printSize(vct_copy);
 
     vct = vct_copy;
     vct_copy = vct_range;
     vct_range.clear();
 
     std::cout << "\t-- PART TWO --" << std::endl;
-    //printSize(vct);
-    //printSize(vct_range);
-    //printSize(vct_copy);
+    // printSize(vct);
+    // printSize(vct_range);
+    // printSize(vct_copy);
 }
 
 int main(void)
 {
-    //copy_construct();
-    //my_vector_copy_construct();
+    // copy_construct();
+    // my_vector_copy_construct();
+    my_rite_arrow();
     return (0);
 }
