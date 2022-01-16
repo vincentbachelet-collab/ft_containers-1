@@ -93,9 +93,9 @@ namespace ft
 			return (iterator(_ptr));
 		}
 
-		iterator begin() const
+		const_iterator begin() const
 		{
-			return (iterator(_ptr));
+			return (const_iterator(_ptr));
 		}
 
 		iterator end()
@@ -103,11 +103,13 @@ namespace ft
 			return (iterator(this->_ptr + this->_size));
 		}
 
-		iterator end() const
+		const_iterator end() const
 		{
-			return iterator(_ptr + _size);
+			return const_iterator(_ptr + _size);
 		}
 
+		//TODO: revoir les reverse iterators
+		/*
 		reverse_iterator rbegin() const
 		{
 			return (reverse_iterator(_ptr[size()]));
@@ -124,7 +126,7 @@ namespace ft
 		}
 
 		const_reverse_iterator rend() const { return const_reverse_iterator(_ptr - 1); }
-
+		*/
 		void clear(void)
 		{
 			this->_size = 0;

@@ -68,8 +68,7 @@ namespace ft
 
         value_type *operator->()
         {
-            --_p;
-            return (*this);
+            return (this->_p);
         }
 
         //reference operator*() const { return (*_p); }

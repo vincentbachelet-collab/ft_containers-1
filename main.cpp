@@ -13,9 +13,11 @@
 #define NS ft
 #endif
 
-#ifndef TESTED_NAMESPACE
-#define TESTED_NAMESPACE ft
-#endif
+//#ifndef TESTED_NAMESPACE
+//#define TESTED_NAMESPACE ft
+//#endif
+
+#define TESTED_TYPE int
 
 /*
 template <typename T>
@@ -35,6 +37,20 @@ void printSize(NS::vector<T> const &vct, bool print_content = 1)
     }
 }
 */
+
+//! Dans ce test on attend que ca plante, donc ne pas l inclure dans le main
+void my_ite_n1(void)
+{
+    /*
+    const int size = 5;
+	NS::vector<int> const vct(size);
+	NS::vector<int>::iterator it = vct.begin(); // <-- error expected
+
+	for (int i = 0; i < size; ++i)
+		it[i] = i;
+        */
+    return ;
+}
 
 int my_vector_copy_construct(void);
 
@@ -432,6 +448,6 @@ void copy_construct(void)
 int main(void)
 {
     //copy_construct();
-    my_vector_copy_construct();
+    //my_vector_copy_construct();
     return (0);
 }
