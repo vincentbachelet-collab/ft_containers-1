@@ -471,7 +471,7 @@ void    my_vector_push_back(void)
 
 void    my_vector_pop_back(void)
 {
-    //TODO
+    //cpp reference
     return ;
 }
 
@@ -481,24 +481,42 @@ int main(void)
     std::cout << "TESTING VECTORS :" << std::endl;
     my_ft_constructor();
     my_vector_copy_construct();
-    
+    //TODO: overload operator = 
+    my_vector_assign();
+    //TODO: tester get_allocator
+
+    //Element access
+    my_vector_at();
+    my_vector_at_const();
+    //TODO: test operator[]
+    //TODO: front
+    //TODO: back
+    //TODO: data ?
+
+    //Iterators : begin, end, rbegin, rend
     my_ite_n1();
     my_ft_reverse_iterator();
-
     my_rite_arrow();
     my_ft_reserve();
     
-    my_ft_erase();
-    my_vector_assign();
-
-    my_vector_at();
-    my_vector_at_const();
-    my_ft_insert();
-    
+    //Capacity
+    //TODO: empty
     my_vector_size();
+    //TODO: max_size
+    //TODO: capacity
+
+    //Modifiers
+    //TODO: clear
+    my_ft_insert();
+    my_ft_erase();
     my_vector_push_back();
-    my_ft_swap();
     my_vector_pop_back();
+    //TODO: resize
+    my_ft_swap();
+
+    //Non member functions
+    //TODO: TESTER overload de comparaisons
+    //TODO: tester overload arithmetiques
     std::cout << "--- END OF VECTOR TESTS ---" << std::endl;
     return (0);
 }
