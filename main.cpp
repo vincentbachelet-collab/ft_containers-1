@@ -26,6 +26,14 @@ void printSize(NS::vector<int> const &vct)
         std::cout << "- " << *it << std::endl;
 }
 
+void printStr(NS::vector<std::string> const &vct)
+{
+    NS::vector<std::string>::const_iterator it = vct.begin();
+    NS::vector<std::string>::const_iterator ite = vct.end();
+    for (; it != ite; ++it)
+        std::cout << *it << std::endl;
+}
+
 void my_ft_constructor()
 {
     std::cout << "-----------------------------" << std::endl;
@@ -469,12 +477,153 @@ void    my_vector_push_back(void)
     return ;
 }
 
-void    my_vector_pop_back(void)
+void    my_capacity(void)
 {
+    //cpp reference
+    int sz = 200;
+    NS::vector<int> v1;
+ 
+    unsigned long cap = v1.capacity();
+    std::cout << "initial capacity=" << cap << std::endl;
+ 
+    for (int n = 0; n < sz; ++n) {
+        v1.push_back(n);
+        if (cap != v1.capacity()) {
+            cap = v1.capacity();
+            std::cout << "new capacity=" << cap << std::endl;
+        }
+    }
+    std::cout << "final size=" << v1.size() << std::endl;
+    std::cout << "final capacity=" << v1.capacity() << std::endl;
+
+    NS::vector<int> myvector;
+    for (int i=0; i<100; i++) myvector.push_back(i);
+    std::cout << "size: " << (int) myvector.size() << std::endl;
+    std::cout << "capacity: " << (int) myvector.capacity() << std::endl;
+    std::cout << "max_size: " << (int) myvector.max_size() << std::endl;
+}
+
+void    my_empty(void)
+{
+    //Test cplusplus reference
+    NS::vector<int> myvector;
+    int sum (0);
+
+    for (int i=1;i<=10;i++) myvector.push_back(i);
+
+    while (!myvector.empty())
+    {
+        sum += myvector.back();
+        myvector.pop_back();
+    }
+    std::cout << "total: " << sum << std::endl;
+    //cpp reference 
+    std::cout << std::boolalpha;
+    std::vector<int> numbers;
+    std::cout << "Initially, numbers.empty(): " << numbers.empty() << '\n';
+ 
+    numbers.push_back(42);
+    std::cout << "After adding elements, numbers.empty(): " << numbers.empty() << '\n';
+    return ;
+}
+
+void    my_clear(void)
+{
+    //c plus plus reference 
+    NS::vector<int> myvector;
+    myvector.push_back (100);
+    myvector.push_back (200);
+    myvector.push_back (300);
+
+    for (unsigned i=0; i<myvector.size(); i++)
+        std::cout << ' ' << myvector[i];
+    std::cout << std::endl;
+
+    myvector.clear();
+    myvector.push_back (1101);
+    myvector.push_back (2202);
+
+    for (unsigned i=0; i<myvector.size(); i++)
+        std::cout << ' ' << myvector[i];
+    std::cout << std::endl;
     //cpp reference
     return ;
 }
 
+void    my_max_size(void)
+{
+    //c plus plus reference
+    NS::vector<int> myvector;
+    for (int i=0; i<100; i++)
+        myvector.push_back(i);
+
+    std::cout << "size: " << myvector.size() << std::endl;
+    std::cout << "capacity: " << myvector.capacity() << std::endl;
+    std::cout << "max_size: " << myvector.max_size() << std::endl;
+    return ;
+}
+
+void    my_vector_pop_back(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR POP BACK :" << std::endl;
+    NS::vector<std::string> words;
+    words.push_back("I");
+    words.push_back("love");
+    words.push_back("chocolate !");
+    printStr(words);
+    while (!words.empty())
+    {
+        words.pop_back();
+        printStr(words);
+    }
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_resize(void)
+{
+    NS::vector<int> myvector;
+    for (int i=1;i<10;i++) myvector.push_back(i);
+
+    myvector.resize(5);
+    myvector.resize(8,100);
+    myvector.resize(12);
+
+    std::cout << "myvector contains:";
+    for (unsigned long i=0;i<myvector.size();i++)
+        std::cout << ' ' << myvector[i];
+    std::cout << std::endl;
+    return ;
+}
+
+void    my_front(void)
+{
+    std::vector<int> myvector;
+
+    myvector.push_back(78);
+    myvector.push_back(16);
+    myvector.front() -= myvector.back();
+    std::cout << "myvector.front() is now " << myvector.front() << std::endl;
+
+    NS::vector<char> letters;
+    letters.push_back('a');
+    letters.push_back('e');
+    letters.push_back('i');
+    letters.push_back('o');
+    letters.push_back('u');
+
+ 
+    if (!letters.empty()) {
+        std::cout << "The first character is '" << letters.front() << "'.\n";
+    }  
+}
+
+void    my_back(void)
+{
+
+    return ;
+}
 
 int main(void)
 {
@@ -489,7 +638,7 @@ int main(void)
     my_vector_at();
     my_vector_at_const();
     //TODO: test operator[]
-    //TODO: front
+    my_front();
     //TODO: back
     //TODO: data ?
 
@@ -500,18 +649,18 @@ int main(void)
     my_ft_reserve();
     
     //Capacity
-    //TODO: empty
+    my_empty();
     my_vector_size();
-    //TODO: max_size
-    //TODO: capacity
+    my_max_size();
+    my_capacity();
 
     //Modifiers
-    //TODO: clear
+    my_clear();
     my_ft_insert();
     my_ft_erase();
     my_vector_push_back();
     my_vector_pop_back();
-    //TODO: resize
+    my_resize();
     my_ft_swap();
 
     //Non member functions
