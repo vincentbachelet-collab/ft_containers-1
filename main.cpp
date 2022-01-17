@@ -13,38 +13,17 @@
 #define NS ft
 #endif
 
-#define TESTED_TYPE int
-
-/*
-template <typename T>
-void printSize(NS::vector<T> const &vct, bool print_content = 1)
-{
-    std::cout << "size: " << vct.size() << std::endl;
-    std::cout << "capacity: " << vct.capacity() << std::endl;
-    std::cout << "max_size: " << vct.max_size() << std::endl;
-    if (print_content)
-    {
-        typename NS::vector<T>::const_iterator it = vct.begin();
-        typename NS::vector<T>::const_iterator ite = vct.end();
-        std::cout << std::endl
-                  << "Content is:" << std::endl;
-        for (; it != ite; ++it)
-            std::cout << "- " << *it << std::endl;
-    }
-}
-*/
+//#define TESTED_TYPE int
 
 //! Dans ce test on attend que ca plante, donc ne pas l inclure dans le main
 void my_ite_n1(void)
 {
-    /*
-    const int size = 5;
-    NS::vector<int> const vct(size);
-    NS::vector<int>::iterator it = vct.begin(); // <-- error expected
+    int size = 5;
+    NS::vector<int> vct(size);
 
+    NS::vector<int>::iterator it = vct.begin();
     for (int i = 0; i < size; ++i)
         it[i] = i;
-        */
     return;
 }
 
@@ -86,12 +65,12 @@ int my_vector_copy_construct(void)
     return (0);
 }
 
+// Inspiree du testeur mli42
 void printSize(NS::vector<int> const &vct, bool print_content = true)
 {
     const int size = vct.size();
     const int capacity = vct.capacity();
     const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
-    // Cannot limit capacity's max value because it's implementation dependent
 
     std::cout << "size: " << size << std::endl;
     std::cout << "capacity: " << isCapacityOk << std::endl;
@@ -110,6 +89,7 @@ void printSize(NS::vector<int> const &vct, bool print_content = true)
 
 int my_rite_arrow(void)
 {
+    /*
     const int size = 5;
     NS::vector<int> vct(size);
     NS::vector<int>::iterator it(vct.begin());
@@ -136,6 +116,44 @@ int my_rite_arrow(void)
     std::cout << *(ite--) << std::endl;
     std::cout << *--ite << std::endl;
     std::cout << *ite-- << std::endl;
+
+    std::cout << *(--it) << std::endl;
+    std::cout << *(it--) << std::endl;
+    std::cout << *it-- << std::endl;
+    std::cout << *--it << std::endl;
+    */
+    const int size = 5;
+    NS::vector<int> vct(size);
+    NS::vector<int>::reverse_iterator it(vct.rbegin());
+    NS::vector<int>::const_reverse_iterator ite(vct.rend());
+
+    for (int i = 1; it != ite; ++i)
+        *it++ = (i * 7);
+    printSize(vct, 1);
+
+    it = vct.rbegin();
+    ite = vct.rbegin();
+
+    std::cout << *(++ite) << std::endl;
+    std::cout << *(ite++) << std::endl;
+    std::cout << *ite++ << std::endl;
+    std::cout << *++ite << std::endl;
+
+    // it->m();
+    // ite->m();
+
+    std::cout << *(++it) << std::endl;
+    std::cout << *(it++) << std::endl;
+    std::cout << *it++ << std::endl;
+    std::cout << *++it << std::endl;
+
+    std::cout << *(--ite) << std::endl;
+    std::cout << *(ite--) << std::endl;
+    std::cout << *--ite << std::endl;
+    std::cout << *ite-- << std::endl;
+
+    //(*it).m();
+    //(*ite).m();
 
     std::cout << *(--it) << std::endl;
     std::cout << *(it--) << std::endl;
@@ -461,32 +479,29 @@ void basic_tests()
         std::cout << ' ' << *it;
     std::cout << '\n';
 }
+*/
 
-void ft_erase()
+void my_ft_erase()
 {
     NS::vector<int> myvector;
 
-    // set some values (from 1 to 10)
     for (int i = 1; i <= 10; i++)
         myvector.push_back(i);
 
-    // erase the 6th element
     myvector.erase(myvector.begin() + 5);
 
-    // erase the first 3 elements:
     myvector.erase(myvector.begin(), myvector.begin() + 3);
 
     std::cout << "myvector contains:";
     for (unsigned i = 0; i < myvector.size(); ++i)
         std::cout << ' ' << myvector[i];
-    std::cout << '\n';
+    std::cout << std::endl;
 
     NS::vector<int>::iterator it = myvector.begin() + 2;
     (void)it;
 }
-*/
 
-void copy_construct(void)
+void my_copy_construct(void)
 {
     NS::vector<int> vct(5);
     NS::vector<int>::iterator it = vct.begin(), ite = vct.end();
@@ -507,25 +522,16 @@ void copy_construct(void)
     vct_copy.push_back(42);
     vct_copy.push_back(21);
 
-    std::cout << "\t-- PART ONE --" << std::endl;
-    // printSize(vct);
-    // printSize(vct_range);
-    // printSize(vct_copy);
-
     vct = vct_copy;
     vct_copy = vct_range;
     vct_range.clear();
-
-    std::cout << "\t-- PART TWO --" << std::endl;
-    // printSize(vct);
-    // printSize(vct_range);
-    // printSize(vct_copy);
 }
 
 int main(void)
 {
-    // copy_construct();
-    // my_vector_copy_construct();
+    my_ite_n1();
     my_rite_arrow();
+    my_ft_erase();
+    my_copy_construct();
     return (0);
 }
