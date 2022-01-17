@@ -46,18 +46,10 @@ namespace ft
 
         reference_type operator*() const
         {
-            // return (*(this->_ptr));
-            iterator_type it = _ptr;
+            iterator_type it = this->_ptr;
             it--;
             return *it;
         }
-
-        /*
-        reference_type operator*()
-        {
-            return (*(this->_ptr));
-        }
-        */
 
         // Pre increment by one
         reverse_iterator &operator++()
@@ -71,7 +63,7 @@ namespace ft
         {
             reverse_iterator it = *this;
             this->_ptr--;
-            return (it);
+            return it;
         }
 
         // Pre decrement
@@ -85,14 +77,14 @@ namespace ft
         reverse_iterator operator--(int)
         {
             reverse_iterator it = *this;
-            _ptr++;
+            this->_ptr++;
             return it;
         }
 
         reverse_iterator &operator-=(difference_type n)
         {
             this->_ptr += n;
-            return (*(this));
+            return *this;
         }
 
         // Arrow operator
@@ -118,30 +110,37 @@ namespace ft
         reverse_iterator<Iterator> &operator+=(difference_type n)
         {
             this->_ptr -= n;
-            return (*(this));
+            return *this;
         }
 
-        // TODO: a revoir
-        friend std::ostream &operator<<(std::ostream &o, reverse_iterator<Iterator> &rhs)
+
+        /*
+        difference_type operator-(reverse_iterator const &rhs) const { return (rhs._ptr - this->_ptr); }
+
+        reverse_iterator<Iterator> operator-(difference_type n) const
         {
-            o << *rhs._ptr;
-            return o;
+            return (reverse_iterator(this->_ptr + n));
         }
+        */
 
-        friend reverse_iterator<Iterator> operator+(difference_type n, const reverse_iterator &rhs) { return rhs._ptr - n; } // n + a
-        // reverse_iterator<Iterator> operator+(difference_type n) const { return _ptr - n; }                                   // a + n
-        // reverse_iterator<Iterator> operator-(difference_type n) const { return _ptr + n; }       // a - n
-        difference_type operator-(const reverse_iterator &rhs) const { return rhs._ptr - _ptr; } // a - b
+        reverse_iterator<Iterator> operator-(difference_type n) const {return this->_ptr + n;}
+        difference_type operator-(const reverse_iterator& rhs) const {return rhs._ptr - this->_ptr;}
 
         reverse_iterator operator+(difference_type n) const
         {
             return (reverse_iterator(this->_ptr - n));
         }
 
-        reverse_iterator operator-(difference_type n) const
+
+        /* */
+        friend std::ostream &operator<<(std::ostream &o, reverse_iterator<Iterator> &rhs)
         {
-            return (reverse_iterator(this->_ptr + n));
+            o << *rhs._pointer;
+            return o;
         }
+
+        friend reverse_iterator<Iterator> operator+(difference_type n, reverse_iterator const &rhs) {return rhs._ptr - n;}
+        friend reverse_iterator<Iterator> operator-(difference_type n, reverse_iterator const &rhs) {return rhs._ptr + n;}
     };
 
     // Non member overloading
