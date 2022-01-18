@@ -100,7 +100,12 @@ namespace ft
         }
 
         // Member overloading
-        bool operator==(const reverse_iterator &other) const { return this->_ptr == other._ptr; }
+        bool operator==(const reverse_iterator &other) const 
+        {
+          //  std::cout << "Calling member overload" << std::endl;
+            return this->_ptr == other._ptr;
+        }
+
         bool operator!=(const reverse_iterator &other) const { return this->_ptr != other._ptr; }
         bool operator<(const reverse_iterator &other) const { return this->_ptr > other._ptr; }
         bool operator<=(const reverse_iterator &other) const { return this->_ptr >= other._ptr; }
@@ -138,6 +143,7 @@ namespace ft
     template <class Iterator1, class Iterator2>
     bool operator==(reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs)
     {
+       // std::cout << "Calling non member overload" << std::endl;
         return (lhs.base() == rhs.base());
     }
 
@@ -174,7 +180,7 @@ namespace ft
     template <typename Iterator>
     std::ostream &operator<<(std::ostream &o, reverse_iterator<Iterator> &rhs)
     {
-        o << *rhs._pointer;
+        o << *rhs.base();
         return o;
     }
 }

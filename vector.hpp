@@ -32,10 +32,10 @@ namespace ft
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 	private:
-		size_type _size;	  // taille du vecteur (remplie)
-		size_type _capacity;  // taille en terme de capacite/memoire
-		allocator _allocator; // type de l'allocateur du container
-		pointer _ptr;		  // Addresse du premier element du vecteur (a verifier en test)
+		size_type _size;	  // taille du vecteur
+		size_type _capacity;  // taille en termes de capacite/memoire
+		allocator _allocator; // type de l'allocateur du container (peut etre custom)
+		pointer _ptr;		  // Addresse du tableau
 
 	public:
 		pointer get_ptr(void) const

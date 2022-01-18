@@ -168,17 +168,11 @@ namespace ft
         {
             if (*first1 < *first2)
             {
-#if DEBUG == 1
-                std::cout << "lexicographical_compare will return true" << std::endl;
-#endif
                 return true;
             }
             /* On retourne true si la premiere range est lexicographiquement inferieure a la seconde */
             if (*first2 < *first1)
             {
-#if DEBUG == 1
-                std::cout << "lexicographical_compare will return false" << std::endl;
-#endif
                 return false;
             }
         }
@@ -195,16 +189,10 @@ namespace ft
         {
             if (comp(*first1, *first2))
             {
-#if DEBUG == 1
-                std::cout << "lexicographical comp function will return true" << std::endl;
-#endif
                 return true;
             }
             if (comp(*first2, *first1))
             {
-#if DEBUG == 1
-                std::cout << "lexicographical comp function will return false" << std::endl;
-#endif
                 return false;
             }
         }

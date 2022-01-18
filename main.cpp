@@ -86,9 +86,9 @@ void my_ft_constructor()
     }
 
     std::cout << "Testing range constructor" << std::endl;
-    ft::vector<int> third(ft_vec3.begin(), ft_vec3.end());
-    it = third.begin();
-    ite = third.end();
+    ft::vector<int> test(ft_vec3.begin(), ft_vec3.end());
+    it = test.begin();
+    ite = test.end();
     while (it != ite)
     {
         std::cout << (*it) << std::endl;
@@ -96,7 +96,7 @@ void my_ft_constructor()
     }
 
     std::cout << "Testing copy constructor" << std::endl;
-    ft::vector<int> copy(third);
+    ft::vector<int> copy(test);
     it = copy.begin();
     ite = copy.end();
     while (it != ite)
@@ -193,13 +193,14 @@ int my_rite_arrow(void)
     std::cout << *it-- << std::endl;
     std::cout << *--it << std::endl;
     std::cout << "OK !" << std::endl;
-    std::cout << std::endl;
     return (0);
 }
 
 //TODO: ajouter d autres tests avec les autres protos
 void my_ft_insert()
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR INSERT : " << std::endl;
     NS::vector<int> vec(3,100);
     NS::vector<int>::iterator it = vec.begin();
     it = vec.insert(it, 200);
@@ -218,25 +219,24 @@ void my_ft_insert()
     int arr[] = { 501,502,503 };
     vec.insert(vec.begin(), arr, arr+3);
     printSize(vec);
+    std::cout << "OK !" << std::endl;
 }
 
 void my_ft_swap()
 {
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTOR SWAP NON MEMBER : " << std::endl;
-    int x = 10, y = 20;
-    std::swap(x, y);
 
-    NS::vector<int> foo(4, x), bar(6, y);
-    NS::swap(foo, bar);
+    NS::vector<int> one(4, 6), two(6, 7);
+    NS::swap(one, two);
 
-    for (NS::vector<int>::iterator it = foo.begin(); it != foo.end(); ++it)
+    for (NS::vector<int>::iterator it = one.begin(); it != one.end(); ++it)
         std::cout << ' ' << *it;
     std::cout << std::endl;
 
     std::cout << "Second round of tests :" << std::endl;
-    ft::vector<int> foo(3, 10);
-    ft::vector<int> bar(5, 20);
+    NS::vector<int> foo(3, 10);
+    NS::vector<int> bar(5, 20);
 
     foo.swap(bar);
 
@@ -248,11 +248,11 @@ void my_ft_swap()
         std::cout << ' ' << bar[i];
     std::cout << std::endl;
 
-    ft::vector<int> a1;
+    NS::vector<int> a1;
     a1.push_back(1);
     a1.push_back(2);
     a1.push_back(3);
-    ft::vector<int> a2;
+    NS::vector<int> a2;
     a2.push_back(4);
     a2.push_back(5);
     a1.swap(a2);
@@ -264,9 +264,9 @@ void my_ft_swap()
 
 void my_ft_reverse_iterator()
 {
-    //TODO: ajouter des tests
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTOR REVERSE ITERATOR : " << std::endl;
+    //TODO: ajouter des tests
     NS::vector<int> myvector;
 
     for (int i = 0; i < 10; i++)
@@ -495,8 +495,7 @@ void    my_vector_at_const(void)
         it++;
     }
     std::cout << std::endl;
-    std::cout << "OK !";
-    std::cout << std::endl;
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
@@ -516,8 +515,7 @@ void    my_vector_size(void)
 
     myints.pop_back();
     std::cout << "3. size: " << myints.size() << std::endl;
-    std::cout << "OK !";
-    std::cout << std::endl;
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
@@ -555,11 +553,14 @@ void    my_vector_push_back(void)
     numbers.push_back(3);
     numbers.push_back(4);
     printSize(numbers);
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
 void    my_capacity(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR CAPACITY : " << std::endl;
     //cpp reference
     int sz = 200;
     NS::vector<int> v1;
@@ -582,10 +583,13 @@ void    my_capacity(void)
     std::cout << "size: " << (int) myvector.size() << std::endl;
     std::cout << "capacity: " << (int) myvector.capacity() << std::endl;
     std::cout << "max_size: " << (int) myvector.max_size() << std::endl;
+    std::cout << "OK !" << std::endl;
 }
 
 void    my_empty(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR EMPTY() : " << std::endl;
     //Test cplusplus reference
     NS::vector<int> myvector;
     int sum (0);
@@ -601,15 +605,18 @@ void    my_empty(void)
     //cpp reference 
     std::cout << std::boolalpha;
     std::vector<int> numbers;
-    std::cout << "Initially, numbers.empty(): " << numbers.empty() << '\n';
+    std::cout << "Initially, numbers.empty(): " << numbers.empty() << std::endl;
  
     numbers.push_back(42);
-    std::cout << "After adding elements, numbers.empty(): " << numbers.empty() << '\n';
+    std::cout << "After adding elements, numbers.empty(): " << numbers.empty() << std::endl;
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
 void    my_clear(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR CLEAR : " << std::endl;
     //c plus plus reference 
     NS::vector<int> myvector;
     myvector.push_back (100);
@@ -626,13 +633,15 @@ void    my_clear(void)
 
     for (unsigned i=0; i<myvector.size(); i++)
         std::cout << ' ' << myvector[i];
-    std::cout << std::endl;
+    std::cout << "OK !" << std::endl;
     //cpp reference
     return ;
 }
 
 void    my_max_size(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR MAX SIZE() : " << std::endl;
     //c plus plus reference
     NS::vector<int> myvector;
     for (int i=0; i<100; i++)
@@ -641,6 +650,7 @@ void    my_max_size(void)
     std::cout << "size: " << myvector.size() << std::endl;
     std::cout << "capacity: " << myvector.capacity() << std::endl;
     std::cout << "max_size: " << myvector.max_size() << std::endl;
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
@@ -664,6 +674,8 @@ void    my_vector_pop_back(void)
 
 void    my_resize(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR RESIZE : " << std::endl;
     NS::vector<int> myvector;
     for (int i=1;i<10;i++) myvector.push_back(i);
 
@@ -674,14 +686,15 @@ void    my_resize(void)
     std::cout << "myvector contains:";
     for (unsigned long i=0;i<myvector.size();i++)
         std::cout << ' ' << myvector[i];
-    std::cout << std::endl;
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
 void    my_front(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR FRONT : " << std::endl;
     std::vector<int> myvector;
-
     myvector.push_back(78);
     myvector.push_back(16);
     myvector.front() -= myvector.back();
@@ -693,37 +706,174 @@ void    my_front(void)
     letters.push_back('i');
     letters.push_back('o');
     letters.push_back('u');
-
- 
     if (!letters.empty()) {
-        std::cout << "The first character is '" << letters.front() << "'.\n";
-    }  
+        std::cout << "The first character is '" << letters.front() << std::endl;
+    }
+    std::cout << "OK !" << std::endl;
 }
 
 void    my_back(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR BACK : " << std::endl;
+    std::vector<int> myvector;
 
+    //cplusplus reference
+    myvector.push_back(10);
+
+    while (myvector.back() != 0)
+    {
+        myvector.push_back(myvector.back() -1 );
+    }
+    for (unsigned i=0; i<myvector.size() ; i++)
+        std::cout << ' ' << myvector[i];
+    std::cout << std::endl;
+
+    //cpp reference
+    std::vector<char> letters;
+    letters.push_back('a');
+    letters.push_back('b');
+    letters.push_back('c');
+    letters.push_back('d');
+ 
+    if (!letters.empty())
+    {
+        std::cout << "The last character is '" << letters.back() << std::endl;
+    }  
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_operator_bracket(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR OPERATOR[] : " << std::endl;
+    //cplusplus reference
+    NS::vector<int> myvector (10);
+    NS::vector<int>::size_type sz = myvector.size();
+    for (unsigned i=0; i<sz; i++)
+        myvector[i]=i;
+
+    for (unsigned i=0; i<sz/2; i++)
+    {
+        int temp;
+        temp = myvector[sz-1-i];
+        myvector[sz-1-i]=myvector[i];
+        myvector[i]=temp;
+    }
+    for (unsigned i=0; i<sz; i++)
+        std::cout << ' ' << myvector[i];
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_get_allocator(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR GET ALLOCATOR : " << std::endl;
+    //cplusplus reference 
+    NS::vector<int> myvector;
+    int * p;
+    unsigned int i;
+
+    // allocate an array with space for 5 elements using vector's allocator:
+    p = myvector.get_allocator().allocate(5);
+
+    // construct values in-place on the array:
+    for (i=0; i<5; i++) myvector.get_allocator().construct(&p[i],i);
+
+    for (i=0; i<5; i++)
+        std::cout << ' ' << p[i];
+    std::cout << std::endl;
+
+  // destroy and deallocate:
+    for (i=0; i<5; i++)
+        myvector.get_allocator().destroy(&p[i]);
+    myvector.get_allocator().deallocate(p,5);
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_operator_assignation(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR ASSIGNATION : " << std::endl;
+    //c plus plus
+    NS::vector<int> foo (3,0);
+    NS::vector<int> bar (5,0);
+
+    bar = foo;
+
+    std::cout << "Size of foo: " << int(foo.size()) << std::endl;
+    std::cout << "Size of bar: " << int(bar.size()) << std::endl;
+    std::cout << "OK !" << std::endl;
+    return;
+}
+
+//https://docs.microsoft.com/fr-fr/cpp/standard-library/reverse-iterator-class?view=msvc-170
+void my_reverse_operator_overloads(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING REVERSE OPERATOR OVERLOADS : " << std::endl;
+    NS::vector<int> vec(5,2);
+    vec.push_back(17);
+
+    NS::vector<int>::reverse_iterator rev = vec.rbegin();
+    NS::vector<int>::reverse_iterator reve = vec.rend();
+    std::cout << (rev == reve) << std::endl;
+    std::cout << (rev != reve) << std::endl;
+    std::cout << (rev > reve) << std::endl;
+    std::cout << (rev < reve) << std::endl;
+    std::cout << (rev >= reve) << std::endl;
+    std::cout << (rev <= reve) << std::endl;
+
+    //Arithmetique
+    NS::vector<int>::reverse_iterator rev1 = rev + 1;
+    NS::vector<int>::reverse_iterator rev2 = rev - 1;
+
+    (void)rev1;
+    (void)rev2;
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_integral_constant(void)
+{
+    std::cout << NS::is_integral<char>::value << std::endl;
+    std::cout << NS::is_integral<int>::value << std::endl;
+    std::cout << NS::is_integral<NS::vector<int>::iterator>::value << std::endl;
+    return ;
+}
+
+void    my_vector_iterator(void)
+{
     return ;
 }
 
 int main(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING UTILS :" << std::endl;
+    //TODO: tester tous les utils
+    my_integral_constant();
+    /*
+    my_reverse_operator_overloads();
+    std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTORS :" << std::endl;
     my_ft_constructor();
     my_vector_copy_construct();
-    //TODO: overload operator = 
+    my_operator_assignation();
     my_vector_assign();
-    //TODO: tester get_allocator
+    my_get_allocator();
 
     //Element access
     my_vector_at();
     my_vector_at_const();
-    //TODO: test operator[]
+    my_operator_bracket();
     my_front();
-    //TODO: back
-    //TODO: data ?
+    my_back();
 
-    //Iterators : begin, end, rbegin, rend
+    //Iterators (inspirés du testeur mli)
     my_ite_n1();
     my_ft_reverse_iterator();
     my_rite_arrow();
@@ -745,8 +895,12 @@ int main(void)
     my_ft_swap();
 
     //Non member functions
-    //TODO: TESTER overload de comparaisons
+    //TODO: TESTER overload de comparaisons pour les iterateurs simples
     //TODO: tester overload arithmetiques
     std::cout << "--- END OF VECTOR TESTS ---" << std::endl;
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING LIST :" << std::endl;
+    //TODO: faire les tests de list
+    */
     return (0);
 }
