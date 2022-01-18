@@ -36,6 +36,7 @@ void printStr(NS::vector<std::string> const &vct)
 
 void my_ft_constructor()
 {
+    //First round of test
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTOR CONSTRUCTORS : " << std::endl;
     NS::vector<int> first;
@@ -48,6 +49,61 @@ void my_ft_constructor()
     for (NS::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
         std::cout << ' ' << *it;
     std::cout << std::endl;
+
+    //Second round of test
+    //Appel du constructeur par defaut
+    std::cout << "Default constructor testing : " << std::endl;
+    ft::vector<int> ft_vec;
+    std::vector<int> std_vec;
+
+    //Appel du constructeur par defaut avec un allocateur pour test
+    std::cout << "Default constructor with allocator : " << std::endl;
+    std::allocator<int> my_alloc;
+    ft::vector<int> ft_vec1(my_alloc);
+
+    //Test deuxieme constructeur
+    std::cout << "Copying constructor with allocator : " << std::endl;
+    std::vector<int> std_vec2(5);
+    ft::vector<int> ft_vec2(5);
+
+    //affichage des deux vecteurs
+    ft::vector<int>::iterator it = ft_vec2.begin();
+    ft::vector<int>::iterator ite = ft_vec2.end();
+    while (it != ite)
+    {
+        std::cout << (*it) << std::endl;
+        it++;
+    }
+    std::cout << "Testing fill constructor : " << std::endl;
+    std::vector<int> std_vec3(5, 4);
+    ft::vector<int> ft_vec3(5, 4);
+    ft::vector<int>::iterator it1 = ft_vec3.begin();
+    ft::vector<int>::iterator ite1 = ft_vec3.end();
+    while (it1 != ite1)
+    {
+        std::cout << (*it1) << std::endl;
+        it1++;
+    }
+
+    std::cout << "Testing range constructor" << std::endl;
+    ft::vector<int> third(ft_vec3.begin(), ft_vec3.end());
+    it = third.begin();
+    ite = third.end();
+    while (it != ite)
+    {
+        std::cout << (*it) << std::endl;
+        it++;
+    }
+
+    std::cout << "Testing copy constructor" << std::endl;
+    ft::vector<int> copy(third);
+    it = copy.begin();
+    ite = copy.end();
+    while (it != ite)
+    {
+        std::cout << (*it) << std::endl;
+        it++;
+    }
     std::cout << "OK !" << std::endl;
     std::cout << std::endl;
 }
@@ -177,6 +233,31 @@ void my_ft_swap()
     for (NS::vector<int>::iterator it = foo.begin(); it != foo.end(); ++it)
         std::cout << ' ' << *it;
     std::cout << std::endl;
+
+    std::cout << "Second round of tests :" << std::endl;
+    ft::vector<int> foo(3, 10);
+    ft::vector<int> bar(5, 20);
+
+    foo.swap(bar);
+
+    for (unsigned i = 0; i < foo.size(); i++)
+        std::cout << ' ' << foo[i];
+    std::cout << std::endl;
+
+    for (unsigned i = 0; i < bar.size(); i++)
+        std::cout << ' ' << bar[i];
+    std::cout << std::endl;
+
+    ft::vector<int> a1;
+    a1.push_back(1);
+    a1.push_back(2);
+    a1.push_back(3);
+    ft::vector<int> a2;
+    a2.push_back(4);
+    a2.push_back(5);
+    a1.swap(a2);
+    printSize(a1);
+    printSize(a2);
     std::cout << "OK !" << std::endl;
     std::cout << std::endl;
 }
