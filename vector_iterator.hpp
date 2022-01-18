@@ -2,6 +2,7 @@
 
 #include "includes.hpp"
 
+/*
 namespace ft
 {
     template <typename T>
@@ -207,3 +208,4 @@ namespace ft
         return (res);
     }
 }
+*/

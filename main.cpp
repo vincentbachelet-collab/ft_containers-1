@@ -1,5 +1,6 @@
 #include "vector.hpp"
 #include "stack.hpp"
+#include "map.hpp"
 
 #include <vector>
 #include <map>
@@ -950,17 +951,6 @@ void    my_vector_iterator(void)
     return ;
 }
 
-//TODO: Utils obligatoire 
-void    my_pair(void)
-{
-    return ;
-}
-
-void    my_make_pair(void)
-{
-    return ;
-}
-
 //STACK
 void    my_stack_empty(void)
 {
@@ -1082,11 +1072,58 @@ void    my_stack_pop(void)
     return ;
 }
 
+void    my_make_pair(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING UTILS MAKE PAIR :" << std::endl;
+
+    NS::pair <int,int> foo;
+    NS::pair <int,int> bar;
+
+    foo = NS::make_pair (10,20);
+    bar = NS::make_pair (10.5,'A');
+    std::cout << "foo: " << foo.first << ", " << foo.second << std::endl;
+    std::cout << "bar: " << bar.first << ", " << bar.second << std::endl;
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+//TODO: tester le make pair aussi
+
+void    my_map_value_compare(void)
+{
+    NS::map<char,int> mymap;
+
+    /*
+    mymap['x']=1001;
+    mymap['y']=2002;
+    mymap['z']=3003;
+    */
+
+    //NS::pair<char,int> highest = *mymap.begin();
+    #if NS == std
+        NS::map<char,int>::iterator it = mymap.begin();
+    #else
+        ft::map<char,int>::map_iterator it = mymap.begin();
+    #endif
+    (void)mymap;
+    (void)it;
+    (void)highest;
+    /*
+    do {
+        std::cout << it->first << " => " << it->second << '\n';
+    } while ( mymap.value_comp()(*it++, highest) );
+    */
+
+    return ;
+}
+
 int main(void)
 {
     //TODO: ajouter les tests qui sont ecrits dans le main du sujet 
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING UTILS :" << std::endl;
+    my_map_value_compare();
     //TODO: tester tous les utils
     /*
     my_vector_iterator();
@@ -1094,7 +1131,9 @@ int main(void)
     my_iterator_traits();
     my_enable_if();
     my_integral_constant();
+    my_make_pair();
     my_reverse_operator_overloads();
+
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTORS :" << std::endl;
     my_ft_constructor();
@@ -1135,7 +1174,6 @@ int main(void)
     //TODO: TESTER overload de comparaisons pour les iterateurs simples
     //TODO: tester overload arithmetiques
     std::cout << "--- END OF VECTOR TESTS ---" << std::endl;
-    */
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING STACK :" << std::endl;
     my_stack_empty();
@@ -1143,5 +1181,11 @@ int main(void)
     my_stack_push();
     my_stack_pop();
     my_stack_top();
+    std::cout << "--- END OF STACK TESTS ---" << std::endl;
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP :" << std::endl;
+    std::cout << "--- END OF MAP TESTS ---" << std::endl;
+    std::cout << "-----------------------------" << std::endl;
+    */
     return (0);
 }
