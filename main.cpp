@@ -912,6 +912,34 @@ void    my_lexico(void)
 
 void    my_vector_iterator(void)
 {
+    //Declaration
+    NS::vector<std::string> words;
+    words.push_back("je");
+    words.push_back("teste");
+    words.push_back("les");
+    words.push_back("iterateurs");
+
+    NS::vector<std::string>::iterator it = words.begin();
+    NS::vector<std::string>::iterator ite = words.end();
+    while (it != ite)
+    {
+        std::cout << (*it) << " ";
+        it++;
+    }
+    std::cout << std::endl;
+    it = words.begin();
+    //Overloads
+    ite--;
+    std::cout << (it == ite) << std::endl;
+    std::cout << (it != ite) << std::endl;
+    std::cout << (it > ite) << std::endl;
+    std::cout << (it >= ite) << std::endl;
+    std::cout << (it < ite) << std::endl;
+    std::cout << (it <= ite) << std::endl;
+    it = it + 2;
+    it = it - 2;
+    it += 2;
+    it -= 2;
     return ;
 }
 
@@ -932,7 +960,7 @@ int main(void)
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING UTILS :" << std::endl;
     //TODO: tester tous les utils
-
+    my_vector_iterator();
     /*
     my_lexico();
     my_iterator_traits();

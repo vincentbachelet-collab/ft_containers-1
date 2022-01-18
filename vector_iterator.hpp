@@ -30,10 +30,17 @@ namespace ft
                 this->_p = rhs._p;
             return (*this);
         }
+        
+        //Equivalent de "base" pour les reverse iterator
         value_type *get_ptr(void) const
         {
             return this->_p;
         }
+
+        value_type *base(void) const
+		{
+				return (_p);
+		}
 
         vector_iterator &operator++()
         {
