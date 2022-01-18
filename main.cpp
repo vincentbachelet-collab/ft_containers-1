@@ -839,9 +839,74 @@ void my_reverse_operator_overloads(void)
 
 void    my_integral_constant(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING UTILS MY INTEGRAL CONSTANT : " << std::endl;
     std::cout << NS::is_integral<char>::value << std::endl;
     std::cout << NS::is_integral<int>::value << std::endl;
     std::cout << NS::is_integral<NS::vector<int>::iterator>::value << std::endl;
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_iterator_traits(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING UTILS ITERATOR TRAITS : " << std::endl;
+    //Test de c plus plus reference
+    typedef NS::iterator_traits<int*> traits;
+    if (typeid(traits::iterator_category)==typeid(std::random_access_iterator_tag))
+        std::cout << "int* is a random-access iterator" << std::endl;
+    //Ajouts tests perso
+    if (typeid(traits::iterator_category)==typeid(std::input_iterator_tag))
+        std::cout << "int* is an input_iterator_tag" << std::endl;
+    if (typeid(traits::iterator_category)==typeid(std::output_iterator_tag))
+        std::cout << "int* is a output_iterator_tag" << std::endl;
+    if (typeid(traits::iterator_category)==typeid(std::forward_iterator_tag))
+        std::cout << "int* is a forward_iterator_tag" << std::endl;
+    if (typeid(traits::iterator_category)==typeid(std::bidirectional_iterator_tag))
+        std::cout << "int* is a bidirectional_iterator_tag" << std::endl;
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+// Test enable if 
+template <class T>
+typename NS::enable_if<NS::is_integral<T>::value,bool>::type
+is_odd (T i) {return bool(i%2);}
+
+void    my_enable_if(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING UTILS MY ENABLE IF : " << std::endl;
+    short int i = 1;    // code does not compile if type of i is not integral
+    std::cout << std::boolalpha;
+    std::cout << "i is odd: " << is_odd(i) << std::endl;
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+//Utils pour tester lexicographical compare
+bool mycomp (char c1, char c2)
+{ return std::tolower(c1)<std::tolower(c2); }
+
+void    my_lexico(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING UTILS LEXICOGRAPHICAL COMPARE : " << std::endl;
+
+    char foo[]="Apple";
+    char bar[]="apartment";
+
+    std::cout << std::boolalpha;
+    std::cout << "Comparing foo and bar lexicographically (foo<bar): " << std::endl;
+
+    std::cout << "Using default comparison (operator<): ";
+    std::cout << std::lexicographical_compare(foo,foo+5,bar,bar+9);
+    std::cout << std::endl;
+
+    std::cout << "Using mycomp as comparison object: ";
+    std::cout << std::lexicographical_compare(foo,foo+5,bar,bar+9,mycomp);
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
@@ -850,13 +915,29 @@ void    my_vector_iterator(void)
     return ;
 }
 
+//TODO: Utils obligatoire 
+void    my_pair(void)
+{
+    return ;
+}
+
+void    my_make_pair(void)
+{
+    return ;
+}
+
 int main(void)
 {
+    //TODO: ajouter les tests qui sont ecrits dans le main du sujet 
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING UTILS :" << std::endl;
     //TODO: tester tous les utils
-    my_integral_constant();
+
     /*
+    my_lexico();
+    my_iterator_traits();
+    my_enable_if();
+    my_integral_constant();
     my_reverse_operator_overloads();
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTORS :" << std::endl;

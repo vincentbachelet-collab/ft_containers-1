@@ -88,7 +88,6 @@ namespace ft
     class iterator_traits
     {
     public:
-        //Member types - Iter is the iterator type the retrived properties for
         typedef typename Iterator::difference_type difference_type;
         typedef typename Iterator::value_type value_type;
         typedef typename Iterator::pointer pointer;
@@ -131,34 +130,39 @@ namespace ft
         typedef T type;
     };
 
-    template <class InputIt1, class InputIt2>
-    bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2)
-    {
-        //Inspiree de la documentation officielle
-        for (; first1 != last1; ++first1, ++first2)
-        {
-            if (!(*first1 == *first2))
-                return false;
-        }
-        return true;
-    }
+    //https://www.geeksforgeeks.org/stdequal-in-cpp/
+    //std::equal() helps to compare the elements wihin the range (first, last) with those within the range beginning at first_2
+    template <typename InputIterator1, typename InputIterator2>
+	bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+	{
+		while (first1 != last1)
+		{
+			if (!(*first1 == *first2))
+				return (false);
+			first1++;
+			first2++;
+		}
+		return (true);
+	}
 
-    template <class InputIt1, class InputIt2, class BinaryPredicate>
-    bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2, BinaryPredicate p)
-    {
-        //Inspiree de la documentation officielle
-        for (; first1 != last1; ++first1, ++first2)
-        {
-            if (!p(*first1, *first2))
-                return false;
-        }
-        return true;
-    }
+	template <typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
+	bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)
+	{
+		while (first1 != last1)
+		{
+			if (!pred(*first1, *first2))
+				return (false);
+			first1++;
+			first2++;
+		}
+		return (true);
+	}
 }
 
+//Lexicographical compare
 namespace ft
 {
-    /* Implementation inspiree de la documentation officielle */
+    //Implementation inspiree de la documentation officielle
     template <class InputIt1, class InputIt2>
     bool lexicographical_compare(InputIt1 first1, InputIt1 last1,
                                  InputIt2 first2, InputIt2 last2)
@@ -167,19 +171,15 @@ namespace ft
         for (; (first1 != last1) && (first2 != last2); ++first1, (void)++first2)
         {
             if (*first1 < *first2)
-            {
                 return true;
-            }
-            /* On retourne true si la premiere range est lexicographiquement inferieure a la seconde */
+            //On retourne true si la premiere range est lexicographiquement inferieure a la seconde 
             if (*first2 < *first1)
-            {
                 return false;
-            }
         }
         return (first1 == last1) && (first2 != last2);
     }
 
-    /* Implementation inspiree de la documentation officielle */
+    // Implementation inspiree de la documentation officielle
     template <class InputIt1, class InputIt2, class Compare>
     bool lexicographical_compare(InputIt1 first1, InputIt1 last1,
                                  InputIt2 first2, InputIt2 last2,
@@ -197,18 +197,5 @@ namespace ft
             }
         }
         return (first1 == last1) && (first2 != last2);
-    }
-
-    template <class InputIterator>
-    typename ft::iterator_traits<InputIterator>::difference_type
-    distance(InputIterator first, InputIterator last)
-    {
-        typename ft::iterator_traits<InputIterator>::difference_type rtn = 0;
-        while (first != last)
-        {
-            first++;
-            rtn++;
-        }
-        return (rtn);
     }
 }
