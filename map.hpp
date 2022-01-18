@@ -215,6 +215,125 @@ namespace ft
             return const_reverse_iterator(begin());
         }
 
+        // LOWER BOUND : https://www.cplusplus.com/reference/map/map/lower_bound/
+        // Returns an iterator pointing to the first element in the container whose key is not considered to go before k
+        iterator lower_bound(const key_type &k)
+        {
+            iterator ite = end();
+            iterator it = begin();
+            while (it != ite)
+            {
+                // Key compare retourne
+                if (!_key_compare(it->first, k))
+                    return it;
+                it++;
+            }
+            return ite;
+        }
+
+        const_iterator lower_bound(const key_type &k) const
+        {
+            const_iterator ite = end();
+            const_iterator it = begin();
+
+            while (it != ite)
+            {
+                if (!_key_compare(it->first, k))
+                    return const_iterator(it);
+                it++;
+            }
+            return const_iterator(ite);
+        }
+
+        node_type *min_value_node(node_type *node)
+        {
+            node_type *current = node;
+            while (current->left != NULL)
+                current = current->left;
+            return current;
+        }
+
+        node_type *max_value_node(node_type *node)
+        {
+            node_type *current = node;
+            while (current->right != NULL)
+                current = current->right;
+            return current;
+        }
+
+        node_type *delete_node(node_type *current, const key_type &key)
+        {
+            if (!current || current->last)
+                return current;
+            if (_key_compare(key, current->value.first))
+                current->left = delete_node(current->left, key);
+            else if (_key_compare(current->value.first, key))
+                current->right = delete_node(current->right, key);
+            else
+            {
+                if (!current->left || !current->right)
+                {
+                    node_type *temp = current->left ? current->left : current->right;
+                    if (!current->left && !current->right)
+                    {
+                        temp = current;
+                        _allocator.destroy(temp);
+                        _allocator.deallocate(temp, 1);
+                        current = NULL;
+                        _size--;
+                    }
+                    else
+                    {
+                        temp->parent = current->parent;
+                        node_type *temp2 = current;
+                        current = temp;
+                        _allocator.destroy(temp2);
+                        _allocator.deallocate(temp2, 1);
+                        _size--;
+                    }
+                }
+                else
+                {
+                    node_type *temp = min_value_node(current->right);
+                    if (temp != current->right)
+                    {
+                        temp->right = current->right;
+                        current->right->parent = temp;
+                    }
+                    temp->left = current->left;
+                    current->left->parent = temp;
+                    temp->parent->left = NULL;
+                    temp->parent = current->parent;
+                    if (_root == current)
+                        _root = temp;
+                    _allocator.destroy(current);
+                    _allocator.deallocate(current, 1);
+                    _size--;
+                    current = temp;
+                }
+            }
+            return current;
+        }
+
+        void erase(iterator position)
+        {
+            erase(position->first);
+        }
+        size_type erase(key_type const &k)
+        {
+            size_type backup = this->_size;
+            this->_root = delete_node(this->_root, k);
+            return (backup - this->_size);
+        }
+        void erase(iterator first, iterator last)
+        {
+            map<key_type, mapped_type> temp(first, last);
+            iterator it = temp.begin();
+            iterator ite = temp.end();
+            for (; it != ite; it++)
+                this->_root = delete_node(this->_root, it->first);
+        }
+
         node_type *insert_node(const value_type &val, node_type *current, node_type *parent)
         {
             if (!current)

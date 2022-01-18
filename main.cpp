@@ -1187,6 +1187,72 @@ void my_map_value_compare(void)
     return;
 }
 
+// Utils pour tester les constructors
+bool fncomp(char lhs, char rhs) { return lhs < rhs; }
+
+struct classcomp
+{
+    bool operator()(const char &lhs, const char &rhs) const
+    {
+        return lhs < rhs;
+    }
+};
+
+void my_map_constructors(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP CONSTRUCTORS:" << std::endl;
+    NS::map<char, int> first;
+    first['a'] = 10;
+    first['b'] = 30;
+    first['c'] = 50;
+    first['d'] = 70;
+
+    NS::map<char, int> second(first.begin(), first.end());
+    NS::map<char, int> third(second);
+    NS::map<char, int, classcomp> fourth;
+
+    bool (*fn_pt)(char, char) = fncomp;
+    NS::map<char, int, bool (*)(char, char)> fifth(fn_pt);
+    NS::map<char, int> sixth = third;
+    std::cout << "OK !" << std::endl;
+    return;
+}
+
+void my_map_lower_bound(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP LOWER BOUNDS :" << std::endl;
+
+    NS::map<char, int> mymap;
+    NS::map<char, int>::iterator itlow, itup;
+
+    mymap['a'] = 20;
+    mymap['b'] = 40;
+    mymap['c'] = 60;
+    mymap['d'] = 80;
+    mymap['e'] = 100;
+
+    itlow = mymap.lower_bound('b');
+    mymap.erase(itlow);
+
+    for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+    itlow = mymap.lower_bound('d');
+    std::cout << "----" << std::endl;
+    mymap.erase(itlow);
+    for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+    std::cout << "OK !" << std::endl;
+    return;
+}
+
+// TODO: a tester
+void my_map_iterators(void)
+{
+    return;
+}
+
 int main(void)
 {
     // TODO: ajouter les tests qui sont ecrits dans le main du sujet
@@ -1194,7 +1260,11 @@ int main(void)
     std::cout << "TESTING UTILS :" << std::endl;
     my_map_value_compare();
     my_key_comp();
-    // TODO: tester tous les utils
+    my_map_constructors();
+    my_map_iterators();
+    my_map_lower_bound();
+    // TODO: voir erase + toutes les fonctions deja presentes
+    //  TODO: tester tous les utils
     /*
     my_vector_iterator();
     my_lexico();
