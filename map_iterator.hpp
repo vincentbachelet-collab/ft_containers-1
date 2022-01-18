@@ -1,6 +1,7 @@
 #pragma once
 #include "includes.hpp"
 
+/*
 namespace ft
     {
     template<typename T, typename node_pointer>
@@ -75,3 +76,4 @@ namespace ft
             }
         };
 }
+*/

@@ -8,9 +8,10 @@
 #include "iterator.hpp"
 #include "utils.hpp"
 
-struct	enable_if;
-class	vector_iterator;
+struct enable_if;
+class vector_iterator;
 
+/* */
 namespace ft
 {
 	template <typename T, typename Alloc = std::allocator<T> >
@@ -37,8 +38,7 @@ namespace ft
 		pointer _ptr;		  // Addresse du tableau
 
 	public:
-
-		//Getters, setters
+		// Getters, setters
 		pointer get_ptr(void) const
 		{
 			return (this->_ptr);
@@ -131,8 +131,8 @@ namespace ft
 			this->_size = 0;
 		}
 
-		//https://www.cplusplus.com/reference/vector/vector/reserve/
-		//Requests that the vector capacity be at least enough to contain n elements.
+		// https://www.cplusplus.com/reference/vector/vector/reserve/
+		// Requests that the vector capacity be at least enough to contain n elements.
 		void reserve(size_type size)
 		{
 			if (size > this->get_capacity())

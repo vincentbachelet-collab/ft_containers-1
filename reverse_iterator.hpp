@@ -5,7 +5,7 @@
 #include <string>
 #include "utils.hpp"
 #include "vector_iterator.hpp"
-
+/*
 namespace ft
 {
     template <class Iterator>
@@ -100,7 +100,7 @@ namespace ft
         }
 
         // Member overloading
-        bool operator==(const reverse_iterator &other) const 
+        bool operator==(const reverse_iterator &other) const
         {
           //  std::cout << "Calling member overload" << std::endl;
             return this->_ptr == other._ptr;
@@ -128,15 +128,15 @@ namespace ft
     };
 
     template <typename Iterator>
-	reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator> & it)
-	{
-		return (reverse_iterator<Iterator>(it.base() - n));
-	}
+    reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator> & it)
+    {
+        return (reverse_iterator<Iterator>(it.base() - n));
+    }
 
     template <typename Iterator>
-	reverse_iterator<Iterator> operator-(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator> & it)
-	{
-		return (reverse_iterator<Iterator>(it.base() + n));
+    reverse_iterator<Iterator> operator-(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator> & it)
+    {
+        return (reverse_iterator<Iterator>(it.base() + n));
     }
 
     // Non member overloading
@@ -184,3 +184,4 @@ namespace ft
         return o;
     }
 }
+*/

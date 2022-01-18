@@ -31,17 +31,17 @@ namespace ft
                 this->_p = rhs._p;
             return (*this);
         }
-        
-        //Equivalent de "base" pour les reverse iterator
+
+        // Equivalent de "base" pour les reverse iterator
         value_type *get_ptr(void) const
         {
             return this->_p;
         }
 
         value_type *base(void) const
-		{
-				return (_p);
-		}
+        {
+            return (_p);
+        }
 
         vector_iterator &operator++()
         {
@@ -79,8 +79,6 @@ namespace ft
             return (this->_p);
         }
 
-        //reference operator*() const { return (*_p); }
-
         bool operator==(const vector_iterator &other) const
         {
             bool b = this->_p == other._p;
@@ -99,8 +97,7 @@ namespace ft
             return (b);
         }
 
-        bool
-        operator<(const vector_iterator &other) const
+        bool operator<(const vector_iterator &other) const
         {
             bool b = this->_p < other._p;
             return (b);
@@ -127,8 +124,8 @@ namespace ft
         friend vector_iterator<T> operator+(difference_type n, const vector_iterator &rhs) { return n + rhs._p; }
         friend vector_iterator<T> operator-(difference_type n, const vector_iterator &rhs) { return rhs._p - n; }
 
-        vector_iterator<T> operator+(difference_type n) const 
-        { 
+        vector_iterator<T> operator+(difference_type n) const
+        {
             vector_iterator<T> res = this->_p + n;
             return (res);
         }
@@ -153,13 +150,13 @@ namespace ft
 
         vector_iterator<T> &operator+=(difference_type n)
         {
-            _p += n;
+            this->_p += n;
             return *this;
         }
 
         vector_iterator<T> &operator-=(difference_type n)
         {
-            _p -= n;
+            this->_p -= n;
             return *this;
         }
 
