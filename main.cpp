@@ -1108,7 +1108,6 @@ void    my_map_value_compare(void)
     #endif
     (void)mymap;
     (void)it;
-    (void)highest;
     /*
     do {
         std::cout << it->first << " => " << it->second << '\n';
