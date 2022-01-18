@@ -1,4 +1,5 @@
 #include "vector.hpp"
+#include "stack.hpp"
 
 #include <vector>
 #include <map>
@@ -912,6 +913,8 @@ void    my_lexico(void)
 
 void    my_vector_iterator(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING VECTOR ITERATORS : " << std::endl;
     //Declaration
     NS::vector<std::string> words;
     words.push_back("je");
@@ -943,6 +946,7 @@ void    my_vector_iterator(void)
     ite--;
     std::ptrdiff_t diff = ite - it;
     (void)diff;
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
@@ -954,6 +958,22 @@ void    my_pair(void)
 
 void    my_make_pair(void)
 {
+    return ;
+}
+
+//STACK
+void    my_stack_empty(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING STACK EMPTY :" << std::endl;
+    NS::stack<int> mystack;
+    if (mystack.empty())
+        std::cout << "The stack is empty." << std::endl;
+    else
+        std::cout << "The stack is not empty." << std::endl;
+    std::cout << "OK !" << std::endl;
+    mystack.push(42);
+    std::cout << "After adding elements, container.empty(): " << mystack.empty() << " " << std::endl;
     return ;
 }
 
@@ -1010,9 +1030,9 @@ int main(void)
     //TODO: TESTER overload de comparaisons pour les iterateurs simples
     //TODO: tester overload arithmetiques
     std::cout << "--- END OF VECTOR TESTS ---" << std::endl;
-    std::cout << "-----------------------------" << std::endl;
-    std::cout << "TESTING LIST :" << std::endl;
-    //TODO: faire les tests de list
     */
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING STACK :" << std::endl;
+    my_stack_empty();
     return (0);
 }
