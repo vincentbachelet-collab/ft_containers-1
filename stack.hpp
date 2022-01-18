@@ -20,12 +20,6 @@ namespace ft
 
     public:
 
-        /*
-        container_type  get_container(void)
-        {
-            return (this->_vector);
-        }
-        */
 
         stack(const container_type &container = container_type()) : _vector(container) {}
         virtual ~stack() {}

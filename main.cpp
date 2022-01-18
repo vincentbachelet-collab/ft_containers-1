@@ -971,9 +971,114 @@ void    my_stack_empty(void)
         std::cout << "The stack is empty." << std::endl;
     else
         std::cout << "The stack is not empty." << std::endl;
-    std::cout << "OK !" << std::endl;
     mystack.push(42);
     std::cout << "After adding elements, container.empty(): " << mystack.empty() << " " << std::endl;
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_stack_size(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING STACK SIZE :" << std::endl;
+
+    //c plus plus reference
+    NS::stack<int> myints;
+    std::cout << "0. size: " << myints.size() << std::endl;
+
+    for (int i=0; i<5; i++) myints.push(i);
+    std::cout << "1. size: " << myints.size() << std::endl;
+
+    myints.pop();
+    std::cout << "2. size: " << myints.size() << std::endl;
+
+    //cpp reference
+    NS::stack<int> container;
+    std::cout << "Initially, container.size(): " << container.size() << std::endl;
+    for (int i = 0; i < 7; ++i)
+        container.push(i);
+    std::cout << "After adding elements, container.size(): " << container.size() << std::endl;
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+//Utils pour tester top
+void reportStackSize(const std::stack<int>& s)
+{
+    std::cout << s.size() << " elements on stack" << std::endl;
+}
+ 
+void reportStackTop(const std::stack<int>& s)
+{
+    // Leaves element on stack
+    std::cout << "Top element: " << s.top() << std::endl;
+}
+
+void    my_stack_top(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING STACK TOP :" << std::endl;
+    //c plus plus reference
+    NS::stack<int> mystack;
+
+    mystack.push(10);
+    mystack.push(20);
+
+    mystack.top() -= 5;
+    std::cout << "mystack.top() is now " << mystack.top() << std::endl;
+
+    //cpp reference
+    std::stack<int> s;
+    s.push(2);
+    s.push(6);
+    s.push(51);
+ 
+    reportStackSize(s);
+    reportStackTop(s);
+ 
+    reportStackSize(s);
+    s.pop();
+ 
+    reportStackSize(s);
+    reportStackTop(s);
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_stack_push(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING STACK PUSH :" << std::endl;
+    //c plus plus reference
+    NS::stack<int> mystack;
+
+    for (int i=0; i<5; ++i) mystack.push(i);
+    std::cout << "Popping out elements...";
+    while (!mystack.empty())
+    {
+        std::cout << ' ' << mystack.top();
+        mystack.pop();
+    }
+    std::cout << std::endl;
+    std::cout << "OK !" << std::endl;
+    return ;
+}
+
+void    my_stack_pop(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING STACK POP :" << std::endl;
+    NS::stack<int> mystack;
+
+    for (int i=0; i<5; ++i) mystack.push(i);
+    std::cout << "Popping out elements...";
+    while (!mystack.empty())
+    {
+        std::cout << ' ' << mystack.top();
+        mystack.pop();
+    }
+    std::cout << std::endl;
+    std::cout << "OK !" << std::endl;
     return ;
 }
 
@@ -1034,5 +1139,9 @@ int main(void)
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING STACK :" << std::endl;
     my_stack_empty();
+    my_stack_size();
+    my_stack_push();
+    my_stack_pop();
+    my_stack_top();
     return (0);
 }
