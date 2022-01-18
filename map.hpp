@@ -94,7 +94,7 @@ namespace ft
             template <class InputIterator>
             map (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _allocator(alloc), _key_compare(comp), _size(0), _root(NULL) {insert(first, last);}
             //copy (3)
-            map (const map& x) : _allocator(x._alloc_type), _key_compare(x._key_compare), _size(0), _root(NULL) {*this = x;}
+            map (const map& x) : _allocator(x._allocator), _key_compare(x._key_compare), _size(0), _root(NULL) {*this = x;}
             virtual ~map () {clear_tree(_root);}
             map& operator= (const map& x) {
                 clear_tree(_root);
@@ -225,6 +225,24 @@ namespace ft
 	        const_reverse_iterator rend() const
             {
                 return const_reverse_iterator(begin());
+            }
+
+            node_type* insert_node(const value_type& val, node_type *current, node_type *parent)
+            {
+                if (!current)
+                    return add_node(val, parent);
+                if (current->last) {
+                    node_type *to_insert = add_node(val, parent);
+                    current->parent = to_insert;
+                    to_insert->right = current;
+                    current = to_insert;
+                    return current;
+                }
+                if (_key_compare(val.first, current->value.first))
+                    current->left = insert_node(val, current->left, current);
+                else if (_key_compare(current->value.first, val.first))
+                    current->right = insert_node(val, current->right, current);
+                return current;
             }
 
             node_type* insert_node_check_root(const value_type& val, node_type *current, node_type *parent = NULL)

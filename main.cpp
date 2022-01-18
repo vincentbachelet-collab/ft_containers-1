@@ -1088,19 +1088,41 @@ void    my_make_pair(void)
     return ;
 }
 
-//TODO: tester le make pair aussi
 
+void    printMap(NS::map<int, std::string> mymap)
+{
+   #if NS == std
+        NS::map<int, std::string>::iterator it = mymap.begin();
+    #else
+        ft::map<int, mkstd::string>::map_iterator it = mymap.begin();
+    #endif
+    (void)it;
+    #if NS == std
+        NS::map<int, std::string>::iterator ite = mymap.end();
+    #else
+        ft::map<int, std::string>::map_iterator ite = mymap.end();
+    #endif
+    (void)ite;
+    while (it != ite)
+    {
+        std::cout << "key : " << (*it).first << ", value : " << (*it).second << std::endl;
+        it++;
+    }
+    return ;
+}
+
+//TODO: tester le make pair aussi
 void    my_map_value_compare(void)
 {
-    NS::map<char,int> mymap;
+    NS::map<int, std::string> mymap;
 
-    /*
-    mymap['x']=1001;
-    mymap['y']=2002;
-    mymap['z']=3003;
-    */
+    mymap.insert(NS::make_pair(1, "coucou"));
+    mymap.insert(NS::make_pair(2, "blabla"));
+    mymap.insert(NS::make_pair(3, "blublu"));
+    printMap(mymap);
 
     //NS::pair<char,int> highest = *mymap.begin();
+    /*
     #if NS == std
         NS::map<char,int>::iterator it = mymap.begin();
     #else
@@ -1108,12 +1130,7 @@ void    my_map_value_compare(void)
     #endif
     (void)mymap;
     (void)it;
-    /*
-    do {
-        std::cout << it->first << " => " << it->second << '\n';
-    } while ( mymap.value_comp()(*it++, highest) );
     */
-
     return ;
 }
 
