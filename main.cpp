@@ -940,6 +940,9 @@ void    my_vector_iterator(void)
     it = it - 2;
     it += 2;
     it -= 2;
+    ite--;
+    std::ptrdiff_t diff = ite - it;
+    (void)diff;
     return ;
 }
 
@@ -960,8 +963,8 @@ int main(void)
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING UTILS :" << std::endl;
     //TODO: tester tous les utils
-    my_vector_iterator();
     /*
+    my_vector_iterator();
     my_lexico();
     my_iterator_traits();
     my_enable_if();

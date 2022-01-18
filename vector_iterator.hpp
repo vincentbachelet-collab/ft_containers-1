@@ -124,7 +124,13 @@ namespace ft
         }
 
         friend vector_iterator<T> operator+(difference_type n, const vector_iterator &rhs) { return n + rhs._p; }
-        vector_iterator<T> operator+(difference_type n) const { return _p + n; }
+        friend vector_iterator<T> operator-(difference_type n, const vector_iterator &rhs) { return rhs._p - n; }
+
+        vector_iterator<T> operator+(difference_type n) const 
+        { 
+            vector_iterator<T> res = this->_p + n;
+            return (res);
+        }
 
         vector_iterator<T> operator-(difference_type n) const
         {
@@ -135,6 +141,12 @@ namespace ft
         difference_type operator-(const vector_iterator &rhs) const
         {
             difference_type res = this->_p - rhs._p;
+            return (res);
+        }
+
+        difference_type operator+(const vector_iterator &rhs) const
+        {
+            difference_type res = this->_p + rhs._p;
             return (res);
         }
 

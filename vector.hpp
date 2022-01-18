@@ -7,8 +7,8 @@
 #include "reverse_iterator.hpp"
 #include "utils.hpp"
 
-struct enable_if;
-class vector_iterator;
+struct	enable_if;
+class	vector_iterator;
 
 namespace ft
 {
@@ -24,10 +24,8 @@ namespace ft
 		typedef typename allocator::size_type size_type;
 		typedef typename allocator::pointer pointer;
 		typedef typename allocator::const_pointer const_pointer;
-
 		typedef vector_iterator<value> iterator;
 		typedef vector_iterator<value const> const_iterator;
-
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -38,6 +36,8 @@ namespace ft
 		pointer _ptr;		  // Addresse du tableau
 
 	public:
+
+		//Getters, setters
 		pointer get_ptr(void) const
 		{
 			return (this->_ptr);
@@ -130,6 +130,8 @@ namespace ft
 			this->_size = 0;
 		}
 
+		//https://www.cplusplus.com/reference/vector/vector/reserve/
+		//Requests that the vector capacity be at least enough to contain n elements.
 		void reserve(size_type size)
 		{
 			if (size > this->get_capacity())
@@ -143,9 +145,7 @@ namespace ft
 					this->_allocator.destroy(&this->_ptr[i]);
 					i++;
 				}
-				// set_capacity(size);
 				this->_allocator.deallocate(this->_ptr, this->_capacity);
-				this->_ptr = n;
 				set_ptr(n);
 				set_capacity(size);
 			}
@@ -235,13 +235,11 @@ namespace ft
 					reserve(n);
 			}
 			size_type i = this->get_size();
-			// Construction des elements qui seraient supplementaires
 			while (i < n)
 			{
 				this->_allocator.construct(&_ptr[i], val);
 				i++;
 			}
-			// Deconstruction des elements qui seraient en trop
 			i = n;
 			while (i < this->get_size())
 			{
@@ -293,22 +291,17 @@ namespace ft
 		// retourne une reference de l element a la position n dans le vecteur
 		reference at(size_type n)
 		{
-			// if (n >= this->get_size())
-			if (n >= _size)
+			if (n >= this->get_size())
 				throw std::out_of_range("out of range");
-			// reference ref = this->_ptr[n];
-			return (_ptr[n]);
+			return (this->_ptr[n]);
 		}
 
 		// retourne une reference de l element a la position n dans le vecteurs
 		const reference at(size_type n) const
 		{
-			// if (n >= this->get_size())
-			if (n >= _size)
-				// C'est bien le comportement qui a lieu avec la std
+			if (n >= this->get_size())
 				throw std::out_of_range("out of range");
-			// reference ref = _ptr[n];
-			return (_ptr[n]);
+			return (this->_ptr[n]);
 		}
 
 		void push_back(const value &val)
@@ -325,12 +318,6 @@ namespace ft
 			_size++;
 		}
 
-		// deux versions de erase
-		iterator erase(iterator position)
-		{
-			return erase(position, position + 1);
-		}
-
 		// Le compilateur appelle ca un subscript operator
 		reference operator[](size_type n)
 		{
@@ -342,6 +329,12 @@ namespace ft
 		{
 			reference ref = this->_ptr[n];
 			return (ref);
+		}
+
+		// deux versions de erase
+		iterator erase(iterator position)
+		{
+			return erase(position, position + 1);
 		}
 
 		// Removes from the vector either a single element (position) or a range of elements ([first,last)).
@@ -480,19 +473,19 @@ namespace ft
 		// fonction iterateur
 		reference front()
 		{
-			reference ref = _ptr[0];
+			reference ref = this->_ptr[0];
 			return (ref);
 		}
 
 		const_reference front() const
 		{
-			reference ref = _ptr[0];
+			reference ref = this->_ptr[0];
 			return (ref);
 		}
 
 		vector &operator=(const vector &x)
 		{
-			if (_size < x._size)
+			if (this->_size < x._size)
 			{
 				reserve(x._size);
 				resize(x._size);
@@ -500,10 +493,10 @@ namespace ft
 			else
 				for (size_type i = 0; i < _size; i++)
 					_allocator.destroy(&_ptr[i]);
-			_size = x._size;
+			this->_size = x._size;
 			for (size_type i = 0; i < _size; i++)
 				_allocator.construct(&_ptr[i], x._ptr[i]);
-			return *this;
+			return (*(this));
 		}
 	};
 
@@ -517,15 +510,11 @@ namespace ft
 	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		if (lhs.size() != rhs.size())
-		{
 			return (false);
-		}
 		for (size_t i = 0; i < lhs.size(); i++)
 		{
 			if (lhs[i] != rhs[i])
-			{
 				return (false);
-			}
 		}
 		return (true);
 	}
@@ -540,8 +529,6 @@ namespace ft
 	template <typename T, typename Alloc>
 	bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		(void)lhs;
-		(void)rhs;
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
