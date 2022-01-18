@@ -3,15 +3,12 @@
 #include <memory>
 #include <iostream>
 #include <string>
-//#include "vector_iterator.hpp"
-//#include "reverse_iterator.hpp"
 #include "iterator.hpp"
 #include "utils.hpp"
 
 struct enable_if;
 class vector_iterator;
 
-/* */
 namespace ft
 {
 	template <typename T, typename Alloc = std::allocator<T> >

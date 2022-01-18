@@ -3,9 +3,21 @@
 #include <memory>
 #include "node.hpp"
 #include "utils.hpp"
-//#include "map_iterator.hpp"
 #include "iterator.hpp"
-//#include "functional.hpp"
+
+// Necessaire pour value compare
+// https://en.cppreference.com/w/cpp/utility/functional/binary_function
+
+namespace ft
+{
+    template <typename Arg1, typename Arg2, typename Result>
+    struct binary_function
+    {
+        typedef Arg1 first_argument_type;
+        typedef Arg2 second_argument_type;
+        typedef Result result_type;
+    };
+}
 
 class map_iterator;
 
@@ -14,7 +26,6 @@ class map_iterator;
 // https://www.youtube.com/watch?v=GiQnFdbdSbo
 namespace ft
 {
-    // On met 4 arguments et pas deux car 2 d'entre deux sont presque toujours implicites
     template <class Key,
               class T,
               class Compare = std::less<Key>,
@@ -29,21 +40,21 @@ namespace ft
         typedef node<value_type> node_type;
 
         // Implementation doc officielle
+        // https://www.cplusplus.com/reference/map/map/value_comp/
+        // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
         class value_compare
         {
             friend class map;
 
         protected:
             Compare comp;
-            value_compare(Compare c) : comp(c) {} // constructed with map's comparison object
+            value_compare(Compare c) : comp(c) {}
+
         public:
             typedef bool result_type;
             typedef value_type first_argument_type;
             typedef value_type second_argument_type;
-            bool operator()(const value_type &x, const value_type &y) const
-            {
-                return comp(x.first, y.first);
-            }
+            bool operator()(const value_type &x, const value_type &y) const { return comp(x.first, y.first); }
         };
 
         typedef Allocator allocator_type;
@@ -76,6 +87,18 @@ namespace ft
             clear_tree(_root);
             insert(x.begin(), x.end());
             return *this;
+        }
+
+        // https://www.cplusplus.com/reference/map/map/key_comp/
+        key_compare key_comp() const
+        {
+            return (this->_key_compare);
+        }
+
+        // https://www.cplusplus.com/reference/map/map/value_comp/
+        value_compare value_comp() const
+        {
+            return (value_compare(key_compare()));
         }
 
         size_type get_size(void)

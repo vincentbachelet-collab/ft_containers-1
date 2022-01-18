@@ -1,6 +1,5 @@
 #pragma once
 
-/* */
 namespace ft
 {
     template <typename T>
@@ -8,16 +7,16 @@ namespace ft
     {
     public:
         T value;
-	    node *left;
-	    node *right;
-	    node *parent;
+        node *left;
+        node *right;
+        node *parent;
         bool last;
 
         node(void) : value(NULL), left(NULL), right(NULL), parent(NULL), last(false) {}
         node(T v, node *l, node *r, node *p, bool e = false) : value(v), left(l), right(r), parent(p), last(e) {}
-	    virtual ~node() {}
+        virtual ~node() {}
 
-        node(const T &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), last(src.last)  {}
+        node(const T &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), last(src.last) {}
 
         node &operator=(const node &src)
         {
@@ -30,15 +29,5 @@ namespace ft
             }
             return (*this);
         }
-
-        //Comment
-        /*
-        operator node<const T>()
-        {
-            return node<const T>(reinterpret_cast<const T *>(data),
-                                 reinterpret_cast < ft::node<const T *>(previous),
-                                 reinterpret_cast < ft::node<const T *>(next));
-        }
-        */
     };
 }

@@ -57,11 +57,12 @@ $(OBJDIR_STD)/%.o: %.cpp
 	@$(CC) $(CFLAGS) $(STD) -c $< -o $@
 
 clean:
-	@rm -f $(OBJ) $(OBJ_FT) $(OBJ_STD)
+			@rm -rf $(OBJ) $(OBJ_FT) $(OBJ_STD)
 
-fclean: clean
-	@rm -f $(NAME) $(NAME_FT) $(NAME_STD) $(NAME).txt $(NAME_FT).txt $(NAME_STD).txt diff.txt
+fclean:		clean
+			@rm -rf $(NAME) $(NAME_FT) $(NAME_STD) $(NAME).txt $(NAME_FT).txt $(NAME_STD).txt diff.txt \
+			ft_objects std_objects 
 
-re: fclean all
+re: 		fclean all
 
 .PHONY: clean fclean all re bonus test ft std

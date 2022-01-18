@@ -117,8 +117,8 @@ namespace ft
         typedef std::random_access_iterator_tag iterator_category;
     };
 
-    //If B is true, std::enable_if has a public member typedef type,
-    //equal to T; otherwise, there is no member typedef.
+    // If B is true, std::enable_if has a public member typedef type,
+    // equal to T; otherwise, there is no member typedef.
     template <bool B, typename T = void>
     struct enable_if
     {
@@ -130,39 +130,39 @@ namespace ft
         typedef T type;
     };
 
-    //https://www.geeksforgeeks.org/stdequal-in-cpp/
-    //std::equal() helps to compare the elements wihin the range (first, last) with those within the range beginning at first_2
+    // https://www.geeksforgeeks.org/stdequal-in-cpp/
+    // std::equal() helps to compare the elements wihin the range (first, last) with those within the range beginning at first_2
     template <typename InputIterator1, typename InputIterator2>
-	bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
-	{
-		while (first1 != last1)
-		{
-			if (!(*first1 == *first2))
-				return (false);
-			first1++;
-			first2++;
-		}
-		return (true);
-	}
+    bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+    {
+        while (first1 != last1)
+        {
+            if (!(*first1 == *first2))
+                return (false);
+            first1++;
+            first2++;
+        }
+        return (true);
+    }
 
-	template <typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
-	bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)
-	{
-		while (first1 != last1)
-		{
-			if (!pred(*first1, *first2))
-				return (false);
-			first1++;
-			first2++;
-		}
-		return (true);
-	}
+    template <typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
+    bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)
+    {
+        while (first1 != last1)
+        {
+            if (!pred(*first1, *first2))
+                return (false);
+            first1++;
+            first2++;
+        }
+        return (true);
+    }
 }
 
-//Lexicographical compare
+// Lexicographical compare
 namespace ft
 {
-    //Implementation inspiree de la documentation officielle
+    // Implementation inspiree de la documentation officielle
     template <class InputIt1, class InputIt2>
     bool lexicographical_compare(InputIt1 first1, InputIt1 last1,
                                  InputIt2 first2, InputIt2 last2)
@@ -172,7 +172,7 @@ namespace ft
         {
             if (*first1 < *first2)
                 return true;
-            //On retourne true si la premiere range est lexicographiquement inferieure a la seconde 
+            // On retourne true si la premiere range est lexicographiquement inferieure a la seconde
             if (*first2 < *first1)
                 return false;
         }
@@ -200,66 +200,66 @@ namespace ft
     }
 }
 
-//Make pair - necessaire pour map
-//https://en.cppreference.com/w/cpp/utility/pair/make_pair
-//creates an std::pair object
+// Make pair - necessaire pour map
+// https://en.cppreference.com/w/cpp/utility/pair/make_pair
+// creates an std::pair object
 namespace ft
 {
     template <typename T1, typename T2>
-	class pair
-	{
-        public:
-		typedef T1	first_type;
-		typedef	T2	second_type;
+    class pair
+    {
+    public:
+        typedef T1 first_type;
+        typedef T2 second_type;
 
-		T1	first;
-		T2	second;
+        T1 first;
+        T2 second;
 
-		pair(void) : first(T1()), second(T2()) {};
-		template<typename U, typename V>
-		pair(pair<U, V> const &src) : first(src.first), second(src.second) {};
-		pair(first_type const &a, second_type const &b): first(a), second(b) {};
+        pair(void) : first(T1()), second(T2()){};
+        template <typename U, typename V>
+        pair(pair<U, V> const &src) : first(src.first), second(src.second){};
+        pair(first_type const &a, second_type const &b) : first(a), second(b){};
 
-		pair    &operator=(pair const &src)
-		{
-			if (this != &src)
-			{
-				first = src.first;
-				second = src.second;
-			}
-			return (*(this));
-		}
-	};
-	template <typename T1, typename T2>
-	bool operator==(const pair<T1, T2>& lhs, const pair<T1, T2>& rhs)
-	{
-		return (lhs.first == rhs.first && lhs.second == rhs.second);
-	}
-	template <typename T1, typename T2>
-	bool operator!=(const pair<T1, T2>& lhs, const pair<T1, T2>& rhs)
-	{
-		return (!(lhs == rhs));
-	}
-	template <typename T1, typename T2>
-	bool operator<(const pair<T1, T2>& lhs, const pair<T1, T2>& rhs)
-	{
-		return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
-	}
-	template <typename T1, typename T2>
-	bool operator<=(const pair<T1, T2>& lhs, const pair<T1, T2>& rhs)
-	{
-		return (!(rhs < lhs));
-	}
-	template <typename T1, typename T2>
-	bool operator>(const pair<T1, T2>& lhs, const pair<T1, T2>& rhs)
-	{
-		return (rhs < lhs);
-	}
-	template <typename T1, typename T2>
-	bool operator>= (const pair<T1, T2>& lhs, const pair<T1, T2>& rhs)
-	{
-		return (!(lhs < rhs));
-	}
+        pair &operator=(pair const &src)
+        {
+            if (this != &src)
+            {
+                first = src.first;
+                second = src.second;
+            }
+            return (*(this));
+        }
+    };
+    template <typename T1, typename T2>
+    bool operator==(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return (lhs.first == rhs.first && lhs.second == rhs.second);
+    }
+    template <typename T1, typename T2>
+    bool operator!=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return (!(lhs == rhs));
+    }
+    template <typename T1, typename T2>
+    bool operator<(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
+    }
+    template <typename T1, typename T2>
+    bool operator<=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return (!(rhs < lhs));
+    }
+    template <typename T1, typename T2>
+    bool operator>(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return (rhs < lhs);
+    }
+    template <typename T1, typename T2>
+    bool operator>=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return (!(lhs < rhs));
+    }
 
     template <typename T1, typename T2>
     pair<T1, T2> make_pair(T1 x, T2 y)

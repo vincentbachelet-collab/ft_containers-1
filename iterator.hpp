@@ -1,6 +1,7 @@
 #pragma once
 
 #include "includes.hpp"
+#include "utils.hpp"
 
 namespace ft
 {
@@ -215,9 +216,6 @@ namespace ft
     }
 }
 
-#include "utils.hpp"
-#include "vector_iterator.hpp"
-
 namespace ft
 {
     template <class Iterator>
@@ -416,6 +414,7 @@ namespace ft
         map_iterator() : _node(NULL) {}
         map_iterator(node_pointer ptr) : _node(ptr) {}
         map_iterator(map_iterator const &src) : _node(src._node) {}
+
         map_iterator &operator=(map_iterator const &rhs)
         {
             _node = rhs._node;
@@ -446,16 +445,16 @@ namespace ft
             return it;
         }
 
-        reference operator*() const { return _node->value; }
+        reference operator*() const { return (this->_node->value); }
         pointer operator->() const { return &(operator*()); }
-        node_pointer get_node() { return _node; }
-        node_pointer get_node() const { return _node; }
-        operator map_iterator<const T, node_pointer>() const { return map_iterator<const T, node_pointer>(_node); }
+        node_pointer get_node() { return (this->_node); }
+        node_pointer get_node() const { return (this->_node); }
+        operator map_iterator<const T, node_pointer>() const { return map_iterator<const T, node_pointer>(this->_node); }
 
         template <typename it2>
-        bool operator==(const map_iterator<it2, node_pointer> &b) const { return _node == b.get_node(); }
+        bool operator==(const map_iterator<it2, node_pointer> &b) const { return (this->_node == b.get_node()); }
         template <typename it2>
-        bool operator!=(const map_iterator<it2, node_pointer> &b) const { return _node != b.get_node(); }
+        bool operator!=(const map_iterator<it2, node_pointer> &b) const { return (this->_node != b.get_node()); }
 
     private:
         void increase()
@@ -498,12 +497,11 @@ namespace ft
             }
         }
     };
-    /*
-    template <typename Iterator>
-    std::ostream &operator<<(std::ostream &o, map_iterator<Iterator> &rhs)
+
+    template <typename One, typename Two>
+    std::ostream &operator<<(std::ostream &o, map_iterator<One, Two> const &rhs)
     {
         o << *rhs.get_node();
         return o;
     }
-    */
 }

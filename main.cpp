@@ -1123,10 +1123,32 @@ void printMap(NS::map<int, std::string> mymap)
     return;
 }
 
+void my_key_comp(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP KEY COMP:" << std::endl;
+    NS::map<char, int> mymap;
+    NS::map<char, int>::key_compare mycomp = mymap.key_comp();
+
+    mymap['a'] = 100;
+    mymap['b'] = 200;
+    mymap['c'] = 300;
+
+    char highest = mymap.rbegin()->first;
+    NS::map<char, int>::iterator it = mymap.begin();
+    while (mycomp((*it++).first, highest))
+    {
+        std::cout << it->first << " => " << it->second << std::endl;
+    }
+    std::cout << "OK !" << std::endl;
+}
+
 // TODO: tester le make pair aussi
 void my_map_value_compare(void)
 {
     // NS::map<int, std::string> mymap;
+    // TODO: a reutiliser
+    /*
     NS::map<int, std::string> mymap;
 
     // Le insert va permettre de trier la map
@@ -1141,6 +1163,27 @@ void my_map_value_compare(void)
     ft::map<int, std::string>::map_iterator ite = mymap.end();
 #endif
     (void)ite;
+    */
+
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP KEY COMP:" << std::endl;
+    NS::map<char, int> mymap;
+
+    mymap['x'] = 1001;
+    mymap['y'] = 2002;
+    mymap['z'] = 3003;
+
+    NS::pair<char, int> highest = *mymap.rbegin();
+    NS::map<char, int>::iterator it = mymap.begin();
+
+    (void)it;
+    (void)highest;
+    //
+    while (mymap.value_comp()(*it++, highest))
+    {
+        std::cout << it->first << " => " << it->second << std::endl;
+    }
+    std::cout << "OK !" << std::endl;
     return;
 }
 
@@ -1150,6 +1193,7 @@ int main(void)
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING UTILS :" << std::endl;
     my_map_value_compare();
+    my_key_comp();
     // TODO: tester tous les utils
     /*
     my_vector_iterator();
