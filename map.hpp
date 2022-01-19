@@ -103,9 +103,9 @@ namespace ft
             this->_size = n;
         }
 
-        node_type *get_allocator(void)
+        allocator_type get_allocator(void) const
         {
-            return (this->_root);
+            return (this->_allocator);
         }
 
         void clear(void)
@@ -411,9 +411,9 @@ namespace ft
             return current;
         }
 
-        node_type *insert_node_check_root(const value_type &val, node_type *current, node_type *parent = NULL)
+        node_type *insert_node_from_root(const value_type &val, node_type *current, node_type *parent = NULL)
         {
-            if (!this->_root) // Si l'arbre est vide
+            if (!this->_root) // Si l'arbre est vide (root pas alloue et construit)
             {
                 this->_root = add_node(val, NULL);
                 node_type *last = add_node(value_type(key_type(), mapped_type()), this->_root);
@@ -422,14 +422,15 @@ namespace ft
                 last->last = true;
                 return (this->_root);
             }
-            if (this->_root->last)
+            if (this->_root->last) //Si root est le seul element
             {
                 node_type *new_root = add_node(val, NULL);
                 this->_root->parent = new_root;
-                new_root->right = _root;
+                new_root->right = this->_root;
                 this->_root = new_root;
                 return (this->_root);
             }
+            //Si ne correspond pas aux deux cas precedents
             return insert_node(val, current, parent);
         }
 
@@ -457,27 +458,33 @@ namespace ft
             return (recursive_find_key(k, this->_root)->value.second);
         }
 
-        //TODO: a revoir
         // Insert, trois versions
+        //https://www.cplusplus.com/reference/map/map/insert/
+        //Insert single element
         pair<iterator, bool> insert(const value_type &val)
         {
             size_t backup = this->get_size();
-            insert_node_check_root(val, this->_root);
+            insert_node_from_root(val, this->_root);
             return (pair<iterator, bool>(recursive_find_key(val.first, this->_root), backup != this->_size));
         }
 
+        //insert with hint
         iterator insert(iterator position, const value_type &val)
         {
             (void)position;
-            insert_node_check_root(val, this->_root);
+            insert_node_from_root(val, this->_root);
             return iterator(recursive_find_key(val.first, this->_root));
         }
 
+        //insert range
         template <class InputIterator>
         void insert(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
         {
-            for (; first != last; first++)
+            while (first != last)
+            {
                 insert(*first);
+                first++;
+            }
         }
 
         bool empty() const { return (this->_size == 0); }

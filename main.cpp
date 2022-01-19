@@ -1501,19 +1501,38 @@ void my_map_equal_range(void)
     ret = mymap.equal_range('b');
 
     std::cout << "lower bound points to: ";
-    std::cout << ret.first->first << " => " << ret.first->second << '\n';
+    std::cout << ret.first->first << " => " << ret.first->second << std::endl;
 
     std::cout << "upper bound points to: ";
-    std::cout << ret.second->first << " => " << ret.second->second << '\n';
+    std::cout << ret.second->first << " => " << ret.second->second << std::endl;
+    return;
+}
+
+void my_map_get_allocator(void)
+{
+    int psize;
+    NS::map<char, int> mymap;
+    NS::pair<const char, int> *p;
+
+    // allocate an array of 5 elements using mymap's allocator:
+    p = mymap.get_allocator().allocate(5);
+
+    // assign some values to array
+    psize = sizeof(std::map<char, int>::value_type) * 5;
+
+    std::cout << "The allocated array has a size of " << psize << " bytes.\n";
+
+    mymap.get_allocator().deallocate(p, 5);
     return;
 }
 
 int main(void)
 {
     // TODO: ajouter les tests qui sont ecrits dans le main du sujet
-    my_map_equal_range();
+    //my_map_get_allocator();
+    //my_map_equal_range();
     //my_map_count();
-    //my_map_insert();
+    my_map_insert();
     //my_map_erase();
     //my_map_find();
     //my_map_clear();

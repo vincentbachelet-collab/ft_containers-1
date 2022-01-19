@@ -10,9 +10,7 @@ SRC			=	main.cpp
 OBJ 		=	$(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
 OBJ_FT 		=	$(addprefix $(OBJDIR_FT)/, $(SRC:.cpp=.o))
 OBJ_STD		=	$(addprefix $(OBJDIR_STD)/, $(SRC:.cpp=.o))
-CFLAGS		=	-Wall -Wextra -Werror -std=c++98#-fsanitize=address -g
-STD			=	-D STD=1
-TEST		=	-D TEST=1
+CFLAGS		=	-Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g3
 
 all: ft std
 	@./$(NAME_FT) > $(NAME_FT).txt
@@ -48,8 +46,8 @@ clean:
 			@rm -rf $(OBJ) $(OBJ_FT) $(OBJ_STD)
 
 fclean:		clean
-			@rm -rf $(NAME) $(NAME_FT) $(NAME_STD) $(NAME).txt $(NAME_FT).txt $(NAME_STD).txt diff.txt \
-			ft_objects std_objects 
+			@rm -rf $(NAME) $(NAME_FT) $(NAME_STD) $(NAME).txt $(NAME_FT).txt $(NAME_STD).txt diff.txt 
+			@rm -rf ft_objects std_objects obj
 
 re: 		fclean all
 
