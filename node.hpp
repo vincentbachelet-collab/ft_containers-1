@@ -1,5 +1,7 @@
 #pragma once
 
+//AVL tree
+//https://fr.wikipedia.org/wiki/Arbre_AVL
 namespace ft
 {
     template <typename T>
@@ -10,7 +12,7 @@ namespace ft
         node *left;
         node *right;
         node *parent;
-        bool last;
+        bool last;//util perso
 
         node(void) : value(NULL), left(NULL), right(NULL), parent(NULL), last(false) {}
         node(T v, node *l, node *r, node *p, bool e = false) : value(v), left(l), right(r), parent(p), last(e) {}

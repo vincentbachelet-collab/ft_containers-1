@@ -44,7 +44,8 @@ namespace ft
         };
 
         typedef Allocator allocator_type;
-        typedef typename allocator_type::template rebind<node_type>::other node_allocator;
+        //typedef Allocator node_allocator;
+        typedef typename allocator_type::template rebind<node_type>::other node_allocator; //Class whose member other is a typedef of allocator for type Type.
         typedef typename allocator_type::reference reference;
         typedef typename allocator_type::const_reference const_reference;
         typedef typename allocator_type::pointer pointer;
@@ -127,10 +128,12 @@ namespace ft
             return 0;
         }
 
-        void swap(map &x)
+        void swap(map &x) //passer par des pointeurs plutot que pas des references?
         {
-            if (x == *this)
-                return;
+            //int temp;
+            //temp = a;
+            //a = b;
+            //b = temp;
 
             node_allocator temp_alloc_type = this->_allocator;
             key_compare temp_key_compare = this->_key_compare;
@@ -146,6 +149,16 @@ namespace ft
             x._key_compare = temp_key_compare;
             x._size = temp_size;
             x._root = temp_root;
+            return;
+        }
+
+        void swap(map *src)
+        {
+            map *temp = src;
+
+            src = this;
+            this = temp;
+            return;
         }
 
         pair<iterator, iterator> equal_range(const key_type &k)
@@ -571,4 +584,13 @@ namespace ft
     {
         x.swap(y);
     }
+
+    //?
+    /*
+    template <class Key, class T, class Compare, class Alloc>
+    void swap(map<Key, T, Compare, Alloc> *x, map<Key, T, Compare, Alloc> *y)
+    {
+        x.swap(y);
+    }
+    */
 }

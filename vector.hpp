@@ -136,6 +136,7 @@ namespace ft
 		{
 			if (size > this->get_capacity())
 			{
+				//As requested, allocate in one call
 				pointer n = this->_allocator.allocate(size);
 				int i = 0;
 				int max = this->get_size();
@@ -187,7 +188,8 @@ namespace ft
 				this->_size++;
 
 			this->set_capacity(this->get_size());
-			this->_ptr = _allocator.allocate(this->get_capacity());
+			//As requested, allocated in one call
+			this->_ptr = _allocator.allocate(this->get_size()); //get_capacity()
 
 			for (int i = 0; first != last; ++first, ++i)
 				_allocator.construct(&this->_ptr[i], *first);
