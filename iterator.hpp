@@ -40,12 +40,12 @@ namespace ft
 
         value_type *base(void) const
         {
-            return (_p);
+            return (this->_p);
         }
 
         vector_iterator &operator++()
         {
-            _p++;
+            this->_p++;
             return (*this);
         }
 
@@ -58,7 +58,7 @@ namespace ft
 
         vector_iterator &operator--()
         {
-            _p--;
+            this->_p--;
             return (*this);
         }
 
@@ -78,8 +78,6 @@ namespace ft
         {
             return (this->_p);
         }
-
-        // reference operator*() const { return (*_p); }
 
         bool operator==(const vector_iterator &other) const
         {
@@ -153,17 +151,17 @@ namespace ft
 
         vector_iterator<T> &operator+=(difference_type n)
         {
-            _p += n;
+            this->_p += n;
             return *this;
         }
 
         vector_iterator<T> &operator-=(difference_type n)
         {
-            _p -= n;
+            this->_p -= n;
             return *this;
         }
 
-        value_type &operator*() { return *_p; }
+        value_type &operator*() { return *this->_p; }
     };
 
     template <typename it1, typename it2>
@@ -243,7 +241,10 @@ namespace ft
         virtual ~reverse_iterator() {}
         reverse_iterator &operator=(reverse_iterator const &src)
         {
-            this->_ptr = src._ptr;
+            if (this != &src)
+            {
+                this->_ptr = src._ptr;
+            }
             return (*(this));
         }
 
@@ -417,7 +418,10 @@ namespace ft
 
         map_iterator &operator=(map_iterator const &rhs)
         {
-            this->_ptr = rhs._ptr;
+            if (this != &src)
+            {
+                this->_ptr = rhs._ptr;
+            }
             return *this;
         }
         virtual ~map_iterator() {}

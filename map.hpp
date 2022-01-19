@@ -25,7 +25,6 @@ namespace ft
         typedef Compare key_compare;
         typedef node<value_type> node_type;
 
-        // Necessaire pour value compare
         // https://en.cppreference.com/w/cpp/utility/functional/binary_function
         class Binary_function
         {
@@ -34,19 +33,13 @@ namespace ft
             typedef value_type first_argument_type;
             typedef value_type second_argument_type;
         };
-
-        // Implementation doc officielle
         // https://www.cplusplus.com/reference/map/map/value_comp/
         // in C++98, it is required to inherit binary_function<value_type,value_type,bool
         class value_compare : public Binary_function
         {
-            //friend class map;
-
         public:
             Compare comp;
             value_compare(Compare c) : comp(c) {}
-
-        public:
             bool operator()(const value_type &x, const value_type &y) const { return comp(x.first, y.first); }
         };
 
