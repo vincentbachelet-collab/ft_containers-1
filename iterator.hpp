@@ -31,7 +31,6 @@ namespace ft
             return (*this);
         }
 
-        // Equivalent de "base" pour les reverse iterator
         value_type *get_ptr(void) const
         {
             return this->_p;
@@ -121,18 +120,15 @@ namespace ft
             return (b);
         }
 
-        friend vector_iterator<T> operator+(difference_type n, const vector_iterator &rhs) { return n + rhs._p; }
-        friend vector_iterator<T> operator-(difference_type n, const vector_iterator &rhs) { return rhs._p - n; }
-
-        vector_iterator<T> operator+(difference_type n) const
+        vector_iterator operator+(difference_type n) const
         {
-            vector_iterator<T> res = this->_p + n;
+            vector_iterator res = this->_p + n;
             return (res);
         }
 
         vector_iterator<T> operator-(difference_type n) const
         {
-            vector_iterator<T> res = this->_p - n;
+            vector_iterator res = this->_p - n;
             return (res);
         }
 
@@ -162,6 +158,18 @@ namespace ft
 
         value_type &operator*() { return *this->_p; }
     };
+
+    template <typename Iterator>
+    vector_iterator<Iterator> operator+(typename vector_iterator<Iterator>::difference_type n, const vector_iterator<Iterator> &it)
+    {
+        return (vector_iterator<Iterator>(it.base() + n));
+    }
+
+    template <typename Iterator>
+    vector_iterator<Iterator> operator-(typename vector_iterator<Iterator>::difference_type n, const vector_iterator<Iterator> &it)
+    {
+        return (vector_iterator<Iterator>(it.base() - n));
+    }
 
     template <typename it1, typename it2>
     bool operator==(const vector_iterator<it1> &a, const vector_iterator<it2> &b)
@@ -232,8 +240,6 @@ namespace ft
     public:
         reverse_iterator() : _ptr(NULL) {}
         reverse_iterator(iterator_type ptr) : _ptr(ptr) {}
-
-        // Constructeur par copie, necessite de templeter pour que ca fonctionne avec n'importe quel type
         template <typename iter>
         reverse_iterator(const reverse_iterator<iter> &src) : _ptr(src.base()) {}
 
@@ -312,7 +318,6 @@ namespace ft
         // Member overloading
         bool operator==(const reverse_iterator &other) const
         {
-            //  std::cout << "Calling member overload" << std::endl;
             return this->_ptr == other._ptr;
         }
 
@@ -349,11 +354,9 @@ namespace ft
         return (reverse_iterator<Iterator>(it.base() + n));
     }
 
-    // Non member overloading
     template <class Iterator1, class Iterator2>
     bool operator==(reverse_iterator<Iterator1> const &lhs, reverse_iterator<Iterator2> const &rhs)
     {
-        // std::cout << "Calling non member overload" << std::endl;
         return (lhs.base() == rhs.base());
     }
 
@@ -418,17 +421,15 @@ namespace ft
         map_iterator &operator=(map_iterator const &rhs)
         {
             if (this != &rhs)
-            {
                 this->_ptr = rhs._ptr;
-            }
-            return *this;
+            return (*(this));
         }
         virtual ~map_iterator() {}
 
         map_iterator &operator++(void)
         {
             increase();
-            return *this;
+            return (*(this));
         }
         map_iterator operator++(int)
         {
@@ -439,7 +440,7 @@ namespace ft
         map_iterator &operator--(void)
         {
             decrease();
-            return *this;
+            return (*(this));
         }
         map_iterator operator--(int)
         {
@@ -448,24 +449,48 @@ namespace ft
             return it;
         }
 
-        reference operator*() const { return (this->_ptr->value); }
-        pointer operator->() const { return &(operator*()); }
-        node_pointer get_node() { return (this->_ptr); }
-        node_pointer get_node() const { return (this->_ptr); }
-        operator map_iterator<const T, node_pointer>() const { return map_iterator<const T, node_pointer>(this->_ptr); }
+        reference operator*() const
+        {
+            return (this->_ptr->value);
+        }
+
+        pointer operator->() const
+        {
+            return &(operator*());
+        }
+
+        node_pointer get_node()
+        {
+            return (this->_ptr);
+        }
+        node_pointer get_node() const
+        {
+            return (this->_ptr);
+        }
+        operator map_iterator<const T, node_pointer>() const
+        {
+            return map_iterator<const T, node_pointer>(this->_ptr);
+        }
 
         template <typename it2>
-        bool operator==(const map_iterator<it2, node_pointer> &b) const { return (this->_ptr == b.get_node()); }
+        bool operator==(const map_iterator<it2, node_pointer> &b) const
+        {
+            return (this->_ptr == b.get_node());
+        }
+
         template <typename it2>
-        bool operator!=(const map_iterator<it2, node_pointer> &b) const { return (this->_ptr != b.get_node()); }
+        bool operator!=(const map_iterator<it2, node_pointer> &b) const
+        {
+            return (this->_ptr != b.get_node());
+        }
 
     private:
         void increase()
         {
-            if (_ptr->right)
+            if (this->_ptr->right)
             {
                 this->_ptr = this->_ptr->right;
-                while (_ptr->left)
+                while (this->_ptr->left)
                     this->_ptr = this->_ptr->left;
             }
             else
