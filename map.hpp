@@ -130,6 +130,27 @@ namespace ft
             return 0;
         }
 
+        void swap(map &x)
+        {
+            if (x == *this)
+                return;
+
+            node_allocator temp_alloc_type = this->_allocator;
+            key_compare temp_key_compare = this->_key_compare;
+            size_type temp_size = this->_size;
+            node_type *temp_root = this->_root;
+
+            this->_allocator = x._allocator;
+            this->_key_compare = x._key_compare;
+            this->_size = x._size;
+            this->_root = x._root;
+
+            x._allocator = temp_alloc_type;
+            x._key_compare = temp_key_compare;
+            x._size = temp_size;
+            x._root = temp_root;
+        }
+
         pair<iterator, iterator> equal_range(const key_type &k)
         {
             return pair<iterator, iterator>(lower_bound(k), upper_bound(k));
