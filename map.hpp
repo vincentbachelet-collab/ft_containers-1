@@ -5,20 +5,6 @@
 #include "utils.hpp"
 #include "iterator.hpp"
 
-// Necessaire pour value compare
-// https://en.cppreference.com/w/cpp/utility/functional/binary_function
-
-namespace ft
-{
-    template <typename Arg1, typename Arg2, typename Result>
-    struct binary_function
-    {
-        typedef Arg1 first_argument_type;
-        typedef Arg2 second_argument_type;
-        typedef Result result_type;
-    };
-}
-
 class map_iterator;
 
 // Data collection that stores key value pairs, also often called dictionnary
@@ -28,7 +14,7 @@ namespace ft
 {
     template <class Key,
               class T,
-              class Compare = std::less<Key>,
+              class Compare = std::less<Key>, //Less est ïmplementation-defined strict total order over pointers (comparateur plus strict que <)
               class Allocator = std::allocator<ft::pair<const Key, T> > >
     class map
     {
@@ -39,21 +25,28 @@ namespace ft
         typedef Compare key_compare;
         typedef node<value_type> node_type;
 
-        // Implementation doc officielle
-        // https://www.cplusplus.com/reference/map/map/value_comp/
-        // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-        class value_compare
+        // Necessaire pour value compare
+        // https://en.cppreference.com/w/cpp/utility/functional/binary_function
+        class Binary_function
         {
-            friend class map;
-
-        protected:
-            Compare comp;
-            value_compare(Compare c) : comp(c) {}
-
         public:
             typedef bool result_type;
             typedef value_type first_argument_type;
             typedef value_type second_argument_type;
+        };
+
+        // Implementation doc officielle
+        // https://www.cplusplus.com/reference/map/map/value_comp/
+        // in C++98, it is required to inherit binary_function<value_type,value_type,bool
+        class value_compare : public Binary_function
+        {
+            //friend class map;
+
+        public:
+            Compare comp;
+            value_compare(Compare c) : comp(c) {}
+
+        public:
             bool operator()(const value_type &x, const value_type &y) const { return comp(x.first, y.first); }
         };
 
@@ -84,7 +77,8 @@ namespace ft
         virtual ~map() { clear_tree(_root); }
         map &operator=(const map &x)
         {
-            clear_tree(_root);
+            if (!this->empty())
+                clear_tree(this->_root);
             insert(x.begin(), x.end());
             return *this;
         }
@@ -96,6 +90,7 @@ namespace ft
         }
 
         // https://www.cplusplus.com/reference/map/map/value_comp/
+        //Returns a comparison object that can be used to compare two elements to get wether the key of the first one goes before the second
         value_compare value_comp() const
         {
             return (value_compare(key_compare()));
@@ -141,7 +136,7 @@ namespace ft
             node_type *temp = _allocator.allocate(1);
             this->_allocator.construct(temp, node_type(val, NULL, NULL, parent, false));
             this->_size++;
-            return temp;
+            return (temp);
         }
 
         // Pour tester key compare on a besoin des iterateurs
@@ -219,30 +214,55 @@ namespace ft
         // Returns an iterator pointing to the first element in the container whose key is not considered to go before k
         iterator lower_bound(const key_type &k)
         {
-            iterator ite = end();
-            iterator it = begin();
+            iterator ite = this->end();
+            iterator it = this->begin();
             while (it != ite)
             {
-                // Key compare retourne
                 if (!_key_compare(it->first, k))
-                    return it;
+                    return (it);
                 it++;
             }
-            return ite;
+            return (ite);
         }
 
         const_iterator lower_bound(const key_type &k) const
         {
-            const_iterator ite = end();
-            const_iterator it = begin();
+            const_iterator ite = this->end();
+            const_iterator it = this->begin();
 
             while (it != ite)
             {
                 if (!_key_compare(it->first, k))
-                    return const_iterator(it);
+                    return (it);
                 it++;
             }
-            return const_iterator(ite);
+            return (ite);
+        }
+
+        iterator upper_bound(const key_type &k)
+        {
+            iterator it = this->begin();
+            iterator ite = this->end();
+            while (it != ite)
+            {
+                if (!_key_compare(k, it->first))
+                    return (it);
+                it++;
+            }
+            return (ite);
+        }
+
+        const_iterator upper_bound(const key_type &k) const
+        {
+            const_iterator it = this->begin();
+            const_iterator ite = this->end();
+            while (it != ite)
+            {
+                if (!_key_compare(k, it->first))
+                    return (it);
+                it++;
+            }
+            return (ite);
         }
 
         node_type *min_value_node(node_type *node)
@@ -426,7 +446,6 @@ namespace ft
         size_type max_size() const { return (this->_allocator.max_size()); }
     };
 
-    // Non members overloads
     template <class Key, class T, class Compare, class Alloc>
     bool operator==(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
     {

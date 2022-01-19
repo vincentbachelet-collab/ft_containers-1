@@ -1244,41 +1244,32 @@ void my_map_lower_bound(void)
     mymap.erase(itlow);
     for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
         std::cout << it->first << " => " << it->second << std::endl;
-    std::cout << "OK !" << std::endl;
     // cpp reference inspired
-    /*
-    const std::vector<int> data = {1, 2, 4, 5, 5, 6};
-    data.insert();
-    for (int i = 0; i < 8; ++i)
-    {
-        // Search for first element x such that i ≤ x
-        auto lower = std::lower_bound(data.begin(), data.end(), i);
-
-        std::cout << i << " ≤ ";
-        lower != data.end()
-            ? std::cout << *lower << " at index " << std::distance(data.begin(), lower)
-            : std::cout << "[not found]";
-        std::cout << '\n';
-    }
-
-    std::vector<PriceInfo> prices = {{100.0}, {101.5}, {102.5}, {102.5}, {107.3}};
-    for (double to_find : {102.5, 110.2})
-    {
-        auto prc_info = std::lower_bound(prices.begin(), prices.end(), to_find,
-                                         [](const PriceInfo &info, double value)
-                                         {
-                                             return info.price < value;
-                                         });
-
-        prc_info != prices.end()
-            ? std::cout << prc_info->price << " at index " << prc_info - prices.begin()
-            : std::cout << to_find << " not found";
-        std::cout << '\n';
-    }
-    */
+    std::cout << "OK !" << std::endl;
     return;
 }
 
+void my_map_upper_bound(void)
+{
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP UPPER BOUNDS :" << std::endl;
+    std::cout << "OK !" << std::endl;
+    return;
+}
+void my_map_empty(void)
+{
+    return;
+}
+
+void my_map_size(void)
+{
+    return;
+}
+
+void my_map_max_size(void)
+{
+    return;
+}
 // TODO: a tester
 void my_map_iterators(void)
 {

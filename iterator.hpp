@@ -408,16 +408,16 @@ namespace ft
         typedef std::bidirectional_iterator_tag iterator_category;
 
     protected:
-        node_pointer _node;
+        node_pointer _ptr;
 
     public:
-        map_iterator() : _node(NULL) {}
-        map_iterator(node_pointer ptr) : _node(ptr) {}
-        map_iterator(map_iterator const &src) : _node(src._node) {}
+        map_iterator() : _ptr(NULL) {}
+        map_iterator(node_pointer ptr) : _ptr(ptr) {}
+        map_iterator(map_iterator const &src) : _ptr(src._ptr) {}
 
         map_iterator &operator=(map_iterator const &rhs)
         {
-            _node = rhs._node;
+            this->_ptr = rhs._ptr;
             return *this;
         }
         virtual ~map_iterator() {}
@@ -445,54 +445,54 @@ namespace ft
             return it;
         }
 
-        reference operator*() const { return (this->_node->value); }
+        reference operator*() const { return (this->_ptr->value); }
         pointer operator->() const { return &(operator*()); }
-        node_pointer get_node() { return (this->_node); }
-        node_pointer get_node() const { return (this->_node); }
-        operator map_iterator<const T, node_pointer>() const { return map_iterator<const T, node_pointer>(this->_node); }
+        node_pointer get_node() { return (this->_ptr); }
+        node_pointer get_node() const { return (this->_ptr); }
+        operator map_iterator<const T, node_pointer>() const { return map_iterator<const T, node_pointer>(this->_ptr); }
 
         template <typename it2>
-        bool operator==(const map_iterator<it2, node_pointer> &b) const { return (this->_node == b.get_node()); }
+        bool operator==(const map_iterator<it2, node_pointer> &b) const { return (this->_ptr == b.get_node()); }
         template <typename it2>
-        bool operator!=(const map_iterator<it2, node_pointer> &b) const { return (this->_node != b.get_node()); }
+        bool operator!=(const map_iterator<it2, node_pointer> &b) const { return (this->_ptr != b.get_node()); }
 
     private:
         void increase()
         {
-            if (_node->right)
+            if (_ptr->right)
             {
-                this->_node = this->_node->right;
-                while (_node->left)
-                    this->_node = this->_node->left;
+                this->_ptr = this->_ptr->right;
+                while (_ptr->left)
+                    this->_ptr = this->_ptr->left;
             }
             else
             {
-                node_pointer temp = this->_node;
-                this->_node = this->_node->parent;
-                while (this->_node->left != temp)
+                node_pointer temp = this->_ptr;
+                this->_ptr = this->_ptr->parent;
+                while (this->_ptr->left != temp)
                 {
-                    temp = this->_node;
-                    this->_node = this->_node->parent;
+                    temp = this->_ptr;
+                    this->_ptr = this->_ptr->parent;
                 }
             }
         }
 
         void decrease()
         {
-            if (this->_node->left)
+            if (this->_ptr->left)
             {
-                this->_node = this->_node->left;
-                while (this->_node->right)
-                    this->_node = this->_node->right;
+                this->_ptr = this->_ptr->left;
+                while (this->_ptr->right)
+                    this->_ptr = this->_ptr->right;
             }
             else
             {
-                node_pointer temp = this->_node;
-                this->_node = this->_node->parent;
-                while (this->_node->right != temp)
+                node_pointer temp = this->_ptr;
+                this->_ptr = this->_ptr->parent;
+                while (this->_ptr->right != temp)
                 {
-                    temp = this->_node;
-                    this->_node = this->_node->parent;
+                    temp = this->_ptr;
+                    this->_ptr = this->_ptr->parent;
                 }
             }
         }

@@ -88,12 +88,12 @@ namespace ft
 		// Iterateur (necessaires pour tester les autres constructeurs notamment)
 		iterator begin()
 		{
-			return (iterator(_ptr));
+			return (iterator(this->_ptr));
 		}
 
 		const_iterator begin() const
 		{
-			return (const_iterator(_ptr));
+			return (const_iterator(this->_ptr));
 		}
 
 		iterator end()
@@ -103,7 +103,7 @@ namespace ft
 
 		const_iterator end() const
 		{
-			return const_iterator(_ptr + _size);
+			return const_iterator(this->_ptr + this->_size);
 		}
 
 		reverse_iterator rbegin()
@@ -121,7 +121,10 @@ namespace ft
 			return reverse_iterator(begin());
 		}
 
-		const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(begin());
+		}
 
 		void clear(void)
 		{
@@ -151,7 +154,7 @@ namespace ft
 
 		bool empty() const
 		{
-			if (size() != 0)
+			if (this->size() != 0)
 				return (false);
 			return (true);
 		}
@@ -188,15 +191,20 @@ namespace ft
 			this->_ptr = _allocator.allocate(this->get_capacity());
 
 			for (int i = 0; first != last; ++first, ++i)
-				_allocator.construct(&_ptr[i], *first);
+				_allocator.construct(&this->_ptr[i], *first);
 		}
 
 		// Copy constructor (4)
 		vector(const vector &src) : _size(src._size), _capacity(src._capacity), _allocator(src._allocator), _ptr(NULL)
 		{
-			_ptr = _allocator.allocate(_capacity);
-			for (size_type i = 0; i < _size; i++)
+			this->_ptr = _allocator.allocate(this->_capacity);
+			size_type i = 0;
+			while (i < this->get_size())
+			{
 				_allocator.construct(&_ptr[i], src._ptr[i]);
+				i++;
+			}
+			return;
 		}
 
 		// destructeur
@@ -214,10 +222,11 @@ namespace ft
 
 		size_type max_size() const
 		{
-			size_type ret = _allocator.max_size();
+			size_type ret = this->_allocator.max_size();
 			return (ret);
 		}
 
+		//Equivalent de mon get capacity
 		size_type capacity() const
 		{
 			return (this->_capacity);
@@ -248,6 +257,7 @@ namespace ft
 		}
 
 		// Assign : fill version
+		//Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 		void assign(size_type count, const T &value)
 		{
 			reserve(count);
@@ -274,14 +284,27 @@ namespace ft
 		{
 			size_type n = 0;
 			size_type i = 0;
-			for (InputIterator it = first; it != last; it++)
+			InputIterator it = first;
+			while (it != last)
+			{
 				n++;
+				it++;
+			}
 			reserve(n);
 			resize(n);
-			for (size_type i = 0; i < n && i < _size; i++)
+			size_type i = 0;
+			while (i < n && i < this->size())
+			{
 				_allocator.destroy(&_ptr[i]);
-			for (InputIterator it = first; it != last; it++, i++)
+				i++;
+			}
+			it = first;
+			while (it != last)
+			{
 				_allocator.construct(&_ptr[i], *it);
+				i++;
+				it++;
+			}
 			if (n > this->get_size())
 				set_size(n);
 		}
@@ -471,29 +494,38 @@ namespace ft
 		// fonction iterateur
 		reference front()
 		{
-			reference ref = this->_ptr[0];
+			//reference ref = this->_ptr[0];
+			reference ref = *(this->get_ptr());
 			return (ref);
 		}
 
 		const_reference front() const
 		{
-			reference ref = this->_ptr[0];
+			//reference ref = this->_ptr[0];
+			const_reference ref = *(this->get_ptr());
 			return (ref);
 		}
 
 		vector &operator=(const vector &x)
 		{
-			if (this->_size < x._size)
+			if (this != &x)
 			{
-				reserve(x._size);
-				resize(x._size);
+				if (this->_size < x._size)
+				{
+					reserve(x._size);
+					resize(x._size);
+				}
+				else
+					for (size_type i = 0; i < _size; i++)
+						_allocator.destroy(&_ptr[i]);
+				this->_size = x._size;
+				size_type i = 0;
+				while (i < this->get_size())
+				{
+					_allocator.construct(&_ptr[i], x._ptr[i]);
+					i++;
+				}
 			}
-			else
-				for (size_type i = 0; i < _size; i++)
-					_allocator.destroy(&_ptr[i]);
-			this->_size = x._size;
-			for (size_type i = 0; i < _size; i++)
-				_allocator.construct(&_ptr[i], x._ptr[i]);
 			return (*(this));
 		}
 	};
