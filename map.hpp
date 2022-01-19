@@ -383,60 +383,64 @@ namespace ft
         }
 
         //Le current est toujours _root, on va chercher le bon node grace a la key
-        node_type *delete_node(node_type *current, const key_type &key)
+        node_type *delete_node(node_type *root, const key_type &key)
         {
-            if (!current || current->last)
-                return current;
-            if (this->_key_compare(key, current->value.first)) //si la cle correspond a l enfant plus petit
-                current->left = delete_node(current->left, key);
-            else if (this->_key_compare(current->value.first, key)) //si la cle correspond a l enfant plus grand
-                current->right = delete_node(current->right, key);
+            (void)key;
+            //Si root n a pas d enfant
+            //partie recursive
+            if (!root || root->last)
+                return root;
+            if (this->_key_compare(key, root->value.first)) //si la cle correspond a l enfant plus petit
+                root->left = delete_node(root->left, key);
+            else if (this->_key_compare(root->value.first, key)) //si la cle correspond a l enfant plus grand
+                root->right = delete_node(root->right, key);
             else
             {
-                //Si le node n a pas deux enfants
-                if (!current->left || !current->right)
+                //Si le node n a qu un enfant
+                if (!root->left || !root->right)
                 {
-                    node_type *temp = current->left ? current->left : current->right;
-                    if (!current->left && !current->right)
+                    node_type *temp = root->left ? root->left : root->right;
+                    if (!root->left && !root->right)
                     {
-                        temp = current;
+                        temp = root;
                         this->_allocator.destroy(temp);
                         this->_allocator.deallocate(temp, 1);
-                        current = NULL;
+                        root = NULL;
                         this->_size--;
                     }
                     else
                     {
-                        temp->parent = current->parent;
-                        node_type *temp2 = current;
-                        current = temp;
+                        temp->parent = root->parent;
+                        node_type *temp2 = root;
+                        root = temp;
                         this->_allocator.destroy(temp2);
                         this->_allocator.deallocate(temp2, 1);
                         this->_size--;
                     }
                 }
                 //Necessaires pour le erase2 et tricky erase
+                //Si le note a supprimer a deux enfants
                 else
                 {
-                    node_type *temp = min_value_node(current->right);
-                    if (temp != current->right)
+                    node_type *temp = min_value_node(root->right); //Strategie de la min value a droite
+                    if (temp != root->right)
                     {
-                        temp->right = current->right;
-                        current->right->parent = temp;
+                        temp->right = root->right;
+                        root->right->parent = temp;
                     }
-                    temp->left = current->left;
-                    current->left->parent = temp;
+                    temp->left = root->left;
+                    root->left->parent = temp;
                     temp->parent->left = NULL;
-                    temp->parent = current->parent;
-                    if (this->_root == current)
+                    temp->parent = root->parent;
+                    if (this->_root == root)
                         this->_root = temp;
-                    this->_allocator.destroy(current);
-                    this->_allocator.deallocate(current, 1);
+                    this->_allocator.destroy(root);
+                    this->_allocator.deallocate(root, 1);
                     this->_size--;
-                    current = temp;
+                    root = temp;
                 }
             }
-            return current;
+            return root;
         }
 
         node_type *insert_node_from_root(const value_type &val, node_type *current, node_type *parent = NULL)
@@ -528,18 +532,37 @@ namespace ft
         return equal(lhs.begin(), lhs.end(), rhs.begin());
     }
     template <class Key, class T, class Compare, class Alloc>
-    bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return !(lhs == rhs); }
+    bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    {
+        return !(lhs == rhs);
+    }
+
     template <class Key, class T, class Compare, class Alloc>
     bool operator<(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
     {
         return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
     }
     template <class Key, class T, class Compare, class Alloc>
-    bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return (lhs < rhs || lhs == rhs); }
+    bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    {
+        return (lhs < rhs || lhs == rhs);
+    }
+
     template <class Key, class T, class Compare, class Alloc>
-    bool operator>(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return rhs < lhs; }
+    bool operator>(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    {
+        return rhs < lhs;
+    }
+
     template <class Key, class T, class Compare, class Alloc>
-    bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return (lhs > rhs || lhs == rhs); }
+    bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    {
+        return (lhs > rhs || lhs == rhs);
+    }
+
     template <class Key, class T, class Compare, class Alloc>
-    void swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y) { x.swap(y); }
+    void swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y)
+    {
+        x.swap(y);
+    }
 }

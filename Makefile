@@ -17,10 +17,6 @@ all: ft std
 	@./$(NAME_STD) > $(NAME_STD).txt
 	@diff $(NAME_FT).txt $(NAME_STD).txt > diff.txt
 	@cat diff.txt
-
-#	@./$(NAME_FT) > $(NAME_FT).txt
-#	@./$(NAME_STD) > $(NAME_STD).txt
-#	@echo "Executing Program and Exporting Difference"
 	
 bonus: all
 
