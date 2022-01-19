@@ -515,9 +515,18 @@ namespace ft
             }
         }
 
-        bool empty() const { return (this->_size == 0); }
-        size_type size() const { return (this->_size); }
-        size_type max_size() const { return (this->_allocator.max_size()); }
+        bool empty() const
+        {
+            return (this->_size == 0);
+        }
+        size_type size() const
+        {
+            return (this->_size);
+        }
+        size_type max_size() const
+        {
+            return (this->_allocator.max_size());
+        }
     };
 
     template <class Key, class T, class Compare, class Alloc>
@@ -528,18 +537,38 @@ namespace ft
         return equal(lhs.begin(), lhs.end(), rhs.begin());
     }
     template <class Key, class T, class Compare, class Alloc>
-    bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return !(lhs == rhs); }
+    bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    {
+        return !(lhs == rhs);
+    }
+
     template <class Key, class T, class Compare, class Alloc>
     bool operator<(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
     {
         return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
     }
+
     template <class Key, class T, class Compare, class Alloc>
-    bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return (lhs < rhs || lhs == rhs); }
+    bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    {
+        return (lhs < rhs || lhs == rhs);
+    }
+
     template <class Key, class T, class Compare, class Alloc>
-    bool operator>(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return rhs < lhs; }
+    bool operator>(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    {
+        return rhs < lhs;
+    }
+
     template <class Key, class T, class Compare, class Alloc>
-    bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) { return (lhs > rhs || lhs == rhs); }
+    bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+    {
+        return (lhs > rhs || lhs == rhs);
+    }
+
     template <class Key, class T, class Compare, class Alloc>
-    void swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y) { x.swap(y); }
+    void swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y)
+    {
+        x.swap(y);
+    }
 }

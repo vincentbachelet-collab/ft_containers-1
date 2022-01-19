@@ -1573,12 +1573,51 @@ void my_map_overloads(void)
     std::cout << "OK !" << std::endl;
     return;
 }
+void my_vector_correc(void)
+{
+    //Testing dynamic array
+    std::cout << "Testing dynamic size" << std::endl;
+    std::cout << "-------" << std::endl;
+    NS::vector<int> vec(1);
+    std::cout << "Size is : " << vec.size() << std::endl;
+    vec.push_back(1);
+    std::cout << "Size is : " << vec.size() << std::endl;
+    vec.pop_back();
+    std::cout << "-------" << std::endl;
+    //iterator should be comparable
+    NS::vector<int>::iterator it = vec.begin();
+    NS::vector<int>::const_iterator const_it = vec.begin();
+    std::cout << "Are const iterator and iterators comparable ? " << (it == const_it) << std::endl;
+    std::cout << "-------" << std::endl;
+    //Demo de la dynamic size
+    std::cout << "Dyamic reallocation system : " << std::endl;
+    std::cout << "-------" << std::endl;
+    std::cout << "Capacity is " << vec.capacity() << std::endl;
+    vec.push_back(5);
+    std::cout << "Capacity is " << vec.capacity() << std::endl;
+    vec.push_back(1);
+    vec.push_back(2);
+    vec.push_back(4);
+    vec.push_back(5);
+    vec.push_back(6);
+    std::cout << "Capacity is " << vec.capacity() << std::endl;
+    std::cout << "-------" << std::endl;
+    std::cout << "Pour tester les iterateurs voir les tests plus complets." << std::endl;
+    std::cout << "-------" << std::endl;
+    return;
+}
+
+void my_stack_correc(void)
+{
+    return;
+}
 
 int main(void)
 {
+    my_stack_correc();
+    /*
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING UTILS :" << std::endl;
-    my_vector_iterator();
     my_lexico();
     my_iterator_traits();
     my_enable_if();
@@ -1589,7 +1628,8 @@ int main(void)
     std::cout << "--- END OF UTILS TESTS ---" << std::endl;
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTORS :" << std::endl;
-
+    my_vector_correc();
+    my_vector_iterator();
     my_ft_constructor();
     my_vector_copy_construct();
     my_operator_assignation();
@@ -1661,5 +1701,6 @@ int main(void)
     my_map_lower_bound();
     std::cout << "--- END OF MAP TESTS ---" << std::endl;
     std::cout << "-----------------------------" << std::endl;
+    */
     return (0);
 }

@@ -1,7 +1,7 @@
 NAME		=	containers
 NAME_FT		=	ft_containers
 NAME_STD	=	std_containers
-CC			=	clang++#--verbose
+CC			=	clang++
 OBJDIR		=	objects
 OBJDIR_FT	=	ft_objects
 OBJDIR_STD	=	std_objects
@@ -10,17 +10,13 @@ SRC			=	main.cpp
 OBJ 		=	$(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
 OBJ_FT 		=	$(addprefix $(OBJDIR_FT)/, $(SRC:.cpp=.o))
 OBJ_STD		=	$(addprefix $(OBJDIR_STD)/, $(SRC:.cpp=.o))
-CFLAGS		=	-Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g3
+CFLAGS		=	-Wall -Wextra -Werror -std=c++98
 
 all: ft std
 	@./$(NAME_FT) > $(NAME_FT).txt
 	@./$(NAME_STD) > $(NAME_STD).txt
 	@diff $(NAME_FT).txt $(NAME_STD).txt > diff.txt
 	@cat diff.txt
-
-#	@./$(NAME_FT) > $(NAME_FT).txt
-#	@./$(NAME_STD) > $(NAME_STD).txt
-#	@echo "Executing Program and Exporting Difference"
 	
 bonus: all
 

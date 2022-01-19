@@ -487,14 +487,18 @@ namespace ft
     private:
         void increase()
         {
+            //Si j'ai bien un node a droite
             if (this->_ptr->right)
             {
+                //je sauvegarde l enfant a droite
                 this->_ptr = this->_ptr->right;
+                //Je me place au niveau de minimum du subtree
                 while (this->_ptr->left)
                     this->_ptr = this->_ptr->left;
             }
             else
             {
+                //sinon, je remonte dans les parents pour retrouver le plus grand directement suivant
                 node_pointer temp = this->_ptr;
                 this->_ptr = this->_ptr->parent;
                 while (this->_ptr->left != temp)
@@ -507,6 +511,7 @@ namespace ft
 
         void decrease()
         {
+            //inverse de la mecanique precedente
             if (this->_ptr->left)
             {
                 this->_ptr = this->_ptr->left;
