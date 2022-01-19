@@ -1609,6 +1609,36 @@ void my_vector_correc(void)
 
 void my_stack_correc(void)
 {
+    std::cout << "-------" << std::endl;
+    std::cout << "Testing default (vector) stack :" << std::endl;
+    NS::stack<int> c1;
+    c1.push(5);
+    std::cout << "Taille de la stack par defaut apres un ajout : " << c1.size() << std::endl;
+    std::cout << "Default stack OK !" << std::endl;
+    std::cout << "-------" << std::endl;
+    //test avec vecteur
+    NS::vector<int> vec;
+    NS::stack<int> c2(vec);
+    c2.push(1);
+    c2.push(2);
+    std::cout << "Taille de la stack de vecteur apres 2 ajouts : " << c2.size() << std::endl;
+    std::cout << "Vector stack OK !" << std::endl;
+    std::cout << "-------" << std::endl;
+    //test avec deque
+    NS::stack<int, std::list<int> > c3;
+    c3.push(1);
+    c3.push(2);
+    std::cout << "Taille de la stack de vecteur apres 2 ajouts : " << c3.size() << std::endl;
+    std::cout << "Deque stack OK !" << std::endl;
+    std::cout << "-------" << std::endl;
+
+    //test avec list
+    NS::stack<int, std::list<int> > c4;
+    c4.push(1);
+    c4.push(2);
+    std::cout << "Taille de la stack de vecteur apres 2 ajouts : " << c4.size() << std::endl;
+    std::cout << "List stack OK !" << std::endl;
+    std::cout << "-------" << std::endl;
     return;
 }
 
