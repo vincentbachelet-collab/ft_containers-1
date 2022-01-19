@@ -1143,28 +1143,8 @@ void my_key_comp(void)
     std::cout << "OK !" << std::endl;
 }
 
-// TODO: tester le make pair aussi
 void my_map_value_compare(void)
 {
-    // NS::map<int, std::string> mymap;
-    // TODO: a reutiliser
-    /*
-    NS::map<int, std::string> mymap;
-
-    // Le insert va permettre de trier la map
-    mymap.insert(NS::make_pair(1, "coucou"));
-    mymap.insert(NS::make_pair(58, "blabla"));
-    mymap.insert(NS::make_pair(-1, "blublu"));
-    printMap(mymap);
-
-#if NS == std
-    NS::map<int, std::string>::iterator ite = mymap.end();
-#else
-    ft::map<int, std::string>::map_iterator ite = mymap.end();
-#endif
-    (void)ite;
-    */
-
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING MAP KEY COMP:" << std::endl;
     NS::map<char, int> mymap;
@@ -1252,6 +1232,23 @@ void my_map_upper_bound(void)
 {
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING MAP UPPER BOUNDS :" << std::endl;
+    NS::map<char, int> mymap;
+    NS::map<char, int>::iterator itlow, itup;
+
+    mymap['a'] = 20;
+    mymap['b'] = 40;
+    mymap['c'] = 60;
+    mymap['d'] = 80;
+    mymap['e'] = 100;
+
+    itlow = mymap.lower_bound('b'); // itlow points to b
+    itup = mymap.upper_bound('d');  // itup points to e (not d!)
+
+    mymap.erase(itlow, itup); // erases [itlow,itup)
+
+    // print content:
+    for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
     std::cout << "OK !" << std::endl;
     return;
 }
@@ -1526,13 +1523,42 @@ void my_map_get_allocator(void)
     return;
 }
 
+void my_map_swap(void)
+{
+    NS::map<char, int> foo, bar;
+
+    foo['x'] = 100;
+    foo['y'] = 200;
+
+    bar['a'] = 11;
+    bar['b'] = 22;
+    bar['c'] = 33;
+
+    foo.swap(bar);
+
+    for (NS::map<char, int>::iterator it = foo.begin(); it != foo.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    for (NS::map<char, int>::iterator it = bar.begin(); it != bar.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+    return;
+}
+
+void my_value_comp(void)
+{
+    return;
+}
+
 int main(void)
 {
     // TODO: ajouter les tests qui sont ecrits dans le main du sujet
     //my_map_get_allocator();
     //my_map_equal_range();
     //my_map_count();
-    my_map_insert();
+    my_map_upper_bound();
+    //TODO: a revoir arbre binaire
+    //my_map_swap();
+    //my_map_insert();
     //my_map_erase();
     //my_map_find();
     //my_map_clear();

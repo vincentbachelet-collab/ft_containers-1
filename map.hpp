@@ -317,6 +317,7 @@ namespace ft
         //TODO: revoir tout ce qu il y a en dessous
         // LOWER BOUND : https://www.cplusplus.com/reference/map/map/lower_bound/
         // Returns an iterator pointing to the first element in the container whose key is not considered to go before k
+
         iterator lower_bound(const key_type &k)
         {
             iterator ite = this->end();
@@ -350,7 +351,7 @@ namespace ft
             iterator ite = this->end();
             while (it != ite)
             {
-                if (!_key_compare(k, it->first))
+                if (_key_compare(k, it->first))
                     return (it);
                 it++;
             }
@@ -363,12 +364,47 @@ namespace ft
             const_iterator ite = this->end();
             while (it != ite)
             {
-                if (!_key_compare(k, it->first))
+                if (_key_compare(k, it->first))
                     return (it);
                 it++;
             }
             return (ite);
         }
+
+        /*
+        iterator lower_bound(const key_type &k)
+        {
+            iterator ite = end();
+            for (iterator it = begin(); it != ite; it++)
+                if (!_key_compare(it->first, k))
+                    return it;
+            return ite;
+        }
+        const_iterator lower_bound(const key_type &k) const
+        {
+            const_iterator ite = end();
+            for (const_iterator it = begin(); it != ite; it++)
+                if (!_key_compare(it->first, k))
+                    return const_iterator(it);
+            return ite;
+        }
+        iterator upper_bound(const key_type &k)
+        {
+            iterator ite = end();
+            for (iterator it = begin(); it != ite; it++)
+                if (_key_compare(k, it->first))
+                    return it;
+            return ite;
+        }
+        const_iterator upper_bound(const key_type &k) const
+        {
+            const_iterator ite = end();
+            for (const_iterator it = begin(); it != ite; it++)
+                if (_key_compare(k, it->first))
+                    return const_iterator(it);
+            return ite;
+        }
+        */
 
         //Utils
         node_type *min_value_node(node_type *node)
