@@ -199,7 +199,6 @@ int my_rite_arrow(void)
     return (0);
 }
 
-// TODO: ajouter d autres tests avec les autres protos
 void my_ft_insert()
 {
     std::cout << "-----------------------------" << std::endl;
@@ -211,8 +210,6 @@ void my_ft_insert()
 
     vec.insert(it, 2, 300);
     printSize(vec);
-
-    // "it" no longer valid, get a new one:
     it = vec.begin();
 
     NS::vector<int> vec2(2, 400);
@@ -269,7 +266,6 @@ void my_ft_reverse_iterator()
 {
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTOR REVERSE ITERATOR : " << std::endl;
-    // TODO: ajouter des tests
     NS::vector<int> myvector;
 
     for (int i = 0; i < 10; i++)
@@ -282,7 +278,6 @@ void my_ft_reverse_iterator()
     NS::vector<int>::reverse_iterator rev2 = myvector.rend();
     rev2--;
     rev2++;
-    // TODO: faire des tests avec tous les overloads
     std::cout << "OK !" << std::endl;
     std::cout << std::endl;
 }
@@ -784,19 +779,13 @@ void my_get_allocator(void)
     NS::vector<int> myvector;
     int *p;
     unsigned int i;
-
-    // allocate an array with space for 5 elements using vector's allocator:
     p = myvector.get_allocator().allocate(5);
-
-    // construct values in-place on the array:
     for (i = 0; i < 5; i++)
         myvector.get_allocator().construct(&p[i], i);
 
     for (i = 0; i < 5; i++)
         std::cout << ' ' << p[i];
     std::cout << std::endl;
-
-    // destroy and deallocate:
     for (i = 0; i < 5; i++)
         myvector.get_allocator().destroy(&p[i]);
     myvector.get_allocator().deallocate(p, 5);
@@ -837,7 +826,6 @@ void my_reverse_operator_overloads(void)
     std::cout << (rev >= reve) << std::endl;
     std::cout << (rev <= reve) << std::endl;
 
-    // Arithmetique
     NS::vector<int>::reverse_iterator rev1 = rev + 1;
     NS::vector<int>::reverse_iterator rev2 = rev - 1;
 
@@ -866,7 +854,6 @@ void my_iterator_traits(void)
     typedef NS::iterator_traits<int *> traits;
     if (typeid(traits::iterator_category) == typeid(std::random_access_iterator_tag))
         std::cout << "int* is a random-access iterator" << std::endl;
-    // Ajouts tests perso
     if (typeid(traits::iterator_category) == typeid(std::input_iterator_tag))
         std::cout << "int* is an input_iterator_tag" << std::endl;
     if (typeid(traits::iterator_category) == typeid(std::output_iterator_tag))
@@ -1101,28 +1088,6 @@ void my_make_pair(void)
     return;
 }
 
-void printMap(NS::map<int, std::string> mymap)
-{
-#if NS == std
-    NS::map<int, std::string>::iterator it = mymap.begin();
-#else
-    ft::map<int, mkstd::string>::map_iterator it = mymap.begin();
-#endif
-    (void)it;
-#if NS == std
-    NS::map<int, std::string>::iterator ite = mymap.end();
-#else
-    ft::map<int, std::string>::map_iterator ite = mymap.end();
-#endif
-    (void)ite;
-    while (it != ite)
-    {
-        std::cout << "key : " << (*it).first << ", value : " << (*it).second << std::endl;
-        it++;
-    }
-    return;
-}
-
 void my_key_comp(void)
 {
     std::cout << "-----------------------------" << std::endl;
@@ -1254,6 +1219,8 @@ void my_map_upper_bound(void)
 }
 void my_map_empty(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP EMPTY :" << std::endl;
     //c plus plus reference
     NS::map<char, int> mymap;
 
@@ -1266,11 +1233,14 @@ void my_map_empty(void)
         std::cout << mymap.begin()->first << " => " << mymap.begin()->second << std::endl;
         mymap.erase(mymap.begin());
     }
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_size(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP SIZE :" << std::endl;
     //c plus plus reference
     NS::map<char, int> mymap;
     mymap['a'] = 101;
@@ -1278,11 +1248,14 @@ void my_map_size(void)
     mymap['c'] = 302;
 
     std::cout << "mymap.size() is " << mymap.size() << std::endl;
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_max_size(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP MAX_SIZE :" << std::endl;
     int i;
     NS::map<int, int> mymap;
 
@@ -1294,12 +1267,14 @@ void my_map_max_size(void)
     }
     else
         std::cout << "The map could not hold 1000 elements." << std::endl;
+    std::cout << "OK !" << std::endl;
     return;
 }
 
-// TODO: a tester
 void my_map_iterators(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP ITERATORS :" << std::endl;
     //begin
     NS::map<char, int> mymap;
 
@@ -1354,17 +1329,14 @@ void my_map_iterators(void)
 
     for (NS::map<char, int>::const_reverse_iterator it = mymap3.rbegin(); it != mymap3.rend(); ++it)
         std::cout << it->first << " => " << it->second << std::endl;
-    return;
-}
-
-//TODO!
-void my_map_overloads(void)
-{
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_clear(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP CLEAR :" << std::endl;
     NS::map<char, int> mymap;
 
     mymap['x'] = 100;
@@ -1378,11 +1350,14 @@ void my_map_clear(void)
 
     for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
         std::cout << it->first << " => " << it->second << std::endl;
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_erase(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP ERASE :" << std::endl;
     NS::map<char, int> mymap;
     NS::map<char, int>::iterator it;
 
@@ -1405,11 +1380,14 @@ void my_map_erase(void)
     // show content:
     for (it = mymap.begin(); it != mymap.end(); ++it)
         std::cout << it->first << " => " << it->second << std::endl;
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_find(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP FIND :" << std::endl;
     //c plus plus reference
     NS::map<char, int> mymap;
     NS::map<char, int>::iterator it;
@@ -1428,11 +1406,14 @@ void my_map_find(void)
     std::cout << "a => " << mymap.find('a')->second << std::endl;
     std::cout << "c => " << mymap.find('c')->second << std::endl;
     std::cout << "d => " << mymap.find('d')->second << std::endl;
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_insert(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP INSERT :" << std::endl;
     NS::map<char, int> mymap;
     mymap.insert(NS::pair<char, int>('a', 100));
     mymap.insert(NS::pair<char, int>('z', 200));
@@ -1457,18 +1438,14 @@ void my_map_insert(void)
 
     for (it = anothermap.begin(); it != anothermap.end(); ++it)
         std::cout << it->first << " => " << it->second << std::endl;
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_count(void)
 {
-    /*
-    NS::map<std::string, int> mymap;
-
-    mymap.insert(NS::pair<std::string, int>("alpha", 1));
-    mymap.insert(NS::pair<std::string, int>("beta", 2));
-    mymap.insert(NS::pair<std::string, int>("gamma", 3));
-    */
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP COUNT :" << std::endl;
     NS::map<char, int> mymap;
     char c;
 
@@ -1484,11 +1461,14 @@ void my_map_count(void)
         else
             std::cout << " is not an element of mymap." << std::endl;
     }
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_equal_range(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP EQUAL RANGE :" << std::endl;
     NS::map<char, int> mymap;
 
     mymap['a'] = 10;
@@ -1503,29 +1483,31 @@ void my_map_equal_range(void)
 
     std::cout << "upper bound points to: ";
     std::cout << ret.second->first << " => " << ret.second->second << std::endl;
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_get_allocator(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP GET ALLOCATOR :" << std::endl;
     int psize;
     NS::map<char, int> mymap;
     NS::pair<const char, int> *p;
 
-    // allocate an array of 5 elements using mymap's allocator:
     p = mymap.get_allocator().allocate(5);
-
-    // assign some values to array
     psize = sizeof(std::map<char, int>::value_type) * 5;
 
-    std::cout << "The allocated array has a size of " << psize << " bytes.\n";
-
+    std::cout << "The allocated array has a size of " << psize << " bytes." << std::endl;
     mymap.get_allocator().deallocate(p, 5);
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 void my_map_swap(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP SWAP :" << std::endl;
     NS::map<char, int> foo, bar;
 
     foo['x'] = 100;
@@ -1542,14 +1524,15 @@ void my_map_swap(void)
 
     for (NS::map<char, int>::iterator it = bar.begin(); it != bar.end(); ++it)
         std::cout << it->first << " => " << it->second << std::endl;
+    std::cout << "OK !" << std::endl;
     return;
 }
 
-//TODO: a revoir, surement un pb de size
 void my_map_copy_construct(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP COPY CONSTRUCT :" << std::endl;
     NS::map<char, int> first;
-
     first['a'] = 10;
     first['b'] = 30;
     first['c'] = 50;
@@ -1561,52 +1544,18 @@ void my_map_copy_construct(void)
 
     bool (*fn_pt)(char, char) = fncomp;
     NS::map<char, int, bool (*)(char, char)> fifth(fn_pt); // function pointer as Compare
+    std::cout << "OK !" << std::endl;
     return;
 }
 
 //TODO!
-void my_map_bounds(void)
-{
-    return;
-}
-
-void my_map_comp(void)
-{
-    return;
-}
-
-void my_map_ite_arrow(void)
-{
-    return;
-}
-
-void my_map_rite_arrow(void)
+void my_map_overloads(void)
 {
     return;
 }
 
 int main(void)
 {
-    // TODO: ajouter les tests qui sont ecrits dans le main du sujet
-    my_map_copy_construct();
-    //my_map_get_allocator();
-    //my_map_equal_range();
-    //my_map_count();
-    //my_map_upper_bound();
-    //TODO: a revoir arbre binaire
-    //my_map_swap();
-    //my_map_insert();
-    //my_map_erase();
-    //my_map_find();
-    //my_map_clear();
-    //my_map_iterators();
-    //my_map_max_size();
-    //my_map_size();
-    //my_map_empty();
-    //my_map_lower_bound();
-    // TODO: voir erase + toutes les fonctions deja presentes
-    //  TODO: tester tous les utils
-    /*
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING UTILS :" << std::endl;
     my_vector_iterator();
@@ -1617,8 +1566,10 @@ int main(void)
     my_make_pair();
     my_reverse_operator_overloads();
 
+    std::cout << "--- END OF UTILS TESTS ---" << std::endl;
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING VECTORS :" << std::endl;
+
     my_ft_constructor();
     my_vector_copy_construct();
     my_operator_assignation();
@@ -1653,7 +1604,6 @@ int main(void)
     my_resize();
     my_ft_swap();
 
-
     std::cout << "--- END OF VECTOR TESTS ---" << std::endl;
     std::cout << "-----------------------------" << std::endl;
 
@@ -1669,12 +1619,26 @@ int main(void)
 
     //Tests map
     std::cout << "TESTING MAP :" << std::endl;
-    std::cout << "--- END OF MAP TESTS ---" << std::endl;
-    std::cout << "-----------------------------" << std::endl;
     my_map_value_compare();
     my_key_comp();
     my_map_constructors();
     my_map_iterators();
-    */
+    my_map_copy_construct();
+    my_map_get_allocator();
+    my_map_equal_range();
+    my_map_count();
+    my_map_upper_bound();
+    my_map_swap();
+    my_map_insert();
+    my_map_erase();
+    my_map_find();
+    my_map_clear();
+    my_map_iterators();
+    my_map_max_size();
+    my_map_size();
+    my_map_empty();
+    my_map_lower_bound();
+    std::cout << "--- END OF MAP TESTS ---" << std::endl;
+    std::cout << "-----------------------------" << std::endl;
     return (0);
 }

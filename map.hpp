@@ -2,7 +2,7 @@
 
 #include <memory>
 #include "node.hpp"
-#include "utils.hpp"
+//#include "utils.hpp"
 #include "iterator.hpp"
 
 class map_iterator;
@@ -313,10 +313,6 @@ namespace ft
             return current;
         }
 
-        //TODO: revoir tout ce qu il y a en dessous
-        // LOWER BOUND : https://www.cplusplus.com/reference/map/map/lower_bound/
-        // Returns an iterator pointing to the first element in the container whose key is not considered to go before k
-
         iterator lower_bound(const key_type &k)
         {
             iterator ite = this->end();
@@ -369,41 +365,6 @@ namespace ft
             }
             return (ite);
         }
-
-        /*
-        iterator lower_bound(const key_type &k)
-        {
-            iterator ite = end();
-            for (iterator it = begin(); it != ite; it++)
-                if (!_key_compare(it->first, k))
-                    return it;
-            return ite;
-        }
-        const_iterator lower_bound(const key_type &k) const
-        {
-            const_iterator ite = end();
-            for (const_iterator it = begin(); it != ite; it++)
-                if (!_key_compare(it->first, k))
-                    return const_iterator(it);
-            return ite;
-        }
-        iterator upper_bound(const key_type &k)
-        {
-            iterator ite = end();
-            for (iterator it = begin(); it != ite; it++)
-                if (_key_compare(k, it->first))
-                    return it;
-            return ite;
-        }
-        const_iterator upper_bound(const key_type &k) const
-        {
-            const_iterator ite = end();
-            for (const_iterator it = begin(); it != ite; it++)
-                if (_key_compare(k, it->first))
-                    return const_iterator(it);
-            return ite;
-        }
-        */
 
         //Utils
         node_type *min_value_node(node_type *node)
@@ -422,6 +383,7 @@ namespace ft
             return current;
         }
 
+        //TODO: a splitter
         node_type *delete_node(node_type *current, const key_type &key)
         {
             if (!current || current->last)
@@ -465,8 +427,8 @@ namespace ft
                     current->left->parent = temp;
                     temp->parent->left = NULL;
                     temp->parent = current->parent;
-                    if (_root == current)
-                        _root = temp;
+                    if (this->_root == current)
+                        this->_root = temp;
                     this->_allocator.destroy(current);
                     this->_allocator.deallocate(current, 1);
                     this->_size--;
@@ -512,22 +474,8 @@ namespace ft
                 return current;
         }
 
-        //Pb de const / pas const
-        /*
-        node_type *recursive_find_key(const key_type &key, node_type *current)
-        {
-            if (!current || current->last)
-                return NULL;
-            if (this->_key_compare(key, current->value.first))
-                return recursive_find_key(key, current->left);
-            else if (this->_key_compare(current->value.first, key))
-                return recursive_find_key(key, current->right);
-            else
-                return current;
-        }*/
-
-        //TODO: a revoir
-        // Necessaire assez rapidement pour les tests
+        //If k matches the key of an element in the container, the function returns a reference to its mapped value.
+        //If k does not match the key of any element in the container, the function inserts a new element with that key and returns a reference to its mapped value
         mapped_type &operator[](const key_type &k)
         {
             node_type *temp = recursive_find_key(k, this->_root);
@@ -568,7 +516,7 @@ namespace ft
 
         bool empty() const { return (this->_size == 0); }
         size_type size() const { return (this->_size); }
-        size_type max_size() const { return (std::numeric_limits<difference_type>::max()); }
+        size_type max_size() const { return (this->_allocator.max_size()); }
     };
 
     template <class Key, class T, class Compare, class Alloc>

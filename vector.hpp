@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include "iterator.hpp"
-#include "utils.hpp"
 
 struct enable_if;
 class vector_iterator;
