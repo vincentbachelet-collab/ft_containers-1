@@ -143,7 +143,7 @@ namespace ft
 				while (i < max)
 				{
 					this->_allocator.construct(&n[i], this->_ptr[i]);
-					this->_allocator.destroy(&this->_ptr[i]);
+					this->_allocator.destroy(&_ptr[i]);
 					i++;
 				}
 				this->_allocator.deallocate(this->_ptr, this->_capacity);
@@ -282,6 +282,20 @@ namespace ft
 		template <class InputIterator>
 		void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
+			//TODO: a corriger
+			size_type n = 0;
+			size_type i = 0;
+			for (InputIterator it = first; it != last; it++)
+				n++;
+			reserve(n);
+			resize(n);
+			for (size_type i = 0; i < n && i < _size; i++)
+				_allocator.destroy(&_ptr[i]);
+			for (InputIterator it = first; it != last; it++, i++)
+				_allocator.construct(&_ptr[i], *it);
+			if (n > this->get_size())
+				set_size(n);
+			/*
 			size_type n = 0;
 			size_type i = 0;
 			InputIterator it = first;
@@ -292,7 +306,7 @@ namespace ft
 			}
 			reserve(n);
 			resize(n);
-			size_type i = 0;
+			i = 0;
 			while (i < n && i < this->size())
 			{
 				_allocator.destroy(&_ptr[i]);
@@ -307,6 +321,7 @@ namespace ft
 			}
 			if (n > this->get_size())
 				set_size(n);
+			*/
 		}
 
 		// retourne une reference de l element a la position n dans le vecteur
@@ -314,15 +329,17 @@ namespace ft
 		{
 			if (n >= this->get_size())
 				throw std::out_of_range("out of range");
-			return (this->_ptr[n]);
+			reference ref = this->_ptr[n];
+			return (ref);
 		}
 
 		// retourne une reference de l element a la position n dans le vecteurs
-		const reference at(size_type n) const
+		const_reference at(size_type n) const
 		{
 			if (n >= this->get_size())
 				throw std::out_of_range("out of range");
-			return (this->_ptr[n]);
+			const_reference ref = this->_ptr[n];
+			return (ref);
 		}
 
 		void push_back(const value &val)
@@ -335,8 +352,8 @@ namespace ft
 				else
 					this->reserve(this->get_capacity() * 2);
 			}
-			_allocator.construct(&_ptr[_size], val);
-			_size++;
+			_allocator.construct(&_ptr[size], val);
+			this->_size++;
 		}
 
 		// Le compilateur appelle ca un subscript operator
@@ -346,9 +363,9 @@ namespace ft
 			return (ref);
 		}
 
-		const reference operator[](size_type n) const
+		const_reference operator[](size_type n) const
 		{
-			reference ref = this->_ptr[n];
+			const_reference ref = this->_ptr[n];
 			return (ref);
 		}
 
@@ -367,21 +384,44 @@ namespace ft
 			size_type begin = 0;
 			size_type first_to_last = 0;
 			size_type last_to_end = 0;
-			for (iterator it = this->begin(); it != first; it++)
+			size_type i = 0;
+
+			iterator it = this->begin();
+			//count begin
+			while (it != first)
+			{
 				begin++;
-			for (iterator it = first; it != last; it++)
+				it++;
+			}
+			it = first;
+			while (it != last)
+			{
 				first_to_last++;
-			for (iterator it = last; it != end(); it++)
+				it++;
+			}
+			//count last to end
+			it = last;
+			while (it != this->end())
+			{
 				last_to_end++;
-			for (size_type i = 0; i < last_to_end; i++)
+				it++;
+			}
+			//Va permettre de ne pas perdre les premiers qui ne seraient pas a supprimer
+			while (i < last_to_end)
 			{
 				_allocator.destroy(&_ptr[begin + i]);
 				_allocator.construct(&_ptr[begin + i], _ptr[begin + i + first_to_last]);
+				i++;
 			}
-			for (size_type i = 0; i < first_to_last; i++)
+			//i = 0;
+			///on detruit tout ce qu il y a entre first et last
+			while (i < first_to_last)
+			{
 				_allocator.destroy(&_ptr[begin + last_to_end + i]);
-			_size -= first_to_last;
-			return first;
+				i++;
+			}
+			this->_size -= first_to_last;
+			return (first);
 		}
 
 		iterator insert(iterator position, const value &val)
