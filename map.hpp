@@ -122,6 +122,14 @@ namespace ft
             return 0;
         }
 
+        size_type count(const key_type &k) const
+        {
+            const_iterator temp = this->find(k);
+            if (temp != this->end())
+                return 1;
+            return 0;
+        }
+
         pair<iterator, iterator> equal_range(const key_type &k)
         {
             return pair<iterator, iterator>(lower_bound(k), upper_bound(k));
@@ -237,10 +245,11 @@ namespace ft
         }
         const_iterator find(const key_type &k) const
         {
-            node_type *temp = const_position_of_a_key(k, this->_root);
+            //node_type *temp = const_position_of_a_key(k, this->_root);
+            node_type *temp = recursive_find_key(k, this->_root);
             if (temp)
                 return const_iterator(temp);
-            return (this->end());
+            return (const_iterator(this->end()));
         }
 
         //Erase
@@ -435,7 +444,7 @@ namespace ft
         }
 
         // Fonction recusive qui va chercher une key
-        node_type *recursive_find_key(const key_type &key, node_type *current)
+        node_type *recursive_find_key(const key_type &key, node_type *current) const
         {
             if (!current || current->last)
                 return NULL;
@@ -446,6 +455,20 @@ namespace ft
             else
                 return current;
         }
+
+        //Pb de const / pas const
+        /*
+        node_type *recursive_find_key(const key_type &key, node_type *current)
+        {
+            if (!current || current->last)
+                return NULL;
+            if (this->_key_compare(key, current->value.first))
+                return recursive_find_key(key, current->left);
+            else if (this->_key_compare(current->value.first, key))
+                return recursive_find_key(key, current->right);
+            else
+                return current;
+        }*/
 
         //TODO: a revoir
         // Necessaire assez rapidement pour les tests
