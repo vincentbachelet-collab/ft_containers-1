@@ -108,7 +108,6 @@ namespace ft
         void clear(void)
         {
             set_size(0);
-            clear_tree(this->_root);
         }
 
         //Returns the number of matches if found. - Devrait etre const
@@ -383,17 +382,18 @@ namespace ft
             return current;
         }
 
-        //TODO: a splitter
+        //Le current est toujours _root, on va chercher le bon node grace a la key
         node_type *delete_node(node_type *current, const key_type &key)
         {
             if (!current || current->last)
                 return current;
-            if (_key_compare(key, current->value.first))
+            if (this->_key_compare(key, current->value.first)) //si la cle correspond a l enfant plus petit
                 current->left = delete_node(current->left, key);
-            else if (_key_compare(current->value.first, key))
+            else if (this->_key_compare(current->value.first, key)) //si la cle correspond a l enfant plus grand
                 current->right = delete_node(current->right, key);
             else
             {
+                //Si le node n a pas deux enfants
                 if (!current->left || !current->right)
                 {
                     node_type *temp = current->left ? current->left : current->right;
@@ -415,6 +415,7 @@ namespace ft
                         this->_size--;
                     }
                 }
+                //Necessaires pour le erase2 et tricky erase
                 else
                 {
                     node_type *temp = min_value_node(current->right);

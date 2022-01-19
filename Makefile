@@ -13,6 +13,10 @@ OBJ_STD		=	$(addprefix $(OBJDIR_STD)/, $(SRC:.cpp=.o))
 CFLAGS		=	-Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g3
 
 all: ft std
+	@./$(NAME_FT) > $(NAME_FT).txt
+	@./$(NAME_STD) > $(NAME_STD).txt
+	@diff $(NAME_FT).txt $(NAME_STD).txt > diff.txt
+	@cat diff.txt
 
 #	@./$(NAME_FT) > $(NAME_FT).txt
 #	@./$(NAME_STD) > $(NAME_STD).txt

@@ -6,6 +6,7 @@
 #include <map>
 #include <stack>
 #include <list>
+
 #include <iostream>
 #include <utility>
 
@@ -1347,9 +1348,6 @@ void my_map_clear(void)
         std::cout << it->first << " => " << it->second << std::endl;
 
     mymap.clear();
-
-    for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-        std::cout << it->first << " => " << it->second << std::endl;
     std::cout << "OK !" << std::endl;
     return;
 }
@@ -1548,9 +1546,31 @@ void my_map_copy_construct(void)
     return;
 }
 
-//TODO!
 void my_map_overloads(void)
 {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING MAP NON MEMBER OVERLOADS:" << std::endl;
+    NS::map<char, int> first;
+    first['a'] = 10;
+    first['b'] = 30;
+    first['c'] = 50;
+    first['d'] = 70;
+
+    NS::map<char, int> second;
+    first['e'] = 90;
+    first['f'] = 110;
+    first['g'] = 130;
+    first['h'] = 150;
+
+    std::cout << (first == second) << std::endl;
+    std::cout << (first != second) << std::endl;
+    std::cout << (first >= second) << std::endl;
+    std::cout << (first > second) << std::endl;
+    std::cout << (first <= second) << std::endl;
+    std::cout << (first < second) << std::endl;
+
+    NS::swap(first, second);
+    std::cout << "OK !" << std::endl;
     return;
 }
 
@@ -1619,6 +1639,7 @@ int main(void)
 
     //Tests map
     std::cout << "TESTING MAP :" << std::endl;
+    my_map_overloads();
     my_map_value_compare();
     my_key_comp();
     my_map_constructors();
