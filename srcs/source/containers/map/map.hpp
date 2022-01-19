@@ -1,11 +1,11 @@
 #pragma once
 
-//TODO: mettre le include
+// TODO: mettre le include
 
 /* */
 namespace ft
 {
-    template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
+    template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T>>>
     class map
     {
     public:
@@ -350,6 +350,7 @@ namespace ft
             return (0);
         }
 
+        /*
         iterator lower_bound(const key_type &key)
         {
             iterator it = this->begin();
@@ -365,6 +366,31 @@ namespace ft
             while (it != this->end() && this->key_comp()(it->first, k))
                 it++;
             return (it);
+        }
+        */
+
+        // Implementation suggeree prar la documentation cpp
+        template <class ForwardIt, class T, class Compare>
+        ForwardIt lower_bound(ForwardIt first, ForwardIt last, const T &value, Compare comp)
+        {
+            ForwardIt it;
+            typename ft::iterator_traits<ForwardIt>::difference_type count, step;
+            count = std::distance(first, last);
+
+            while (count > 0)
+            {
+                it = first;
+                step = count / 2;
+                std::advance(it, step);
+                if (comp(*it, value))
+                {
+                    first = ++it;
+                    count -= step + 1;
+                }
+                else
+                    count = step;
+            }
+            return first;
         }
 
         iterator upper_bound(const key_type &key)
@@ -529,21 +555,21 @@ namespace ft
             if (current->last)
             {
                 node_type *to_insert = new_node(val, parent);
-                //le last sera toujours l'enfant des elements ajouts
+                // le last sera toujours l'enfant des elements ajouts
                 current->parent = to_insert;
-                //current, c'est la tete du binary tree ?
+                // current, c'est la tete du binary tree ?
                 to_insert->right = current;
                 current = to_insert;
                 // return (current);
             }
-            //Si la valeur a ajouter est plus petite
+            // Si la valeur a ajouter est plus petite
             else if (key_compare(val.first, current->value.first))
             {
                 if (DEBUG)
                     std::cout << "the node will be insert on the left side" << std::endl;
                 current->left = insert_node(val, current->left, current);
             }
-            //Si la valeur a ajouter est plus grande
+            // Si la valeur a ajouter est plus grande
             else
             {
                 if (DEBUG)
@@ -593,7 +619,7 @@ namespace ft
                 if (DEBUG == 1)
                     std::cout << "get key pos will return NULL" << std::endl;
             }
-            //Si la cle est inferieure a la valeur de current
+            // Si la cle est inferieure a la valeur de current
             if (key_compare(key, current->value.first))
                 return (const_get_key_pos(key, current->left));
             else
@@ -660,8 +686,8 @@ namespace ft
             std::cout << "operator== invoked, will return false because sizes are different" << std::endl;
             return false;
         }
-        //Appel de std::equal
-        //A tester
+        // Appel de std::equal
+        // A tester
         bool res = equal(lhs.begin(), lhs.end(), rhs.begin());
         if (DEBUG == 1)
             std::cout << "std::equal called, res is " << res << std::endl;
