@@ -418,7 +418,7 @@ namespace ft
 
         map_iterator &operator=(map_iterator const &rhs)
         {
-            if (this != &src)
+            if (this != &rhs)
             {
                 this->_ptr = rhs._ptr;
             }

@@ -1178,7 +1178,6 @@ void my_map_value_compare(void)
 
     (void)it;
     (void)highest;
-    //
     while (mymap.value_comp()(*it++, highest))
     {
         std::cout << it->first << " => " << it->second << std::endl;
@@ -1258,33 +1257,198 @@ void my_map_upper_bound(void)
 }
 void my_map_empty(void)
 {
+    //c plus plus reference
+    NS::map<char, int> mymap;
+
+    mymap['a'] = 10;
+    mymap['b'] = 20;
+    mymap['c'] = 30;
+
+    while (!mymap.empty())
+    {
+        std::cout << mymap.begin()->first << " => " << mymap.begin()->second << std::endl;
+        mymap.erase(mymap.begin());
+    }
     return;
 }
 
 void my_map_size(void)
 {
+    //c plus plus reference
+    NS::map<char, int> mymap;
+    mymap['a'] = 101;
+    mymap['b'] = 202;
+    mymap['c'] = 302;
+
+    std::cout << "mymap.size() is " << mymap.size() << std::endl;
     return;
 }
 
 void my_map_max_size(void)
 {
+    int i;
+    NS::map<int, int> mymap;
+
+    if (mymap.max_size() > 1000)
+    {
+        for (i = 0; i < 1000; i++)
+            mymap[i] = 0;
+        std::cout << "The map contains 1000 elements." << std::endl;
+    }
+    else
+        std::cout << "The map could not hold 1000 elements." << std::endl;
     return;
 }
+
 // TODO: a tester
 void my_map_iterators(void)
 {
+    //begin
+    NS::map<char, int> mymap;
+
+    mymap['b'] = 100;
+    mymap['a'] = 200;
+    mymap['c'] = 300;
+
+    // show content:
+    for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    for (NS::map<char, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    //rbegin
+    NS::map<char, int> mymap1;
+
+    mymap1['b'] = 100;
+    mymap1['a'] = 200;
+    mymap1['c'] = 300;
+
+    // show content:
+    for (NS::map<char, int>::reverse_iterator it = mymap1.rbegin(); it != mymap1.rend(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    for (NS::map<char, int>::const_reverse_iterator it = mymap1.rbegin(); it != mymap1.rend(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    //end
+    std::map<char, int> mymap2;
+
+    mymap2['b'] = 100;
+    mymap2['a'] = 200;
+    mymap2['c'] = 300;
+
+    // show content:
+    for (std::map<char, int>::iterator it = mymap2.begin(); it != mymap2.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    for (std::map<char, int>::const_iterator it = mymap2.begin(); it != mymap2.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+    //rend
+    NS::map<char, int> mymap3;
+
+    mymap3['b'] = 100;
+    mymap3['a'] = 200;
+    mymap3['c'] = 300;
+
+    // show content:
+    for (NS::map<char, int>::reverse_iterator it = mymap3.rbegin(); it != mymap3.rend(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    for (NS::map<char, int>::const_reverse_iterator it = mymap3.rbegin(); it != mymap3.rend(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+    return;
+}
+
+void my_map_overloads(void)
+{
+    return;
+}
+
+void my_map_clear(void)
+{
+    NS::map<char, int> mymap;
+
+    mymap['x'] = 100;
+    mymap['y'] = 200;
+    mymap['z'] = 300;
+
+    for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    mymap.clear();
+
+    for (NS::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+    return;
+}
+
+void my_map_erase(void)
+{
+    NS::map<char, int> mymap;
+    NS::map<char, int>::iterator it;
+
+    // insert some values:
+    mymap['a'] = 10;
+    mymap['b'] = 20;
+    mymap['c'] = 30;
+    mymap['d'] = 40;
+    mymap['e'] = 50;
+    mymap['f'] = 60;
+
+    it = mymap.find('b');
+    mymap.erase(it); // erasing by iterator
+
+    mymap.erase('c'); // erasing by key
+
+    it = mymap.find('e');
+    mymap.erase(it, mymap.end()); // erasing by range
+
+    // show content:
+    for (it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+    return;
+}
+
+void my_map_find(void)
+{
+    //c plus plus reference
+    NS::map<char, int> mymap;
+    NS::map<char, int>::iterator it;
+
+    mymap['a'] = 50;
+    mymap['b'] = 100;
+    mymap['c'] = 150;
+    mymap['d'] = 200;
+
+    it = mymap.find('b');
+    if (it != mymap.end())
+        mymap.erase(it);
+
+    // print content:
+    std::cout << "elements in mymap:" << std::endl;
+    std::cout << "a => " << mymap.find('a')->second << std::endl;
+    std::cout << "c => " << mymap.find('c')->second << std::endl;
+    std::cout << "d => " << mymap.find('d')->second << std::endl;
     return;
 }
 
 int main(void)
 {
     // TODO: ajouter les tests qui sont ecrits dans le main du sujet
-    std::cout << "-----------------------------" << std::endl;
-    std::cout << "TESTING UTILS :" << std::endl;
-    my_map_lower_bound();
+    my_map_erase();
+    //my_map_find();
+    //my_map_clear();
+    //my_map_iterators();
+    //my_map_max_size();
+    //my_map_size();
+    //my_map_empty();
+    //my_map_lower_bound();
     // TODO: voir erase + toutes les fonctions deja presentes
     //  TODO: tester tous les utils
     /*
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TESTING UTILS :" << std::endl;
     my_vector_iterator();
     my_lexico();
     my_iterator_traits();
