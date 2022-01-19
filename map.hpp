@@ -113,6 +113,24 @@ namespace ft
             set_size(0);
         }
 
+        //Returns the number of matches if found. - Devrait etre const
+        size_type count(const key_type &k)
+        {
+            iterator temp = this->find(k);
+            if (temp != this->end())
+                return 1;
+            return 0;
+        }
+
+        pair<iterator, iterator> equal_range(const key_type &k)
+        {
+            return pair<iterator, iterator>(lower_bound(k), upper_bound(k));
+        }
+        pair<const_iterator, const_iterator> equal_range(const key_type &k) const
+        {
+            return pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));
+        }
+
         // Fonction de destroy + deallocate recursif / On va supprimer jusqu'au node passe en parametre
         void clear_tree(node_type *cur)
         {
@@ -214,7 +232,7 @@ namespace ft
         {
             node_type *temp = recursive_find_key(k, this->_root);
             if (temp)
-                return (temp);
+                return (iterator(temp));
             return (this->end());
         }
         const_iterator find(const key_type &k) const

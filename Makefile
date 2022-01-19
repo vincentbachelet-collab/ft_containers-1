@@ -14,35 +14,23 @@ CFLAGS		=	-Wall -Wextra -Werror -std=c++98#-fsanitize=address -g
 STD			=	-D STD=1
 TEST		=	-D TEST=1
 
-ifneq (,$(findstring xterm,${TERM}))
-	GREEN := $(shell tput -Txterm setaf 2)
-	RESET := $(shell tput -Txterm sgr0)
-else
-	GREEN := ""
-	RESET := ""
-endif
-
 all: ft std
 	@./$(NAME_FT) > $(NAME_FT).txt
 	@./$(NAME_STD) > $(NAME_STD).txt
-	@echo "${GREEN}Executing Program and Exporting Difference${RESET}"
-	@diff $(NAME_FT).txt $(NAME_STD).txt > diff.txt
-	@cat diff.txt
+	@echo "Executing Program and Exporting Difference"
 
+#diff $(NAME_FT).txt $(NAME_STD).txt > diff.txt
+#cat diff.txt
+	
 bonus: all
-
-test: fclean $(OBJ)
-	@$(CC) $(CFLAGS) $(TEST) $(OBJ) -o $(NAME)
-	@echo "${GREEN}Compilation Done & Executing Program [test]${RESET}"
-	@./$(NAME)
 
 ft: fclean $(OBJ_FT)
 	@$(CC) $(CFLAGS) $(OBJ_FT) -o $(NAME_FT)
-	@echo "${GREEN}Compilation Done [ft]${RESET}"
+	@echo "Compilation Done [ft]"
 
 std: fclean $(OBJ_STD)
 	@$(CC) $(CFLAGS) $(OBJ_STD) -o $(NAME_STD)
-	@echo "${GREEN}Compilation Done [std]${RESET}"
+	@echo "ompilation Done [std]"
 
 $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(OBJDIR)

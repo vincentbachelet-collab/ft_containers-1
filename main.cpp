@@ -1433,10 +1433,88 @@ void my_map_find(void)
     return;
 }
 
+void my_map_insert(void)
+{
+    NS::map<char, int> mymap;
+    mymap.insert(NS::pair<char, int>('a', 100));
+    mymap.insert(NS::pair<char, int>('z', 200));
+
+    NS::pair<NS::map<char, int>::iterator, bool> ret;
+    ret = mymap.insert(NS::pair<char, int>('z', 500));
+    if (ret.second == false)
+    {
+        std::cout << "element 'z' already existed";
+        std::cout << " with a value of " << ret.first->second << std::endl;
+    }
+
+    NS::map<char, int>::iterator it = mymap.begin();
+    mymap.insert(it, NS::pair<char, int>('b', 300)); // max efficiency inserting
+    mymap.insert(it, NS::pair<char, int>('c', 400)); // no max efficiency inserting
+
+    NS::map<char, int> anothermap;
+    anothermap.insert(mymap.begin(), mymap.find('c'));
+
+    for (it = mymap.begin(); it != mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+
+    for (it = anothermap.begin(); it != anothermap.end(); ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+    return;
+}
+
+void my_map_count(void)
+{
+    /*
+    NS::map<std::string, int> mymap;
+
+    mymap.insert(NS::pair<std::string, int>("alpha", 1));
+    mymap.insert(NS::pair<std::string, int>("beta", 2));
+    mymap.insert(NS::pair<std::string, int>("gamma", 3));
+    */
+    NS::map<char, int> mymap;
+    char c;
+
+    mymap['a'] = 101;
+    mymap['c'] = 202;
+    mymap['f'] = 303;
+
+    for (c = 'a'; c < 'h'; c++)
+    {
+        std::cout << c;
+        if (mymap.count(c) > 0)
+            std::cout << " is an element of mymap." << std::endl;
+        else
+            std::cout << " is not an element of mymap." << std::endl;
+    }
+    return;
+}
+
+void my_map_equal_range(void)
+{
+    NS::map<char, int> mymap;
+
+    mymap['a'] = 10;
+    mymap['b'] = 20;
+    mymap['c'] = 30;
+
+    NS::pair<NS::map<char, int>::iterator, NS::map<char, int>::iterator> ret;
+    ret = mymap.equal_range('b');
+
+    std::cout << "lower bound points to: ";
+    std::cout << ret.first->first << " => " << ret.first->second << '\n';
+
+    std::cout << "upper bound points to: ";
+    std::cout << ret.second->first << " => " << ret.second->second << '\n';
+    return;
+}
+
 int main(void)
 {
     // TODO: ajouter les tests qui sont ecrits dans le main du sujet
-    my_map_erase();
+    my_map_equal_range();
+    //my_map_count();
+    //my_map_insert();
+    //my_map_erase();
     //my_map_find();
     //my_map_clear();
     //my_map_iterators();
