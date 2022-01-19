@@ -282,20 +282,6 @@ namespace ft
 		template <class InputIterator>
 		void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
-			//TODO: a corriger
-			size_type n = 0;
-			size_type i = 0;
-			for (InputIterator it = first; it != last; it++)
-				n++;
-			reserve(n);
-			resize(n);
-			for (size_type i = 0; i < n && i < _size; i++)
-				_allocator.destroy(&_ptr[i]);
-			for (InputIterator it = first; it != last; it++, i++)
-				_allocator.construct(&_ptr[i], *it);
-			if (n > this->get_size())
-				set_size(n);
-			/*
 			size_type n = 0;
 			size_type i = 0;
 			InputIterator it = first;
@@ -309,19 +295,20 @@ namespace ft
 			i = 0;
 			while (i < n && i < this->size())
 			{
+				//i++;
 				_allocator.destroy(&_ptr[i]);
 				i++;
 			}
 			it = first;
+			i = 0;
 			while (it != last)
 			{
 				_allocator.construct(&_ptr[i], *it);
-				i++;
 				it++;
+				i++;
 			}
 			if (n > this->get_size())
 				set_size(n);
-			*/
 		}
 
 		// retourne une reference de l element a la position n dans le vecteur
