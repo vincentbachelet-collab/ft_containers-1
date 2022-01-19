@@ -1357,6 +1357,7 @@ void my_map_iterators(void)
     return;
 }
 
+//TODO!
 void my_map_overloads(void)
 {
     return;
@@ -1544,7 +1545,42 @@ void my_map_swap(void)
     return;
 }
 
-void my_value_comp(void)
+//TODO: a revoir, surement un pb de size
+void my_map_copy_construct(void)
+{
+    NS::map<char, int> first;
+
+    first['a'] = 10;
+    first['b'] = 30;
+    first['c'] = 50;
+    first['d'] = 70;
+
+    NS::map<char, int> second(first.begin(), first.end());
+    NS::map<char, int> third(second);
+    NS::map<char, int, classcomp> fourth; // class as Compare
+
+    bool (*fn_pt)(char, char) = fncomp;
+    NS::map<char, int, bool (*)(char, char)> fifth(fn_pt); // function pointer as Compare
+    return;
+}
+
+//TODO!
+void my_map_bounds(void)
+{
+    return;
+}
+
+void my_map_comp(void)
+{
+    return;
+}
+
+void my_map_ite_arrow(void)
+{
+    return;
+}
+
+void my_map_rite_arrow(void)
 {
     return;
 }
@@ -1552,10 +1588,11 @@ void my_value_comp(void)
 int main(void)
 {
     // TODO: ajouter les tests qui sont ecrits dans le main du sujet
+    my_map_copy_construct();
     //my_map_get_allocator();
     //my_map_equal_range();
     //my_map_count();
-    my_map_upper_bound();
+    //my_map_upper_bound();
     //TODO: a revoir arbre binaire
     //my_map_swap();
     //my_map_insert();

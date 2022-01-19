@@ -70,12 +70,9 @@ namespace ft
         virtual ~map() { clear_tree(this->_root); }
         map &operator=(const map &src)
         {
-            if (this != &src)
-            {
-                if (!this->empty())
-                    clear_tree(this->_root);
-                insert(src.begin(), src.end());
-            }
+            //if (this != &src)
+            clear_tree(this->_root);
+            insert(src.begin(), src.end());
             return *this;
         }
 
@@ -111,6 +108,7 @@ namespace ft
         void clear(void)
         {
             set_size(0);
+            clear_tree(this->_root);
         }
 
         //Returns the number of matches if found. - Devrait etre const
@@ -171,7 +169,7 @@ namespace ft
                 this->_allocator.destroy(cur);
                 this->_allocator.deallocate(cur, 1);
                 if (this->get_size() > 0)
-                    this->set_size(this->get_size() + 1);
+                    this->set_size(this->get_size() - 1);
                 if (cur == this->_root)
                     this->_root = NULL;
             }
@@ -217,8 +215,9 @@ namespace ft
 
         iterator end()
         {
-            // if (!this->_root)
-            //    initialize();
+            //Necessaire sinon ne passe pas tous les tests !
+            if (!this->_root)
+                initialize();
             if (this->_size == 0)
                 return (this->_root);
             node_type *temp = this->_root;
@@ -569,7 +568,7 @@ namespace ft
 
         bool empty() const { return (this->_size == 0); }
         size_type size() const { return (this->_size); }
-        size_type max_size() const { return (this->_allocator.max_size()); }
+        size_type max_size() const { return (std::numeric_limits<difference_type>::max()); }
     };
 
     template <class Key, class T, class Compare, class Alloc>
