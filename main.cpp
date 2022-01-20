@@ -6,6 +6,7 @@
 #include <map>
 #include <stack>
 #include <list>
+#include <typeinfo>
 
 #include <iostream>
 #include <utility>
