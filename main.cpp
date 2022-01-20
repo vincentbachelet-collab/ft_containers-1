@@ -1714,7 +1714,6 @@ void my_map_correc(void)
 
 int main(void)
 {
-    /*
     std::cout << "-----------------------------" << std::endl;
     std::cout << "TESTING UTILS :" << std::endl;
     my_lexico();
@@ -1779,9 +1778,7 @@ int main(void)
 
     //Tests map
     std::cout << "TESTING MAP :" << std::endl;
-    */
     my_map_correc();
-    /*
     my_map_overloads();
     my_map_value_compare();
     my_key_comp();
@@ -1804,6 +1801,5 @@ int main(void)
     my_map_lower_bound();
     std::cout << "--- END OF MAP TESTS ---" << std::endl;
     std::cout << "-----------------------------" << std::endl;
-    */
     return (0);
 }
