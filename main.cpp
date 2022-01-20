@@ -1699,17 +1699,17 @@ void my_map_correc(void)
     NS::map<int, int> map1;
     map1.insert(bar);
     NS::map<int, int>::iterator it1 = map1.begin();
-    std::cout << &(*it1) << " " << (*it1).first << std::endl;
+    //std::cout << it1 << std::endl;
     NS::map<int, int> map2;
     map2.insert(foo);
     NS::map<int, int>::iterator it2 = map2.begin();
-    std::cout << &(*it2) << " " << (*it2).first << std::endl;
-    std::cout << "-------" << std::endl;
-    //NS::swap(map1, map2);
-    map1.swap(&map2);
-    std::cout << &(*it1) << " " << (*it1).first << std::endl;
-    std::cout << &(*it2) << " " << (*it2).first << std::endl;
-    std::cout << "-------" << std::endl;
+    //std::cout << it2<< std::endl;
+    //std::cout << "-------" << std::endl;
+    NS::swap(map1, map2);
+    //map1.swap(map2);
+    //std::cout << it1 << std::endl;
+    //std::cout << it2 << std::endl;
+    //std::cout << "-------" << std::endl;
     return;
 }
 

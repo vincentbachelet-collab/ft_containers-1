@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <iostream>
 #include "node.hpp"
 //#include "utils.hpp"
 #include "iterator.hpp"
@@ -128,13 +129,8 @@ namespace ft
             return 0;
         }
 
-        void swap(map &x) //passer par des pointeurs plutot que pas des references?
+        void swap(map &x)
         {
-            //int temp;
-            //temp = a;
-            //a = b;
-            //b = temp;
-
             node_allocator temp_alloc_type = this->_allocator;
             key_compare temp_key_compare = this->_key_compare;
             size_type temp_size = this->_size;
@@ -149,15 +145,6 @@ namespace ft
             x._key_compare = temp_key_compare;
             x._size = temp_size;
             x._root = temp_root;
-            return;
-        }
-
-        void swap(map *src)
-        {
-            map *temp = src;
-
-            src = this;
-            this = temp;
             return;
         }
 
@@ -538,7 +525,8 @@ namespace ft
         }
         size_type max_size() const
         {
-            return (this->_allocator.max_size());
+            return (_allocator.max_size());
+            //return (std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1));
         }
     };
 
@@ -584,13 +572,4 @@ namespace ft
     {
         x.swap(y);
     }
-
-    //?
-    /*
-    template <class Key, class T, class Compare, class Alloc>
-    void swap(map<Key, T, Compare, Alloc> *x, map<Key, T, Compare, Alloc> *y)
-    {
-        x.swap(y);
-    }
-    */
 }
