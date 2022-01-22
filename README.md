@@ -10,7 +10,7 @@
 - You **can't use  new**, even for your nodes (=elements of the tree). You should use the **allocate** and **construct** function. 
 - Some students are reimplemented some classes for no apparent reason like **std::less**. Make sure that have a **solid reason for that**. (They probably just did it because somebody else did).
 - Unlike me, don't forget the **main from the subject**.  Use **valgrind to check if there is no memory leaks**. You can also add some while loop to check a crazy amount of inserting to check the **speed/performances**.
-
+- **Reclone the testers** when correcting other students. They could have commented some tester functions to pass it. For instance, **the output of maxsize could be different from std but it's ok.**
 Please find below my notes (sorry it is in french). 
 
 # Notes 
