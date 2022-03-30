@@ -2,6 +2,7 @@
 
 - Status : validated 
 - Grade : 100%
+You can validate the projet even if you have a diff in the max size compared to mli ! ✅
 
 ![Alt text](/containers.png?raw=true "ft_containers")
 
