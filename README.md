@@ -3,6 +3,9 @@
 - Status : validated 
 - Grade : 100%
 
+![Alt text](/containers.png?raw=true "ft_containers")
+
+
 ## Suggestions for you
 - I implemented few getters and setters (like many people did) but realised the subject mentionned that we should not add more  functions, so please don't. **Use friend for non member overloads (only)**.
 - Make your **destructor virtual**. A lot of people did not do it but remember it could create leaks when working with polymorphism (devired class inheriting from base class). If you want to respect a strictly canonical class you **should not forget virtual**.
